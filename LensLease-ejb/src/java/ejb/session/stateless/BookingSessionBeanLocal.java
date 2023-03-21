@@ -1,0 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ejb.session.stateless;
+
+import entity.Booking;
+import entity.Review;
+import entity.Service;
+import java.util.List;
+import javax.ejb.Local;
+import util.exception.BookingNotFoundException;
+
+/**
+ *
+ * @author Amirul
+ */
+@Local
+public interface BookingSessionBeanLocal {
+
+    public void createNewBooking(Booking booking);
+
+    public void createNewReview(Review review);
+
+    public List<Booking> getAllBookings();
+
+    public Booking findBookingByBookingId(Long bookingId) throws BookingNotFoundException;
+    
+}
