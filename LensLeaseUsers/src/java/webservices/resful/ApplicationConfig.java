@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservices.restful;
+package webservices.resful;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -14,7 +14,6 @@ import javax.ws.rs.core.Application;
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
-    
 
     @Override
     public Set<Class<?>> getClasses() {
@@ -30,7 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(webservices.restful.CORSFilter.class);
+        resources.add(webservices.resful.CORSFilter.class);
         resources.add(webservices.restful.UsersResource.class);
     }
     

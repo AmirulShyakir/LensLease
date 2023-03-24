@@ -1,6 +1,6 @@
 //This module provides a list of helper methods for accessing the
 //Simple CRM RESTful API
-const SERVER_PREFIX = "http://localhost:8080/CRM-war/webresources";
+const SERVER_PREFIX = "http://localhost:8080/LensLease-war/webresources";
 const Api = {
  createUser(data) {
     return fetch(`${SERVER_PREFIX}/users`, {

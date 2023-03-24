@@ -26,17 +26,17 @@ function SearchUsers(props) {
       .then((res) => res.json())
       .then((customers) => {
         for (const customer of customers) {
-          const { gender, dob, created } = customer;
+          // const { gender, dob, created } = customer;
  
-          if (gender === 1) {
-            customer.gender = "Female";
-          } else if (gender === 2) {
-            customer.gender = "Male";
-          }
+          // if (gender === 1) {
+          //   customer.gender = "Female";
+          // } else if (gender === 2) {
+          //   customer.gender = "Male";
+          // }
  
-          //remove [UTC] suffix
-          customer.dob = dob.substring(0, dob.length - 5);
-          customer.created = created.substring(0, created.length - 5);
+          // //remove [UTC] suffix
+          // customer.dob = dob.substring(0, dob.length - 5);
+          // customer.created = created.substring(0, created.length - 5);
         }
  
         setData(customers);
@@ -293,29 +293,29 @@ function SearchUsers(props) {
       name: "Id",
       grow: 0.3,
       sortable: true,
-      selector: (customer) => customer.id,
+      selector: (user) => user.id,
     },
     {
       name: "Name",
       sortable: true,
-      selector: (customer) => customer.name,
+      selector: (user) => user.name,
     },
-    {
-      name: "Gender",
-      grow: 0.3,
-      sortable: true,
-      selector: (customer) => customer.gender,
-    },
-    {
-      name: "DOB",
-      sortable: true,
-      selector: (customer) => moment(customer.dob).format("DD/MM/YYYY"),
-    },
-    {
-      name: "Created",
-      sortable: true,
-      selector: (customer) => moment(customer.created).format("DD/MM/YYYY"),
-    },
+    // {
+    //   name: "Gender",
+    //   grow: 0.3,
+    //   sortable: true,
+    //   selector: (customer) => customer.gender,
+    // },
+    // {
+    //   name: "DOB",
+    //   sortable: true,
+    //   selector: (customer) => moment(customer.dob).format("DD/MM/YYYY"),
+    // },
+    // {
+    //   name: "Created",
+    //   sortable: true,
+    //   selector: (customer) => moment(customer.created).format("DD/MM/YYYY"),
+    // },
     {
       name: "",
       button: true,
