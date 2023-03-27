@@ -1,16 +1,26 @@
 package managedBean;
 
+import ejb.session.stateless.UserSessionBeanLocal;
+import entity.User;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import util.exception.InvalidLoginException;
+import util.exception.UserNotFoundException;
 
 @Named(value = "authenticationManagedBean")
 @SessionScoped
 public class AuthenticationManagedBean implements Serializable {
 
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
+
     private String username = null;
     private String password = null;
-    private int userId = -1;
+    private long userId = -1;
 
     public AuthenticationManagedBean() {
     }
@@ -20,18 +30,18 @@ public class AuthenticationManagedBean implements Serializable {
         //do validation here
         //...
         //simulate username/password
-        if (username.equals("user1") && password.equals("password")) {
-            //login successful
-            //store the logged in user id
-            userId = 10;
-            //do redirect
-            return "/secret/secret.xhtml?faces-redirect=true";
-        } else {
-            //login failed
-            username = null;
-            password = null;
-            userId = -1;
-            return "login.xhtml";
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            User u = userSessionBean.userLogin(getUsername(), getPassword());
+            setUserId(u.getUserId());
+            return "/secret/index.xhtml?faces-redirect=true";
+        } catch (UserNotFoundException | InvalidLoginException ex) {
+            setUsername(null);
+            setPassword(null);
+            setUserId(-1);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), "" ));
+            return "/login.xhtml";    
         }
     }
 
@@ -60,11 +70,11 @@ public class AuthenticationManagedBean implements Serializable {
         this.password = password;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
    
