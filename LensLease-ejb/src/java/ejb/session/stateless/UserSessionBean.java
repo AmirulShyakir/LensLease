@@ -43,7 +43,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     
     @Override
     public User findUserByUserId(Long userId) throws UserNotFoundException {
-        Query query = em.createQuery("SELECT u FROM User u WHERE u.userid = :inUserId");
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.userId = :inUserId");
         query.setParameter("inUserId", userId);
         query.setMaxResults(1);
         try {
