@@ -1,9 +1,12 @@
 /nbproject/private/
-/LensLease-war/nbproject/private/
 /LensLease-ejb/nbproject/private/
+/LensLease-war/nbproject/private/
 /LensLease-ejb/build/
+/build/
+/dist/
 /LensLease-war/build/
 /LensLease-war/dist/
-/dist/
-/build/
 /LensLease-ejb/dist/
+/LensLeaseUsers/nbproject/private/
+/LensLeaseUsers/build/
+/LensLeaseUsers/dist/
