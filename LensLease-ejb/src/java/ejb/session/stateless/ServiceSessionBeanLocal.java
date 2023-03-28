@@ -28,5 +28,7 @@ public interface ServiceSessionBeanLocal {
     public void createNewSchedule(Schedule schedule);
 
     public void createNewBanRequest(BanRequest ban);
+
+    public List<Service> searchServices(String name);
     
 }

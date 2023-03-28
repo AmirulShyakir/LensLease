@@ -39,7 +39,7 @@ public class AuthenticationManagedBean implements Serializable {
         try {
             User u = userSessionBean.userLogin(getUsername(), getPassword());
             setUserId(u.getUserId());
-            return "/secret/index.xhtml?faces-redirect=true";
+            return "/secret/secret.xhtml?faces-redirect=true";
         } catch (UserNotFoundException | InvalidLoginException ex) {
             setUsername(null);
             setPassword(null);

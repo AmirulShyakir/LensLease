@@ -2,19 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      >
     <h:head>
         <title>Login Example</title>
     </h:head>
-    <h:body>
-        <h:form>
-            Username: <h:inputText
-                value="#{authenticationManagedBean.username}"/><br/>
-            Password: <h:inputSecret
-                value="#{authenticationManagedBean.password}"/><br/>
+    <h:body >
+        <h:form style="display:block; text-align:center;" >
+            
+            <p:panel style="border:0px">
+            <h1 style="font-family: Arial"> Welcome To LensLease</h1>
+            
+                <h:outputText value="Username" /><br></br>
+                <h:inputText
+                    value="#{authenticationManagedBean.username}"/><br/>
+                <br></br>
+                <h:outputText value="Password" /><br></br>
+                <h:inputSecret
+                    value="#{authenticationManagedBean.password}"/><br/>
+         
             <!-- using action instead of actionListener -->
-            <h:commandButton value="Login"
+             <br></br><br></br>
+            <p:commandButton value="Login"
                              action="#{authenticationManagedBean.login}"/>
+             </p:panel>  
         </h:form>
     </h:body>
 </html>
