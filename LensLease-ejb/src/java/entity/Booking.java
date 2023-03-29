@@ -32,8 +32,9 @@ public class Booking implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date startDateTime;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date date;
+    private String startDateTime;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endDateTime;
     private String preferredLocation;
@@ -87,14 +88,14 @@ public class Booking implements Serializable {
     /**
      * @return the startDateTime
      */
-    public Date getStartDateTime() {
+    public String getStartDateTime() {
         return startDateTime;
     }
 
     /**
      * @param startDateTime the startDateTime to set
      */
-    public void setStartDateTime(Date startDateTime) {
+    public void setStartDateTime(String startDateTime) {
         this.startDateTime = startDateTime;
     }
 
@@ -187,5 +188,19 @@ public class Booking implements Serializable {
      */
     public void setPreferredLocation(String preferredLocation) {
         this.preferredLocation = preferredLocation;
+    }
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

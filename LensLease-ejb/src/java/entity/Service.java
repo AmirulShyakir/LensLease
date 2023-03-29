@@ -31,10 +31,14 @@ public class Service implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private String serviceDescription;
+    private boolean isRental;
     
     //for rental
     private String earliestCollectionTime;
     private String latestReturnTime;
+    //for videography, photography services
+    private String packageDurationHours;
+    //for editing need figure out
     
     @ManyToOne
     private User provider;
@@ -54,6 +58,12 @@ public class Service implements Serializable {
         this.serviceType = serviceType;
         this.isBanned = false;
         this.serviceDescription = serviceDescription;
+        
+        if (serviceType == serviceType.EQUIPMENT_RENTAL) {
+            this.isRental = true;
+        } else {
+            this.isRental = false;
+        }
     }
     
     /**
@@ -256,6 +266,34 @@ public class Service implements Serializable {
      */
     public void setLatestReturnTime(String latestReturnTime) {
         this.latestReturnTime = latestReturnTime;
+    }
+
+    /**
+     * @return the packageDurationHours
+     */
+    public String getPackageDurationHours() {
+        return packageDurationHours;
+    }
+
+    /**
+     * @param packageDurationHours the packageDurationHours to set
+     */
+    public void setPackageDurationHours(String packageDurationHours) {
+        this.packageDurationHours = packageDurationHours;
+    }
+
+    /**
+     * @return the isRental
+     */
+    public boolean isRental() {
+        return isRental;
+    }
+
+    /**
+     * @param isRental the isRental to set
+     */
+    public void setIsRental(boolean isRental) {
+        this.isRental = isRental;
     }
     
 }
