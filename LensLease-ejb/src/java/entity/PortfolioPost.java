@@ -27,11 +27,13 @@ public class PortfolioPost implements Serializable {
     private String description;
     private String thumbnailUrl;
     private List<String> imagesUrl;
+    private Boolean isDisplayed;
     
     @ManyToOne
     private User user;
 
     public PortfolioPost() {
+        isDisplayed = true;
     }
     
     /**
@@ -136,6 +138,14 @@ public class PortfolioPost implements Serializable {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public Boolean isDisplayed() {
+        return isDisplayed;
+    }
+
+    public void setIsDisplayed(Boolean isDisplayed) {
+        this.isDisplayed = isDisplayed;
     }
     
 }

@@ -45,17 +45,22 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         oldService.setServiceType(service.getServiceType());
         oldService.setServiceCost(service.getServiceCost());
         oldService.setServicePhotos(service.getServicePhotos());
-        oldService.setIsBanned(service.isIsBanned());
+        oldService.setIsBanned(service.isBanned());
+        oldService.setIsDelisted(service.isDelisted());
         oldService.setBookings(service.getBookings());
         oldService.setSchedule(service.getSchedule());
     }
 
     @Override
-    public void deleteService(Long serviceId) throws ServiceNotFoundException { //this is incomplete
+    public void delistService(Long serviceId) throws ServiceNotFoundException {
         Service service = findServiceByServiceId(serviceId);
-        //need to add all the disassociation of entities
-        em.remove(service);
-
+        service.setIsDelisted(true);
+    }
+    
+    @Override
+    public void relistService(Long serviceId) throws ServiceNotFoundException {
+        Service service = findServiceByServiceId(serviceId);
+        service.setIsDelisted(false);
     }
 
     @Override

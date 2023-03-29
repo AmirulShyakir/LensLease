@@ -9,6 +9,8 @@ import entity.BanRequest;
 import entity.Booking;
 import entity.Review;
 import entity.Service;
+import entity.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -62,5 +64,18 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         } catch (Exception e) {
             throw new BookingNotFoundException("Booking not found with id " + bookingId);
         }
+    }
+    
+    public List<Booking> getBookingsAsSupplier(User user){
+        List<Booking> allBookingsAsSupplier = new ArrayList<>();
+        List<Service> servicesProvided = user.getServices();
+        for(Service s : servicesProvided){
+            allBookingsAsSupplier.addAll(s.getBookings());
+        }
+        return allBookingsAsSupplier;
+    }
+    
+    public List<Booking> getBookingsAsClient(User user){
+        return user.getBookings();
     }
 }

@@ -30,6 +30,7 @@ public class Service implements Serializable {
     private double serviceCost;
     private List<String> servicePhotos;
     private boolean isBanned;
+    private boolean isDelisted;
     
     @ManyToOne
     private User provider;
@@ -192,7 +193,7 @@ public class Service implements Serializable {
     /**
      * @return the isBanned
      */
-    public boolean isIsBanned() {
+    public boolean isBanned() {
         return isBanned;
     }
 
@@ -202,5 +203,14 @@ public class Service implements Serializable {
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
     }
+
+    public boolean isDelisted() {
+        return isDelisted;
+    }
+
+    public void setIsDelisted(boolean isDelisted) {
+        this.isDelisted = isDelisted;
+    }
+    
     
 }
