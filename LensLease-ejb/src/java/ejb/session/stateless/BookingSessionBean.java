@@ -63,4 +63,9 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
             throw new BookingNotFoundException("Booking not found with id " + bookingId);
         }
     }
+    
+    public void submitBookingRequest(Booking booking, Service service) {
+        booking.setService(service);
+        service.getBookings().add(booking);
+    }
 }

@@ -22,6 +22,12 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Booking implements Serializable {
+    /**
+     * @param bookingStatus the bookingStatus to set
+     */
+    public void setBookingStatus(BookingStatusEnum bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +36,9 @@ public class Booking implements Serializable {
     private Date startDateTime;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endDateTime;
+    private String preferredLocation;
+    private String comments;
+    private BookingStatusEnum bookingStatus;
     
     @ManyToOne
     private Service service;
@@ -145,4 +154,38 @@ public class Booking implements Serializable {
         this.review = review;
     }
     
+    /**
+     * @return the comments
+     */
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * @param comments the comments to set
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * @return the bookingStatus
+     */
+    public BookingStatusEnum getBookingStatus() {
+        return bookingStatus;
+    }
+
+    /**
+     * @return the preferredLocation
+     */
+    public String getPreferredLocation() {
+        return preferredLocation;
+    }
+
+    /**
+     * @param preferredLocation the preferredLocation to set
+     */
+    public void setPreferredLocation(String preferredLocation) {
+        this.preferredLocation = preferredLocation;
+    }
 }

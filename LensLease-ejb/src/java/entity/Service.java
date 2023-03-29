@@ -30,6 +30,11 @@ public class Service implements Serializable {
     private double serviceCost;
     private List<String> servicePhotos;
     private boolean isBanned;
+    private String serviceDescription;
+    
+    //for rental
+    private String earliestCollectionTime;
+    private String latestReturnTime;
     
     @ManyToOne
     private User provider;
@@ -41,6 +46,14 @@ public class Service implements Serializable {
     private Schedule schedule;
 
     public Service() {
+    }
+    
+    public Service(String serviceName, double serviceCost, ServiceTypeEnum serviceType, String serviceDescription) {
+        this.serviceName = serviceName;
+        this.serviceCost = serviceCost;
+        this.serviceType = serviceType;
+        this.isBanned = false;
+        this.serviceDescription = serviceDescription;
     }
     
     /**
@@ -201,6 +214,48 @@ public class Service implements Serializable {
      */
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
+    }
+
+    /**
+     * @return the serviceDescription
+     */
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    /**
+     * @param serviceDescription the serviceDescription to set
+     */
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
+    }
+
+    /**
+     * @return the earliestCollectionTime
+     */
+    public String getEarliestCollectionTime() {
+        return earliestCollectionTime;
+    }
+
+    /**
+     * @param earliestCollectionTime the earliestCollectionTime to set
+     */
+    public void setEarliestCollectionTime(String earliestCollectionTime) {
+        this.earliestCollectionTime = earliestCollectionTime;
+    }
+
+    /**
+     * @return the latestReturnTime
+     */
+    public String getLatestReturnTime() {
+        return latestReturnTime;
+    }
+
+    /**
+     * @param latestReturnTime the latestReturnTime to set
+     */
+    public void setLatestReturnTime(String latestReturnTime) {
+        this.latestReturnTime = latestReturnTime;
     }
     
 }

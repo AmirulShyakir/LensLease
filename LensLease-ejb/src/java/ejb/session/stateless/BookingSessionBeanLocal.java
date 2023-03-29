@@ -26,5 +26,7 @@ public interface BookingSessionBeanLocal {
     public List<Booking> getAllBookings();
 
     public Booking findBookingByBookingId(Long bookingId) throws BookingNotFoundException;
+
+    public void submitBookingRequest(Booking booking, Service service);
     
 }
