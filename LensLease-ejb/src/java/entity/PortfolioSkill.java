@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,11 +25,14 @@ public class PortfolioSkill implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioSkillId;
     private String skillName;
+    private Boolean isDisplayed;
     
     @ManyToMany(mappedBy = "portfolioSkills")
     private List<User> users;
 
     public PortfolioSkill() {
+        isDisplayed = true;
+        this.users = new ArrayList<User>();
     }
 
     public PortfolioSkill(String skillName) {
@@ -94,6 +98,14 @@ public class PortfolioSkill implements Serializable {
      */
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+    
+    public Boolean isDisplayed() {
+        return isDisplayed;
+    }
+
+    public void setIsDisplayed(Boolean isDisplayed) {
+        this.isDisplayed = isDisplayed;
     }
     
 }

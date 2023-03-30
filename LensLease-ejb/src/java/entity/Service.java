@@ -39,6 +39,9 @@ public class Service implements Serializable {
     //for videography, photography services
     private String packageDurationHours;
     //for editing need figure out
+
+    private boolean isDelisted;
+
     
     @ManyToOne
     private User provider;
@@ -225,7 +228,7 @@ public class Service implements Serializable {
     /**
      * @return the isBanned
      */
-    public boolean isIsBanned() {
+    public boolean isBanned() {
         return isBanned;
     }
 
@@ -304,6 +307,14 @@ public class Service implements Serializable {
      */
     public void setIsRental(boolean isRental) {
         this.isRental = isRental;
+    }
+
+    public boolean isDelisted() {
+        return isDelisted;
+    }
+
+    public void setIsDelisted(boolean isDelisted) {
+        this.isDelisted = isDelisted;
     }
     
 }
