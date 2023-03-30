@@ -15,6 +15,8 @@ import entity.Service;
 import entity.ServiceTypeEnum;
 import entity.User;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -22,6 +24,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -59,11 +62,15 @@ public class DataInitSessionBean {
         }
         
         if (em.find(Service.class, 1l) == null) {
-            ArrayList<String> photos = new ArrayList();
-            photos.add("/studio-image.jpg");
-            serviceSessionBeanLocal.createNewService(new Service("Demo1", ServiceTypeEnum.PHOTOGRAPHY, 10.00 , photos, false));
-            serviceSessionBeanLocal.createNewService(new Service("Demo2", ServiceTypeEnum.PHOTOGRAPHY, 10.00, photos, false));
-            serviceSessionBeanLocal.createNewService(new Service("Demo3", ServiceTypeEnum.PHOTOGRAPHY, 10.00, photos, false));    
+             try {
+                 ArrayList<String> photos = new ArrayList();
+                 photos.add("/studio-image.jpg");
+                 serviceSessionBeanLocal.createNewService(new Service("Demo1", ServiceTypeEnum.PHOTOGRAPHY, 10.00 , photos, false,userSessionBean.findUserByUserId(new Long(1))));
+                 serviceSessionBeanLocal.createNewService(new Service("Demo2", ServiceTypeEnum.PHOTOGRAPHY, 10.00, photos, false,userSessionBean.findUserByUserId(new Long(2))));    
+                 serviceSessionBeanLocal.createNewService(new Service("Demo3", ServiceTypeEnum.PHOTOGRAPHY, 10.00, photos, false, userSessionBean.findUserByUserId(new Long(3))));
+             } catch (UserNotFoundException ex) {
+                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+             }
         }
     }
 

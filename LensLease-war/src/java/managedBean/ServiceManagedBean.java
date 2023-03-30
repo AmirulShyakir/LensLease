@@ -8,6 +8,7 @@ package managedBean;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import entity.Service;
 import entity.ServiceTypeEnum;
+import entity.User;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class ServiceManagedBean implements Serializable {
     private double serviceCost;
     private List<String> servicePhotos;
     private boolean isBanned;
+    private User provider;
     
     private Service selectedService;
     private List<Service> listOfServices;
@@ -69,6 +71,7 @@ public class ServiceManagedBean implements Serializable {
             serviceType = this.selectedService.getServiceType();
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
+            provider = this.selectedService.getProvider();
 
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
@@ -153,5 +156,13 @@ public class ServiceManagedBean implements Serializable {
 
     public void setSearchType(String searchType) {
         this.searchType = searchType;
+    }
+    
+    public User getProvider() {
+        return provider;
+    }
+
+    public void setProvider(User provider) {
+        this.provider = provider;
     }
 }
