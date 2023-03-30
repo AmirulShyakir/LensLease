@@ -34,6 +34,12 @@ public class BanRequest implements Serializable {
     public BanRequest() {
     }
 
+    public BanRequest(String description, Date requestDate, Service service) {
+        this.description = description;
+        this.requestDate = requestDate;
+        this.service = service;
+    }
+    
     public Long getBanRequestId() {
         return banRequestId;
     }

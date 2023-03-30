@@ -11,10 +11,12 @@ import ejb.session.stateless.ForumSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
+import entity.BanRequest;
 import entity.Service;
 import entity.ServiceTypeEnum;
 import entity.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -24,6 +26,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.ServiceNotFoundException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -69,16 +72,16 @@ public class DataInitSessionBean {
                  ArrayList<String> photos = new ArrayList();
                  photos.add("/studio-image.jpg");
                  
-                 Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(1)));
+                 Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(6)));
                  equipmentRental.setEarliestCollectionTime("9am");
                  equipmentRental.setLatestReturnTime("10pm");
                  equipmentRental.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
                  
-                 Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(2)));
+                 Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(7)));
                  photography.setPackageDurationHours("6 hours");
                  photography.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                 Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
+                 Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(8)));
                  photoEditing.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
                  
                  serviceSessionBeanLocal.createNewService(equipmentRental);
@@ -87,6 +90,17 @@ public class DataInitSessionBean {
              } catch (UserNotFoundException ex) {
                  Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
              }
+        }
+        if (em.find(BanRequest.class, 1l) == null) {
+         
+            try {
+                ArrayList<String> photos = new ArrayList();
+                photos.add("/studio-image.jpg");
+                adminSessionBean.createNewBanRequest(new BanRequest("This post is horrigible!", new Date(), serviceSessionBeanLocal.findServiceByServiceId(new Long(10))));
+            } catch (ServiceNotFoundException ex) {
+                Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }
 

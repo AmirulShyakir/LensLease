@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Admin;
+import entity.BanRequest;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -87,5 +88,17 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             }
             throw new InvalidLoginException("Invalid username");
         }
+    }
+
+    @Override
+    public List<BanRequest> getAllBanRequests() {
+        Query query = em.createQuery("SELECT b FROM BanRequest b");
+        return query.getResultList();
+    }
+    
+    @Override
+    public void createNewBanRequest(BanRequest banRequest) {
+        em.persist(banRequest);
+        em.flush();
     }
 }

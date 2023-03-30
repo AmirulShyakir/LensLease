@@ -59,15 +59,15 @@ public class AuthenticationManagedBean implements Serializable {
     public String adminLogin() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            Admin a = adminSessionBean.adminLogin(getUsername(), getPassword());
+            Admin a = adminSessionBean.adminLogin(getAdminUsername(), getAdminPassword());
             setAdminId(a.getAdminId());
-            return "/secret/index.xhtml?faces-redirect=true";
+            return "/admin/homePage.xhtml?faces-redirect=true";
         } catch (AdminNotFoundException | InvalidLoginException ex) {
             setAdminUsername(null);
             setAdminPassword(null);
             setAdminId(-1);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), "" ));
-            return "/login.xhtml";    
+            return "/adminLogin.xhtml";    
         }
     }
 
@@ -75,7 +75,7 @@ public class AuthenticationManagedBean implements Serializable {
         setAdminUsername(null);
         setAdminPassword(null);
         setAdminId(-1);
-        return "/login.xhtml?faces-redirect=true";
+        return "/adminLogin.xhtml?faces-redirect=true";
     }
 
     //getter and setter for the attributes
