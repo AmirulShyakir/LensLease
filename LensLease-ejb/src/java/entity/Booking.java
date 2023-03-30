@@ -22,14 +22,22 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Booking implements Serializable {
+    /**
+     * @param bookingStatus the bookingStatus to set
+     */
+    public void setBookingStatus(BookingStatusEnum bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date startDateTime;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date endDateTime;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date date;
+    private String startTime; //refers to start time for services, collection time for rentals
+    private String preferredLocation;
+    private String comments;
+    private BookingStatusEnum bookingStatus;
     
     @ManyToOne
     private Service service;
@@ -78,29 +86,15 @@ public class Booking implements Serializable {
     /**
      * @return the startDateTime
      */
-    public Date getStartDateTime() {
-        return startDateTime;
+    public String getStartTime() {
+        return startTime;
     }
 
     /**
      * @param startDateTime the startDateTime to set
      */
-    public void setStartDateTime(Date startDateTime) {
-        this.startDateTime = startDateTime;
-    }
-
-    /**
-     * @return the endDateTime
-     */
-    public Date getEndDateTime() {
-        return endDateTime;
-    }
-
-    /**
-     * @param endDateTime the endDateTime to set
-     */
-    public void setEndDateTime(Date endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setStartDateTime(String startDateTime) {
+        this.startTime = startDateTime;
     }
 
     /**
@@ -145,4 +139,52 @@ public class Booking implements Serializable {
         this.review = review;
     }
     
+    /**
+     * @return the comments
+     */
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * @param comments the comments to set
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * @return the bookingStatus
+     */
+    public BookingStatusEnum getBookingStatus() {
+        return bookingStatus;
+    }
+
+    /**
+     * @return the preferredLocation
+     */
+    public String getPreferredLocation() {
+        return preferredLocation;
+    }
+
+    /**
+     * @param preferredLocation the preferredLocation to set
+     */
+    public void setPreferredLocation(String preferredLocation) {
+        this.preferredLocation = preferredLocation;
+    }
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

@@ -1,3 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,900');
+
+*{
+    font-family: "Poppins", sans-serif, "Gill Sans",  sans-serif, Arial, "Arial CE";
+}
+
+p {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+h5 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #BEBEBE;
+}
+
 .grid {
   display: flex;
   flex-wrap: wrap;

@@ -7,19 +7,40 @@ package managedBean;
 
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
+import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Booking;
+import entity.BookingStatusEnum;
 import entity.Service;
+import entity.User;
+import java.awt.event.ActionEvent;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import org.primefaces.event.SelectEvent;
+import java.text.NumberFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.ELContext;
+import javax.faces.annotation.ManagedProperty;
+import util.exception.UserNotFoundException;
 
 /**
  *
  * @author Amirul
  */
-@Named(value = "checkoutManagedbean")
-@SessionScoped
+@Named(value = "checkoutManagedBean")
+@ViewScoped
 public class CheckoutManagedbean implements Serializable {
+
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
 
     @EJB
     private ServiceSessionBeanLocal serviceSessionBean;
@@ -27,10 +48,71 @@ public class CheckoutManagedbean implements Serializable {
     private BookingSessionBeanLocal bookingSessionBean;
 
     private Service service;
+    private User user;
+
+    //fields for submitting booking request
+    private Date selectedDate;
+    private String selectedTime;
+    private String preferredLocation;
+    private String comments;
+    private boolean agreedToTermsAndConditions;
+
     /**
      * Creates a new instance of CheckoutManagedbean
      */
     public CheckoutManagedbean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        service = serviceSessionBean.getAllServices().get(1); //THIS IS FOR TESTING
+        System.out.println(service.getServiceName());
+
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "authenticationManagedBean");
+
+        Long userId = authenticationManagedBean.getUserId();
+        try {
+            user = userSessionBean.findUserByUserId(userId);
+            System.out.println(user.getUsername());
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(CheckoutManagedbean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String createBookingRequest(ActionEvent evt) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Booking booking = new Booking();
+            booking.setDate(selectedDate);
+            booking.setStartDateTime(selectedTime);
+            booking.setComments(getComments());
+            booking.setPreferredLocation(preferredLocation);
+            booking.setBookingStatus(BookingStatusEnum.PENDING);
+            bookingSessionBean.createNewBooking(booking);
+            bookingSessionBean.submitBookingRequest(booking.getBookingId(), service.getServiceId(), user.getUserId());
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully submitted booking request "));
+            return "index.xhtml?faces-redirect=true";
+        } catch (Exception ex) {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
+            return "checkout.xhtml";
+        }
+    }
+
+    public String getServiceCost() {
+        double amount = service.getServiceCost();
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String currencyString = formatter.format(amount);
+        return currencyString;
+    }
+
+    public void handleDateSelect(SelectEvent<LocalDate> event) {
+        LocalDate date = event.getObject();
+        FacesContext context = FacesContext.getCurrentInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected date:  ", format.format(date)));
+        //Add facesmessage
     }
 
     /**
@@ -46,5 +128,75 @@ public class CheckoutManagedbean implements Serializable {
     public void setService(Service service) {
         this.service = service;
     }
-    
+
+    /**
+     * @return the selectedDate
+     */
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    /**
+     * @param selectedDate the selectedDate to set
+     */
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+
+    /**
+     * @return the preferredLocation
+     */
+    public String getPreferredLocation() {
+        return preferredLocation;
+    }
+
+    /**
+     * @param preferredLocation the preferredLocation to set
+     */
+    public void setPreferredLocation(String preferredLocation) {
+        this.preferredLocation = preferredLocation;
+    }
+
+    /**
+     * @return the comments
+     */
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * @param comments the comments to set
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * @return the selectedTime
+     */
+    public String getSelectedTime() {
+        return selectedTime;
+    }
+
+    /**
+     * @param selectedTime the selectedTime to set
+     */
+    public void setSelectedTime(String selectedTime) {
+        this.selectedTime = selectedTime;
+    }
+
+    /**
+     * @return the agreedToTermsAndConditions
+     */
+    public boolean isAgreedToTermsAndConditions() {
+        return agreedToTermsAndConditions;
+    }
+
+    /**
+     * @param agreedToTermsAndConditions the agreedToTermsAndConditions to set
+     */
+    public void setAgreedToTermsAndConditions(boolean agreedToTermsAndConditions) {
+        this.agreedToTermsAndConditions = agreedToTermsAndConditions;
+    }
+
 }
