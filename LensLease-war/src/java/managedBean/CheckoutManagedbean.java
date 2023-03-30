@@ -47,6 +47,7 @@ public class CheckoutManagedbean implements Serializable {
     @EJB
     private BookingSessionBeanLocal bookingSessionBean;
 
+    private Long serviceId;
     private Service service;
     private User user;
 
@@ -75,11 +76,23 @@ public class CheckoutManagedbean implements Serializable {
         Long userId = authenticationManagedBean.getUserId();
         try {
             user = userSessionBean.findUserByUserId(userId);
+
+            service = serviceSessionBean.getAllServices().get(1); //THIS IS FOR TESTING
+//            service = serviceSessionBean.findServiceByServiceId(serviceId);
+
             System.out.println(user.getUsername());
         } catch (UserNotFoundException ex) {
             Logger.getLogger(CheckoutManagedbean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+
+
+    public String bookNow() {
+        return "/secret/checkout.xhtml?faces-redirect=true";
+    }
+    
 
     public String createBookingRequest(ActionEvent evt) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -115,6 +128,16 @@ public class CheckoutManagedbean implements Serializable {
         //Add facesmessage
     }
 
+    public void loadSelectedService() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            this.service = serviceSessionBean.findServiceByServiceId(serviceId);
+            
+//            System.out.println("Going to Individual service page with selected service: " + serviceName);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+        }
+    }
     /**
      * @return the service
      */
