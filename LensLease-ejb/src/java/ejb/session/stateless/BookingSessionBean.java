@@ -87,7 +87,9 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
 
         booking.setCustomer(user);
         user.getBookings().add(booking);
+    }
 
+    @Override
     public List<Booking> getBookingsAsSupplier(User user){
         List<Booking> allBookingsAsSupplier = new ArrayList<>();
         List<Service> servicesProvided = user.getServices();
