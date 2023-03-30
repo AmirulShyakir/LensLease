@@ -9,13 +9,18 @@ import entity.BanRequest;
 import entity.Booking;
 import entity.Review;
 import entity.Service;
+import entity.User;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.BookingNotFoundException;
 import util.exception.ServiceNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -23,6 +28,12 @@ import util.exception.ServiceNotFoundException;
  */
 @Stateless
 public class BookingSessionBean implements BookingSessionBeanLocal {
+
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
+
+    @EJB
+    private ServiceSessionBeanLocal serviceSessionBean;
 
     @PersistenceContext(unitName = "LensLease-ejbPU")
     private EntityManager em;
@@ -64,8 +75,16 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         }
     }
     
-    public void submitBookingRequest(Booking booking, Service service) {
+    @Override
+    public void submitBookingRequest(long bookingId, long serviceId, long userId) throws ServiceNotFoundException, UserNotFoundException, BookingNotFoundException {
+        Booking booking = findBookingByBookingId(bookingId);
+        Service service = serviceSessionBean.findServiceByServiceId(serviceId);
+        User user = userSessionBean.findUserByUserId(userId);
+
         booking.setService(service);
         service.getBookings().add(booking);
+
+        booking.setCustomer(user);
+        user.getBookings().add(booking);
     }
 }

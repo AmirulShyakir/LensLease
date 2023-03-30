@@ -8,9 +8,12 @@ package ejb.session.stateless;
 import entity.Booking;
 import entity.Review;
 import entity.Service;
+import entity.User;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.BookingNotFoundException;
+import util.exception.ServiceNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -27,6 +30,6 @@ public interface BookingSessionBeanLocal {
 
     public Booking findBookingByBookingId(Long bookingId) throws BookingNotFoundException;
 
-    public void submitBookingRequest(Booking booking, Service service);
+    public void submitBookingRequest(long bookingId, long serviceId, long userId) throws ServiceNotFoundException, UserNotFoundException, BookingNotFoundException;
     
 }

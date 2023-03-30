@@ -34,9 +34,7 @@ public class Booking implements Serializable {
     private Long bookingId;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
-    private String startDateTime;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date endDateTime;
+    private String startTime; //refers to start time for services, collection time for rentals
     private String preferredLocation;
     private String comments;
     private BookingStatusEnum bookingStatus;
@@ -88,29 +86,15 @@ public class Booking implements Serializable {
     /**
      * @return the startDateTime
      */
-    public String getStartDateTime() {
-        return startDateTime;
+    public String getStartTime() {
+        return startTime;
     }
 
     /**
      * @param startDateTime the startDateTime to set
      */
     public void setStartDateTime(String startDateTime) {
-        this.startDateTime = startDateTime;
-    }
-
-    /**
-     * @return the endDateTime
-     */
-    public Date getEndDateTime() {
-        return endDateTime;
-    }
-
-    /**
-     * @param endDateTime the endDateTime to set
-     */
-    public void setEndDateTime(Date endDateTime) {
-        this.endDateTime = endDateTime;
+        this.startTime = startDateTime;
     }
 
     /**
