@@ -100,7 +100,20 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
             Service service = (Service) query.getSingleResult();
             return service;
         } catch (Exception e) {
-            throw new ServiceNotFoundException("Member not found with id " + serviceId);
+            throw new ServiceNotFoundException("Service not found with id " + serviceId);
         }
     }
+    
+    public List<Service> searchServices(String name) {
+        Query q;
+        if (name != null) {
+            q = em.createQuery("SELECT s FROM Service s WHERE "
+                    + "LOWER(s.serviceName) LIKE :name");
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+        } else {
+            q = em.createQuery("SELECT s FROM Service s");
+        }
+
+        return q.getResultList();
+    } //end searchBooks
 }

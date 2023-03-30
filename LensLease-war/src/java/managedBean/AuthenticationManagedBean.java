@@ -39,7 +39,7 @@ public class AuthenticationManagedBean implements Serializable {
         try {
             User u = userSessionBean.userLogin(getUsername(), getPassword());
             setUserId(u.getUserId());
-            return "/secret/index.xhtml?faces-redirect=true";
+            return "/secret/landingPage.xhtml?faces-redirect=true";
         } catch (UserNotFoundException | InvalidLoginException ex) {
             setUsername(null);
             setPassword(null);
@@ -60,7 +60,7 @@ public class AuthenticationManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             Admin a = adminSessionBean.adminLogin(getUsername(), getPassword());
-            setUserId(a.getAdminId());
+            setAdminId(a.getAdminId());
             return "/secret/index.xhtml?faces-redirect=true";
         } catch (AdminNotFoundException | InvalidLoginException ex) {
             setAdminUsername(null);
