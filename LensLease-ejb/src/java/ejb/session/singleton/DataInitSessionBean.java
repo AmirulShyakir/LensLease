@@ -36,6 +36,9 @@ import util.exception.UserNotFoundException;
 public class DataInitSessionBean {
 
     @EJB
+    private ServiceSessionBeanLocal serviceSessionBean;
+
+    @EJB
     private UserSessionBeanLocal userSessionBean;
     
     @EJB
@@ -50,7 +53,7 @@ public class DataInitSessionBean {
     // "Insert Code > Add Business Method")
     @PostConstruct 
     public void postConstruct() {
-         if (em.find(Admin.class, 1l) == null) {
+        if (em.find(Admin.class, 1l) == null) {
             adminSessionBean.createNewAdmin(new Admin("Admin", "admin@gmail.com", "password"));
         }
         if (em.find(User.class, 1l) == null) {
@@ -65,9 +68,22 @@ public class DataInitSessionBean {
              try {
                  ArrayList<String> photos = new ArrayList();
                  photos.add("/studio-image.jpg");
-                 serviceSessionBeanLocal.createNewService(new Service("Demo1", ServiceTypeEnum.PHOTOGRAPHY, 10.00 , photos, false,userSessionBean.findUserByUserId(new Long(1))));
-                 serviceSessionBeanLocal.createNewService(new Service("Demo2", ServiceTypeEnum.PHOTOGRAPHY, 10.00, photos, false,userSessionBean.findUserByUserId(new Long(2))));    
-                 serviceSessionBeanLocal.createNewService(new Service("Demo3", ServiceTypeEnum.PHOTOGRAPHY, 10.00, photos, false, userSessionBean.findUserByUserId(new Long(3))));
+                 
+                 Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(1)));
+                 equipmentRental.setEarliestCollectionTime("9am");
+                 equipmentRental.setLatestReturnTime("10pm");
+                 equipmentRental.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                 
+                 Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(2)));
+                 photography.setPackageDurationHours("6 hours");
+                 photography.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+
+                 Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
+                 photoEditing.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                 
+                 serviceSessionBeanLocal.createNewService(equipmentRental);
+                 serviceSessionBeanLocal.createNewService(photography);    
+                 serviceSessionBeanLocal.createNewService(photoEditing);
              } catch (UserNotFoundException ex) {
                  Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
              }

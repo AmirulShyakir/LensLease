@@ -72,7 +72,7 @@ public class ServiceManagedBean implements Serializable {
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
             provider = this.selectedService.getProvider();
-
+            System.out.println("Going to Individual service page with selected service: " + serviceName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
