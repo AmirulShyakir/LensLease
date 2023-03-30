@@ -61,7 +61,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
             Service service = (Service)query.getSingleResult();
             return service;
         } catch (Exception e) {
-            throw new ServiceNotFoundException("Member not found with id " + serviceId);
+            throw new ServiceNotFoundException("Service not found with id " + serviceId);
         }
     }
     

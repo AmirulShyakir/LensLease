@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.annotation.ManagedProperty;
+import util.exception.ServiceNotFoundException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -47,7 +48,7 @@ public class CheckoutManagedbean implements Serializable {
     @EJB
     private BookingSessionBeanLocal bookingSessionBean;
 
-    private Long serviceId;
+    private long serviceId;
     private Service service;
     private User user;
 
@@ -66,22 +67,23 @@ public class CheckoutManagedbean implements Serializable {
 
     @PostConstruct
     public void init() {
-        service = serviceSessionBean.getAllServices().get(1); //THIS IS FOR TESTING
-        System.out.println(service.getServiceName());
-
-        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-        AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
-                .getELResolver().getValue(elContext, null, "authenticationManagedBean");
-
-        Long userId = authenticationManagedBean.getUserId();
         try {
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "authenticationManagedBean");
+            ServiceManagedBean serviceManagedBean = (ServiceManagedBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "serviceManagedBean");
+            
+            long userId = authenticationManagedBean.getUserId();
+            long serviceId = serviceManagedBean.getServiceId();
+           
             user = userSessionBean.findUserByUserId(userId);
-
-            service = serviceSessionBean.getAllServices().get(1); //THIS IS FOR TESTING
-//            service = serviceSessionBean.findServiceByServiceId(serviceId);
-
+            //service = serviceSessionBean.getAllServices().get(1); //THIS IS FOR TESTING
+            service = serviceSessionBean.findServiceByServiceId(serviceId);
             System.out.println(user.getUsername());
-        } catch (UserNotFoundException ex) {
+            System.out.println("Going to Checkout Page with Selected service: " + service.getServiceName());
+           
+        } catch (Exception ex) {
             Logger.getLogger(CheckoutManagedbean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -94,6 +96,10 @@ public class CheckoutManagedbean implements Serializable {
     }
     
 
+    public String bookNow(ActionEvent evt) {
+        return "checkout.xhtml?faces-redirect=true";
+    }
+    
     public String createBookingRequest(ActionEvent evt) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -220,6 +226,20 @@ public class CheckoutManagedbean implements Serializable {
      */
     public void setAgreedToTermsAndConditions(boolean agreedToTermsAndConditions) {
         this.agreedToTermsAndConditions = agreedToTermsAndConditions;
+    }
+
+    /**
+     * @return the serviceId
+     */
+    public long getServiceId() {
+        return serviceId;
+    }
+
+    /**
+     * @param serviceId the serviceId to set
+     */
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
     }
 
 }
