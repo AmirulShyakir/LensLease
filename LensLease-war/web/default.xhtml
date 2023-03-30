@@ -12,14 +12,15 @@
         <title><ui:insert name="title">Title</ui:insert></title>
     </h:head> 
     <h:body style="background-color: whitesmoke; border: 0; margin: 0">
-        <div style="text-align: center; background: lightgrey; color: white; font-size: 30px">
-            <h1>LensLease</h1>
+        <div style="text-align: left; background: black; color: white; font-size: 30px; ">            
+               <p:graphicImage url="/logo.png" style="height:60px; margin-top: 10px; margin-left:10px"/>
+
         </div>
         <div>
             <h:form>
                 <p:growl id="messages"/>
                 <p:menubar>
-                    <p:menuitem value="Home" icon="pi pi-fw pi-home" url="index.xhtml" style="padding-right: 2rem"/>
+                    <p:menuitem value="Home" icon="pi pi-fw pi-home" url="landingPage.xhtml" style="padding-right: 2rem"/>
                     <p:menuitem value="My Account" icon="pi pi-fw pi-user" url="index.xhtml" style="padding-right: 2rem"/>
                     <f:facet name="options">
                         <p:commandButton value="Logout" action="#{authenticationManagedBean.logout}" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" style="background-color: lightgrey; border-color: lightgrey"/>

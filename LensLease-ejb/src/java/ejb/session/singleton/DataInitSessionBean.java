@@ -14,6 +14,9 @@ import entity.Admin;
 import entity.Service;
 import entity.ServiceTypeEnum;
 import entity.User;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -21,6 +24,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -36,6 +40,9 @@ public class DataInitSessionBean {
 
     @EJB
     private UserSessionBeanLocal userSessionBean;
+    
+    @EJB
+    private ServiceSessionBeanLocal serviceSessionBeanLocal;
 
     @EJB
     private AdminSessionBeanLocal adminSessionBean;
@@ -56,17 +63,30 @@ public class DataInitSessionBean {
             userSessionBean.createNewUser(new User("Jun Wei", "junwei@gmail.com","82226727", "Jun Wei",  "password"));
             userSessionBean.createNewUser(new User("Leeann", "leeann@gmail.com", "83685686", "Leeann", "password"));
         }
+        
         if (em.find(Service.class, 1l) == null) {
-            Service equipmentRental = new Service("Service Name Stub 1", 100, ServiceTypeEnum.EQUIPMENT_RENTAL, "Description Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
-            equipmentRental.setEarliestCollectionTime("9am");
-            equipmentRental.setLatestReturnTime("10pm");
-            
-            Service photography = new Service("Photography Service Name Stub", 200, ServiceTypeEnum.PHOTOGRAPHY, "Description Photography Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
-            photography.setPackageDurationHours("6 hours");
-            
-            serviceSessionBean.createNewService(equipmentRental);
-            serviceSessionBean.createNewService(photography);
-            serviceSessionBean.createNewService(new Service("Photo Editing Service Name Stub", 300, ServiceTypeEnum.PHOTO_EDITING, "Description Photo Editing Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "));
+             try {
+                 ArrayList<String> photos = new ArrayList();
+                 photos.add("/studio-image.jpg");
+                 
+                 Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(1)));
+                 equipmentRental.setEarliestCollectionTime("9am");
+                 equipmentRental.setLatestReturnTime("10pm");
+                 equipmentRental.setDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ")
+                 
+                 Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(2)));
+                 photography.setPackageDurationHours("6 hours");
+                 photography.setDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ")
+
+                 Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(3)))
+                 photoEditing.setDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ")
+                 
+                 serviceSessionBeanLocal.createNewService(equipmentRental);
+                 serviceSessionBeanLocal.createNewService(photography);    
+                 serviceSessionBeanLocal.createNewService(photoEditing);
+             } catch (UserNotFoundException ex) {
+                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+             }
         }
     }
 

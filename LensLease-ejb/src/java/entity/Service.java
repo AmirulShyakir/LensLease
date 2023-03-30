@@ -51,6 +51,16 @@ public class Service implements Serializable {
 
     public Service() {
     }
+
+    public Service(String serviceName, ServiceTypeEnum serviceType, double serviceCost, List<String> servicePhotos, boolean isBanned, User provider) {
+        this.serviceName = serviceName;
+        this.serviceType = serviceType;
+        this.serviceCost = serviceCost;
+        this.servicePhotos = servicePhotos;
+        this.isBanned = isBanned;
+        this.provider = provider;
+    }
+    
     
     public Service(String serviceName, double serviceCost, ServiceTypeEnum serviceType, String serviceDescription) {
         this.serviceName = serviceName;
