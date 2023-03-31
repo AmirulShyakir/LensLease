@@ -51,6 +51,13 @@ public class Booking implements Serializable {
     public Booking() {
     }
     
+    public Booking(Date date, String startTime, String preferredLocation, String projectSpecifications, BookingStatusEnum bookingStatus) {
+        this.date = date;
+        this.startTime = startTime;
+        this.preferredLocation = preferredLocation;
+        this.bookingStatus = bookingStatus;
+    }
+    
     public Long getBookingId() {
         return bookingId;
     }
@@ -94,8 +101,8 @@ public class Booking implements Serializable {
     /**
      * @param startDateTime the startDateTime to set
      */
-    public void setStartDateTime(String startDateTime) {
-        this.startTime = startDateTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     /**

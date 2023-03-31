@@ -104,7 +104,7 @@ public class CheckoutManagedbean implements Serializable {
         try {
             Booking booking = new Booking();
             booking.setDate(selectedDate);
-            booking.setStartDateTime(selectedTime);
+            booking.setStartTime(selectedTime);
             booking.setComments(comments);
             booking.setPreferredLocation(preferredLocation);
             booking.setBookingStatus(BookingStatusEnum.PENDING);
