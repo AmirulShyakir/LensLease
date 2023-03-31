@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,11 +26,14 @@ public class PortfolioClient implements Serializable {
     private Long portfolioClientId;
     private String clientName;
     private String clientPhotoUrl;
+    private Boolean isDisplayed;
 
     @ManyToMany(mappedBy = "portfolioClients")
     private List<User> users;
 
     public PortfolioClient() {
+        isDisplayed = true;
+        this.users = new ArrayList<User>();
     }
     
     /**
@@ -105,6 +109,14 @@ public class PortfolioClient implements Serializable {
      */
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+    
+    public Boolean isDisplayed() {
+        return isDisplayed;
+    }
+
+    public void setIsDisplayed(Boolean isDisplayed) {
+        this.isDisplayed = isDisplayed;
     }
     
 }

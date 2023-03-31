@@ -10,6 +10,7 @@ import entity.Booking;
 import entity.Review;
 import entity.Service;
 import entity.User;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -86,5 +87,20 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
 
         booking.setCustomer(user);
         user.getBookings().add(booking);
+    }
+
+    @Override
+    public List<Booking> getBookingsAsSupplier(User user){
+        List<Booking> allBookingsAsSupplier = new ArrayList<>();
+        List<Service> servicesProvided = user.getServices();
+        for(Service s : servicesProvided){
+            allBookingsAsSupplier.addAll(s.getBookings());
+        }
+        return allBookingsAsSupplier;
+    }
+    
+    public List<Booking> getBookingsAsClient(User user){
+        return user.getBookings();
+
     }
 }
