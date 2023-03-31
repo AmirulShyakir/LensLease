@@ -72,6 +72,7 @@ public class DataInitSessionBean {
                  Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(1)));
                  equipmentRental.setEarliestCollectionTime("9am");
                  equipmentRental.setLatestReturnTime("10pm");
+                 equipmentRental.setPackageDurationHours("Full Day Rental");
                  equipmentRental.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
                  
                  Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(2)));
@@ -79,6 +80,7 @@ public class DataInitSessionBean {
                  photography.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                  Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
+                 photoEditing.setPackageDurationHours("2 weeks");
                  photoEditing.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
                  
                  serviceSessionBeanLocal.createNewService(equipmentRental);

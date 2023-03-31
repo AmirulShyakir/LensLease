@@ -57,6 +57,7 @@ public class CheckoutManagedbean implements Serializable {
     private Date selectedDate;
     private String selectedTime;
     private String preferredLocation;
+    private String projectSpecifications;
     private String comments;
     private boolean agreedToTermsAndConditions;
 
@@ -104,9 +105,10 @@ public class CheckoutManagedbean implements Serializable {
             Booking booking = new Booking();
             booking.setDate(selectedDate);
             booking.setStartDateTime(selectedTime);
-            booking.setComments(getComments());
+            booking.setComments(comments);
             booking.setPreferredLocation(preferredLocation);
             booking.setBookingStatus(BookingStatusEnum.PENDING);
+            booking.setProjectSpecifications(projectSpecifications);
             bookingSessionBean.createNewBooking(booking);
             bookingSessionBean.submitBookingRequest(booking.getBookingId(), serviceId, getUser().getUserId());
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully submitted booking request "));
@@ -265,6 +267,20 @@ public class CheckoutManagedbean implements Serializable {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /**
+     * @return the projectSpecifications
+     */
+    public String getProjectSpecifications() {
+        return projectSpecifications;
+    }
+
+    /**
+     * @param projectSpecifications the projectSpecifications to set
+     */
+    public void setProjectSpecifications(String projectSpecifications) {
+        this.projectSpecifications = projectSpecifications;
     }
 
 }
