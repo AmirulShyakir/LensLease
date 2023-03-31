@@ -212,10 +212,20 @@ public class DataInitSessionBean {
                 booking4.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(4)));
                 booking4.setCustomer(userSessionBean.findUserByUserId(new Long(5)));
                 
+                Booking booking5 = new Booking();
+                booking5.setDate(new Date());
+                booking5.setStartTime("0700");
+                booking5.setPreferredLocation("Bedok");
+                booking5.setComments("Comment");
+                booking5.setBookingStatus(BookingStatusEnum.PENDING);
+                booking5.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
+                booking5.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
+                
                 bookingSessionBean.createNewBooking(booking1);
                 bookingSessionBean.createNewBooking(booking2);
                 bookingSessionBean.createNewBooking(booking3);
                 bookingSessionBean.createNewBooking(booking4);
+                bookingSessionBean.createNewBooking(booking5);
             } catch (ServiceNotFoundException | UserNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -258,6 +268,16 @@ public class DataInitSessionBean {
                 reviewSessionBean.createNewReview(review4);
                 booking4.setReview(review3);
                 review4.setBooking(booking3);
+                
+                Booking booking5 = bookingSessionBean.findBookingByBookingId(new Long(5));
+                Review review5 = new Review();
+                review5.setStarRating(5);
+                review5.setDescription("Great work! Will patronise again");
+                review5.setReviewDate(new Date());
+                reviewSessionBean.createNewReview(review5);
+                booking5.setReview(review5);
+                review5.setBooking(booking5);
+                
             } catch (BookingNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
