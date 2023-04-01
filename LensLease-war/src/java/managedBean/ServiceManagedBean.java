@@ -9,12 +9,14 @@ import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Booking;
+import entity.Review;
 import entity.Service;
 import entity.ServiceTypeEnum;
 import entity.User;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +53,7 @@ public class ServiceManagedBean implements Serializable {
     private User provider;
     
     private Service selectedService;
+    private List<Review> reviewsForSelectedService;
     private List<Service> listOfServices;
     private List<Service> servicesProvided;
     
@@ -91,6 +94,14 @@ public class ServiceManagedBean implements Serializable {
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
             provider = this.selectedService.getProvider();
+            List<Booking> bookings = selectedService.getBookings();
+            List<Review> reviews = new ArrayList<Review>();
+            for (Booking b : bookings) {
+                if (b.getReview() != null) {
+                    reviews.add(b.getReview());
+                }
+            }
+            setReviewsForSelectedService(reviews);
             System.out.println("Going to Individual service page with selected service: " + serviceName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
@@ -209,5 +220,19 @@ public class ServiceManagedBean implements Serializable {
 
     public void setServicesProvided(List<Service> servicesProvided) {
         this.servicesProvided = servicesProvided;
+    }
+
+    /**
+     * @return the reviewsForSelectedService
+     */
+    public List<Review> getReviewsForSelectedService() {
+        return reviewsForSelectedService;
+    }
+
+    /**
+     * @param reviewsForSelectedService the reviewsForSelectedService to set
+     */
+    public void setReviewsForSelectedService(List<Review> reviewsForSelectedService) {
+        this.reviewsForSelectedService = reviewsForSelectedService;
     }
 }

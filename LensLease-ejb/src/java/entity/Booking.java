@@ -36,6 +36,7 @@ public class Booking implements Serializable {
     private Date date;
     private String startTime; //refers to start time for services, collection time for rentals
     private String preferredLocation;
+    private String projectSpecifications;
     private String comments;
     private BookingStatusEnum bookingStatus;
     
@@ -48,6 +49,13 @@ public class Booking implements Serializable {
     private Review review;
 
     public Booking() {
+    }
+    
+    public Booking(Date date, String startTime, String preferredLocation, String projectSpecifications, BookingStatusEnum bookingStatus) {
+        this.date = date;
+        this.startTime = startTime;
+        this.preferredLocation = preferredLocation;
+        this.bookingStatus = bookingStatus;
     }
     
     public Long getBookingId() {
@@ -93,8 +101,8 @@ public class Booking implements Serializable {
     /**
      * @param startDateTime the startDateTime to set
      */
-    public void setStartDateTime(String startDateTime) {
-        this.startTime = startDateTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     /**
@@ -186,5 +194,19 @@ public class Booking implements Serializable {
      */
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    /**
+     * @return the projectSpecifications
+     */
+    public String getProjectSpecifications() {
+        return projectSpecifications;
+    }
+
+    /**
+     * @param projectSpecifications the projectSpecifications to set
+     */
+    public void setProjectSpecifications(String projectSpecifications) {
+        this.projectSpecifications = projectSpecifications;
     }
 }

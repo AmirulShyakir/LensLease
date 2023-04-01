@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,6 +60,45 @@ public class User implements Serializable {
         this.setIsBanned(false);
     }
     
+    public double getRating() {
+        double numRatings = 0;
+        double totalRatingScore = 0;
+        
+        if (services.isEmpty()) {
+            return -1;
+        } else {
+            for (Service s : services) {
+                if (!s.getBookings().isEmpty()) {
+                    List<Booking> bookings = s.getBookings();
+                    for (Booking b : bookings) {
+                        if (b.getReview() != null) {
+                            numRatings++;
+                            totalRatingScore += b.getReview().getStarRating();
+                        }
+                    }
+                }
+            }
+        }
+        if (numRatings == 0) {
+            return -1;
+        } else {
+             return totalRatingScore / numRatings;
+        }
+    }
+    
+    public int getStarRating() {
+        return (int) Math.round(getRating());
+    }
+    
+    public String getFormattedRating() {
+        DecimalFormat df = new DecimalFormat("#.0");
+        double rating = getRating();
+        if (rating == -1) {
+            return "No Ratings Yet";
+        } 
+        String formatted = df.format(rating);
+        return formatted;
+    }
     
     /**
      * @return the portfolioSkills
