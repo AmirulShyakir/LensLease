@@ -151,7 +151,7 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
     }
     
     @Override
-    public List<Booking> getTodayServicesByRequester(User user) {
+    public List<Booking> getTodayServicesByRequester(User user) { //only get if its confirmed
         List<Booking> bookings = getBookingsAsClient(user);
         List<Booking> todayServiceBookings = new ArrayList<Booking>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD/MM/YYYY");
@@ -159,7 +159,7 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         System.out.println("today " + today);
         for (Booking b : bookings) {
             System.out.println("booking " + simpleDateFormat.format(b.getDate()));
-            if (simpleDateFormat.format(b.getDate()).equals(today)) {
+            if (simpleDateFormat.format(b.getDate()).equals(today) && b.getBookingStatus() == BookingStatusEnum.CONFIRMED) {
                 todayServiceBookings.add(b);
             }
         }

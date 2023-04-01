@@ -69,14 +69,14 @@ public class BookingManagedBean implements Serializable {
         this.todayServicesProvided = bookingSessionBean.getTodayServicesByUser(this.user);
     }
     public void loadTodayBookingsAsRequester() {
-        this.todayServicesProvided = bookingSessionBean.getTodayServicesByRequester(this.user);
+        this.todayServices = bookingSessionBean.getTodayServicesByRequester(this.user);
     }
 
     public void loadPendingBookingsAsProvider() {
         this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsProvider(user);
     }
     public void loadPendingBookingsAsRequester() {
-        this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsRequester(user);
+        this.pendingBookingsAsRequester = bookingSessionBean.getPendingBookingRequestsAsRequester(user);
     }
     
     public void loadAllBookingsAsProvider(){
