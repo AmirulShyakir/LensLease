@@ -12,14 +12,13 @@
         <title><ui:insert name="title">Title</ui:insert></title>
     </h:head> 
     <h:body style="background: #F5F5F7; border: 0; margin: 0">
-        <div style="text-align: center; background: lightgrey; color: white; font-size: 30px">
-            <h1>LensLease</h1>
+        <div style="text-align: left; background: black; color: white; font-size: 30px; ">            
+            <p:graphicImage url="/logo.png" style="height:60px; margin-top: 10px; margin-left:10px"/>
         </div>
         <div>
             <h:form>
                 <p:growl id="messages"/>
-                <p:menubar style="background: #0E0E0E">
-                    <p:menuitem><p:graphicImage value="https://github.com/AmirulShyakir/LensLease/blob/browsingModule/LensLease-war/web/logo.png?raw=true"/></p:menuitem>
+                <p:menubar>
                     <p:menuitem value="Home" icon="pi pi-fw pi-home" url="landingPage.xhtml" style="padding-right: 2rem"/>
                     <p:menuitem value="My Account" icon="pi pi-fw pi-user" url="myServices.xhtml" style="padding-right: 2rem"/>
                     <f:facet name="options">
@@ -42,7 +41,7 @@
                     <div class="card">
                         <p:menu>
                             <p:menuitem value="My services" url="myServices.xhtml"/>
-                            <p:menuitem value="My bookings" url="checkout.xhtml"/>
+                            <p:menuitem value="My bookings" url="myBookings.xhtml"/>
                             <p:menuitem value="Portfolio" url="myServices.xhtml"/>
                             <p:menuitem value="Reviews" url="myServices.xhtml"/>
                             <p:menuitem value="Edit account" url="myServices.xhtml"/>
