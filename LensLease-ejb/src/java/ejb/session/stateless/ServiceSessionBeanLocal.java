@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.BanRequest;
 import entity.Schedule;
 import entity.Service;
+import entity.User;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.ServiceNotFoundException;
@@ -39,6 +40,5 @@ public interface ServiceSessionBeanLocal {
     public void relistService(Long serviceId) throws ServiceNotFoundException;
 
     public void editService(Service service) throws ServiceNotFoundException;
-
     
 }
