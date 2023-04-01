@@ -209,4 +209,6 @@ public class Booking implements Serializable {
     public void setProjectSpecifications(String projectSpecifications) {
         this.projectSpecifications = projectSpecifications;
     }
+    
+    
 }

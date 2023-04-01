@@ -37,6 +37,12 @@ public class BookingManagedBean implements Serializable {
     private List<Booking> todayServicesProvided;
     private List<Booking> pendingBookingsAsProvider;
     private List<Booking> allBookingsAsProvider;
+    
+    private List<Booking> allBookingsAsRequester;
+    private List<Booking> pendingBookingsAsRequester;
+    private List<Booking> todayServices;
+    private List<Booking> bookingsToBeRated;
+    private List<Booking> upcomingBookings;
 
     /**
      * Creates a new instance of BookingManagedBean
@@ -61,16 +67,32 @@ public class BookingManagedBean implements Serializable {
 
     public void loadTodayBookingsForServices() {
         this.todayServicesProvided = bookingSessionBean.getTodayServicesByUser(this.user);
-        System.out.println("Retrieved todays services as provider");
+    }
+    public void loadTodayBookingsAsRequester() {
+        this.todayServicesProvided = bookingSessionBean.getTodayServicesByRequester(this.user);
     }
 
     public void loadPendingBookingsAsProvider() {
         this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsProvider(user);
-        System.out.println("Retrieved pending bookings as provider");
+    }
+    public void loadPendingBookingsAsRequester() {
+        this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsRequester(user);
     }
     
     public void loadAllBookingsAsProvider(){
         this.allBookingsAsProvider = bookingSessionBean.getBookingsAsSupplier(user);
+    }
+    
+    public void loadAllBookingsAsRequester(){
+        this.allBookingsAsRequester = bookingSessionBean.getBookingsAsClient(user);
+    }
+    
+    public void loadBookingsToBeRated(){
+        this.bookingsToBeRated = bookingSessionBean.getToRateBookingsAsRequester(user);
+    }
+    
+    public void loadUpcomingBookings(){
+        this.upcomingBookings = bookingSessionBean.getConfirmedBookingsAsRequester(user);
     }
     
     public User getUser() {
@@ -103,6 +125,49 @@ public class BookingManagedBean implements Serializable {
 
     public void setAllBookingsAsProvider(List<Booking> allBookingsAsProvider) {
         this.allBookingsAsProvider = allBookingsAsProvider;
+    }
+
+    public List<Booking> getAllBookingsAsRequester() {
+        return allBookingsAsRequester;
+    }
+
+    public void setAllBookingsAsRequester(List<Booking> allBookingsAsRequester) {
+        this.allBookingsAsRequester = allBookingsAsRequester;
+    }
+
+    /**
+     * @return the pendingBookingsAsRequester
+     */
+    public List<Booking> getPendingBookingsAsRequester() {
+        return pendingBookingsAsRequester;
+    }
+
+    public void setPendingBookingsAsRequester(List<Booking> pendingBookingsAsRequester) {
+        this.pendingBookingsAsRequester = pendingBookingsAsRequester;
+    }
+
+    public List<Booking> getTodayServices() {
+        return todayServices;
+    }
+
+    public void setTodayServices(List<Booking> todayServices) {
+        this.todayServices = todayServices;
+    }
+
+    public List<Booking> getBookingsToBeRated() {
+        return bookingsToBeRated;
+    }
+
+    public void setBookingsToBeRated(List<Booking> bookingsToBeRated) {
+        this.bookingsToBeRated = bookingsToBeRated;
+    }
+
+    public List<Booking> getUpcomingBookings() {
+        return upcomingBookings;
+    }
+
+    public void setUpcomingBookings(List<Booking> upcomingBookings) {
+        this.upcomingBookings = upcomingBookings;
     }
     
 }

@@ -102,14 +102,57 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         return allBookingsAsSupplier;
     }
 
+    @Override
     public List<Booking> getBookingsAsClient(User user) {
         return user.getBookings();
-
+    }
+    
+    @Override
+    public List<Booking> getPendingBookingRequestsAsRequester(User user){
+        Query q = em.createQuery("SELECT b FROM Booking b WHERE b.customer = :inUser AND b.bookingStatus = :inStatus");
+        q.setParameter("inUser", user);
+        q.setParameter("inStatus", BookingStatusEnum.PENDING);
+        List<Booking> pendingBookingRequests = q.getResultList();
+        return pendingBookingRequests;
+    }
+    
+    @Override
+    public List<Booking> getToRateBookingsAsRequester(User user){
+        Query q = em.createQuery("SELECT b FROM Booking b WHERE b.customer = :inUser AND b.bookingStatus = :inStatus");
+        q.setParameter("inUser", user);
+        q.setParameter("inStatus", BookingStatusEnum.TORATE);
+        List<Booking> pendingBookingRequests = q.getResultList();
+        return pendingBookingRequests;
+    }
+    
+    @Override
+    public List<Booking> getConfirmedBookingsAsRequester(User user){
+        Query q = em.createQuery("SELECT b FROM Booking b WHERE b.customer = :inUser AND b.bookingStatus = :inStatus");
+        q.setParameter("inUser", user);
+        q.setParameter("inStatus", BookingStatusEnum.CONFIRMED);
+        List<Booking> pendingBookingRequests = q.getResultList();
+        return pendingBookingRequests;
     }
 
     @Override
     public List<Booking> getTodayServicesByUser(User user) {
         List<Booking> bookings = getBookingsAsSupplier(user);
+        List<Booking> todayServiceBookings = new ArrayList<Booking>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD/MM/YYYY");
+        String today = simpleDateFormat.format(new Date());
+        System.out.println("today " + today);
+        for (Booking b : bookings) {
+            System.out.println("booking " + simpleDateFormat.format(b.getDate()));
+            if (simpleDateFormat.format(b.getDate()).equals(today)) {
+                todayServiceBookings.add(b);
+            }
+        }
+        return todayServiceBookings;
+    }
+    
+    @Override
+    public List<Booking> getTodayServicesByRequester(User user) {
+        List<Booking> bookings = getBookingsAsClient(user);
         List<Booking> todayServiceBookings = new ArrayList<Booking>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD/MM/YYYY");
         String today = simpleDateFormat.format(new Date());
