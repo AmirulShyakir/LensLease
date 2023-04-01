@@ -50,6 +50,14 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     @Override
+    public void submitNewReview(long reviewId, long bookingId) throws ReviewNotFoundException, BookingNotFoundException {
+        Review review = findReviewByReviewId(reviewId);
+        Booking booking = bookingSessionBean.findBookingByBookingId(bookingId);
+        review.setBooking(booking);
+        booking.setReview(review);
+    }
+    
+    @Override
     public Review findReviewByReviewId(Long reviewId) throws ReviewNotFoundException {
         Query query = em.createQuery("SELECT r FROM Review r WHERE r.reviewId = :inReviewId");
         query.setParameter("inReviewId", reviewId);

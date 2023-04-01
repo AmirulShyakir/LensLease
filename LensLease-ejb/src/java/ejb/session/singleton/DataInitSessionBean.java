@@ -221,11 +221,21 @@ public class DataInitSessionBean {
                 booking5.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking5.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
                 
+                Booking booking6 = new Booking();
+                booking6.setDate(new Date());
+                booking6.setStartTime("2000");
+                booking6.setPreferredLocation("Eusoff Hall");
+                booking6.setComments("Comment");
+                booking6.setBookingStatus(BookingStatusEnum.TORATE);
+                booking6.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
+                booking6.setCustomer(userSessionBean.findUserByUserId(new Long(1)));
+                
                 bookingSessionBean.createNewBooking(booking1);
                 bookingSessionBean.createNewBooking(booking2);
                 bookingSessionBean.createNewBooking(booking3);
                 bookingSessionBean.createNewBooking(booking4);
                 bookingSessionBean.createNewBooking(booking5);
+                bookingSessionBean.createNewBooking(booking6);
             } catch (ServiceNotFoundException | UserNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -241,6 +251,7 @@ public class DataInitSessionBean {
                 reviewSessionBean.createNewReview(review1);
                 booking1.setReview(review1);
                 review1.setBooking(booking1);
+                booking1.setBookingStatus(BookingStatusEnum.COMPLETED);
                 
                 Booking booking2 = bookingSessionBean.findBookingByBookingId(new Long(2));
                 Review review2 = new Review();
@@ -249,6 +260,7 @@ public class DataInitSessionBean {
                 review2.setReviewDate(new Date());
                 reviewSessionBean.createNewReview(review2);
                 booking2.setReview(review2);
+                booking2.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review2.setBooking(booking2);
                 
                 Booking booking3 = bookingSessionBean.findBookingByBookingId(new Long(3));
@@ -258,6 +270,7 @@ public class DataInitSessionBean {
                 review3.setReviewDate(new Date());
                 reviewSessionBean.createNewReview(review3);
                 booking3.setReview(review3);
+                booking3.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review3.setBooking(booking3);
                 
                 Booking booking4 = bookingSessionBean.findBookingByBookingId(new Long(4));
@@ -266,7 +279,7 @@ public class DataInitSessionBean {
                 review4.setDescription("It was nice working with you. Thank you");
                 review4.setReviewDate(new Date());
                 reviewSessionBean.createNewReview(review4);
-                booking4.setReview(review3);
+                booking4.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review4.setBooking(booking3);
                 
                 Booking booking5 = bookingSessionBean.findBookingByBookingId(new Long(5));
@@ -276,6 +289,7 @@ public class DataInitSessionBean {
                 review5.setReviewDate(new Date());
                 reviewSessionBean.createNewReview(review5);
                 booking5.setReview(review5);
+                booking5.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review5.setBooking(booking5);
                 
             } catch (BookingNotFoundException ex) {

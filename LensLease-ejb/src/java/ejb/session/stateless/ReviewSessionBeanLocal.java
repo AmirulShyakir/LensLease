@@ -26,5 +26,7 @@ public interface ReviewSessionBeanLocal {
     public void createReview(long reviewId, long bookingId) throws BookingNotFoundException, ReviewNotFoundException;
 
     public List<Review> getReviewsByUserId(long userId) throws UserNotFoundException;
+
+    public void submitNewReview(long reviewId, long bookingId) throws ReviewNotFoundException, BookingNotFoundException;
     
 }
