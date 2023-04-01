@@ -8,6 +8,9 @@ package ejb.session.stateless;
 import entity.Booking;
 import entity.Review;
 import entity.Service;
+import entity.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.BookingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -22,6 +26,9 @@ import util.exception.ReviewNotFoundException;
  */
 @Stateless
 public class ReviewSessionBean implements ReviewSessionBeanLocal {
+
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
 
     @EJB
     private BookingSessionBeanLocal bookingSessionBean;
@@ -55,10 +62,35 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         }
     }
     
+    @Override
     public void createReview(long reviewId, long bookingId) throws BookingNotFoundException, ReviewNotFoundException {
         Booking booking = bookingSessionBean.findBookingByBookingId(bookingId);
         Review review = findReviewByReviewId(reviewId);
         booking.setReview(review);
         review.setBooking(booking);
+    }
+    
+    @Override
+    public List<Review> getReviewsByUserId(long userId) throws UserNotFoundException {
+        User u = userSessionBean.findUserByUserId(userId);
+        List<Service> services = u.getServices();
+        List<Review> reviews = new ArrayList<Review>();
+        if (!services.isEmpty()) {
+            for (Service s : services) {
+                if (!s.getBookings().isEmpty()) {
+                    List<Booking> bookings = s.getBookings();
+                    for (Booking b : bookings) {
+                        if (b.getReview() != null) {
+                            reviews.add(b.getReview());
+                        }
+                    }
+                }
+            }
+        }
+        return reviews;
+    }
+
+    public void persist1(Object object) {
+        em.persist(object);
     }
 }

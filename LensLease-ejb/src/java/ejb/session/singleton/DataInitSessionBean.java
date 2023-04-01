@@ -69,15 +69,15 @@ public class DataInitSessionBean {
         }
         if (em.find(User.class, 1l) == null) {
             User amirul = new User("Amirul", "amirul@gmail.com", "98553644", "Amirul", "password");
-            //amirul.setPhotoUrl("https://i.pravatar.cc/300?img=56");
+            amirul.setPhotoUrl("https://i.pravatar.cc/300?img=56");
             User adriel = new User("Adriel", "adriel@gmail.com", "91111111", "Adriel", "password");
-            //adriel.setPhotoUrl("https://i.pravatar.cc/300?img=6");
+            adriel.setPhotoUrl("https://i.pravatar.cc/300?img=6");
             User jonathan = new User("Jonathan", "jonathan@gmail.com", "91111112", "Jonathan", "password");
-            //jonathan.setPhotoUrl("https://i.pravatar.cc/300?img=14");
+            jonathan.setPhotoUrl("https://i.pravatar.cc/300?img=14");
             User junwei = new User("Jun Wei", "junwei@gmail.com", "82226727", "Jun Wei", "password");
-            //junwei.setPhotoUrl("https://i.pravatar.cc/300?img=12");
+            junwei.setPhotoUrl("https://i.pravatar.cc/300?img=12");
             User leeann = new User("Leeann", "leeann@gmail.com", "83685686", "Leeann", "password");
-            //leeann.setPhotoUrl("https://i.pravatar.cc/300?img=31");
+            leeann.setPhotoUrl("https://i.pravatar.cc/300?img=31");
                     
             userSessionBean.createNewUser(amirul);
             userSessionBean.createNewUser(adriel);

@@ -1,12 +1,17 @@
 package managedBean;
 
 import ejb.session.stateless.AdminSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
+import entity.Review;
 import entity.User;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -17,6 +22,9 @@ import util.exception.UserNotFoundException;
 @Named(value = "authenticationManagedBean")
 @SessionScoped
 public class AuthenticationManagedBean implements Serializable {
+
+    @EJB
+    private ReviewSessionBeanLocal reviewSessionBean;
 
     @EJB
     private AdminSessionBeanLocal adminSessionBean;
@@ -30,6 +38,7 @@ public class AuthenticationManagedBean implements Serializable {
     private String username = null;
     private String password = null;
     private long userId = -1;
+    private List<Review> reviews;
 
     public AuthenticationManagedBean() {
     }
@@ -78,6 +87,14 @@ public class AuthenticationManagedBean implements Serializable {
         return "/login.xhtml?faces-redirect=true";
     }
 
+    public void loadReviewsForUser() {
+        try {
+            this.setReviews(reviewSessionBean.getReviewsByUserId(this.userId));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(AuthenticationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     //getter and setter for the attributes
 
     public String getUsername() {
@@ -144,6 +161,20 @@ public class AuthenticationManagedBean implements Serializable {
      */
     public void setAdminId(long adminId) {
         this.adminId = adminId;
+    }
+
+    /**
+     * @return the reviews
+     */
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    /**
+     * @param reviews the reviews to set
+     */
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
    
 }
