@@ -43,8 +43,9 @@
                             </div>
                             <div class="grid align-items-center pl-3">
                                 <p:rating readonly="true" value="#{serviceManagedBean.user.getStarRating()}"/>
-                                <p>#{serviceManagedBean.user.getFormattedRating()}</p>
+                                <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() == 3}"></h:outputText></p>
                             </div>
+                            <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() != 3}"></h:outputText></p>
                         <p:divider/>
                         </div>
                         <a style="text-decoration: none; color: inherit" href="myServices.xhtml"><h5>My Services</h5></a>
