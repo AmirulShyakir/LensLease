@@ -6,12 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -25,12 +28,25 @@ public class ForumTopic implements Serializable {
     private Long forumTopicId;
     private String topicName;
     private String description;
-    private String thumbnailUrl;
+    @ManyToOne
+    private User poster;
+    private List<ForumTopicTagEnum> tags;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateCreated;
+    
     
     @OneToMany(mappedBy = "forumTopic")
     private List<ForumReply> replies;
 
     public ForumTopic() {
+    }
+
+    public ForumTopic(String topicName, String description, User poster, List<ForumTopicTagEnum> tags, Date dateCreated) {
+        this.topicName = topicName;
+        this.description = description;
+        this.poster = poster;
+        this.tags = tags;
+        this.dateCreated = dateCreated;
     }
     
     /**
@@ -59,20 +75,6 @@ public class ForumTopic implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * @return the thumbnailUrl
-     */
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    /**
-     * @param thumbnailUrl the thumbnailUrl to set
-     */
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
     }
 
     public Long getForumTopicId() {
@@ -120,6 +122,48 @@ public class ForumTopic implements Serializable {
      */
     public void setReplies(List<ForumReply> replies) {
         this.replies = replies;
+    }
+
+    /**
+     * @return the tags
+     */
+    public List<ForumTopicTagEnum> getTags() {
+        return tags;
+    }
+
+    /**
+     * @param tags the tags to set
+     */
+    public void setTags(List<ForumTopicTagEnum> tags) {
+        this.tags = tags;
+    }
+
+    /**
+     * @return the dateCreated
+     */
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    /**
+     * @param dateCreated the dateCreated to set
+     */
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    /**
+     * @return the poster
+     */
+    public User getPoster() {
+        return poster;
+    }
+
+    /**
+     * @param poster the poster to set
+     */
+    public void setPoster(User poster) {
+        this.poster = poster;
     }
     
 }

@@ -45,6 +45,10 @@ public class User implements Serializable {
     private List<Service> services;
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
+    @OneToMany(mappedBy = "poster")
+    private List<ForumTopic> forumTopics;
+    @OneToMany(mappedBy = "user")
+    private List<ForumReply> forumReplys;
 
     public User() {
         this.setIsBanned(false);

@@ -28,7 +28,6 @@ public class ForumReply implements Serializable {
     private String message;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date replyTime;
-    @OneToOne
     private User user;
     
     @ManyToOne

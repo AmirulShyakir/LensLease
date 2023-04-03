@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.stateless;
-
-import entity.ForumTopic;
-import javax.ejb.Local;
+package entity;
 
 /**
  *
  * @author Amirul
  */
-@Local
-public interface ForumSessionBeanLocal {
-
-    public void createNewForumTopic(ForumTopic forumTopic);
-    
+public enum ForumTopicTagEnum {
+    PHOTOGRAPHY, VIDEOGRAPHY, EQUIPMENT, PHOTOEDITING, VIDEOEDITING, TIPSANDADVICE
 }

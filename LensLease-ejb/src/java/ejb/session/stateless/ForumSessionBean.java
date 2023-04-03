@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.ForumTopic;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,4 +26,9 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @Override
+    public void createNewForumTopic(ForumTopic forumTopic) {
+        em.persist(forumTopic);
+        em.flush();
+    }
 }
