@@ -6,12 +6,18 @@
 package ejb.session.stateless;
 
 import entity.BanRequest;
+import entity.Booking;
 import entity.Schedule;
 import entity.Service;
 import entity.User;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +31,9 @@ import util.exception.UserNotFoundException;
  */
 @Stateless
 public class ServiceSessionBean implements ServiceSessionBeanLocal {
+
+    @EJB
+    private BookingSessionBeanLocal bookingSessionBean;
 
     @PersistenceContext(unitName = "LensLease-ejbPU")
     private EntityManager em;
@@ -104,6 +113,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         }
     }
     
+    @Override
     public List<Service> searchServices(String name) {
         Query q;
         if (name != null) {

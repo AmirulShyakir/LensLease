@@ -5,16 +5,24 @@
  */
 package managedBean;
 
+import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
+import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Booking;
+import entity.Review;
 import entity.Service;
 import entity.ServiceTypeEnum;
 import entity.User;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -33,7 +41,10 @@ public class ServiceManagedBean implements Serializable {
     }
     @EJB
     private ServiceSessionBeanLocal serviceSessionBeanLocal;
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
 
+    private User user;
     private String serviceName;
     private ServiceTypeEnum serviceType;
     private double serviceCost;
@@ -42,7 +53,10 @@ public class ServiceManagedBean implements Serializable {
     private User provider;
     
     private Service selectedService;
+    private List<Review> reviewsForSelectedService;
     private List<Service> listOfServices;
+    private List<Service> servicesProvided;
+    
     private Long serviceId; 
 
     private String searchString;
@@ -50,19 +64,27 @@ public class ServiceManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
         if (getSearchString() == null || getSearchString().equals("")) {
             setListOfServices(serviceSessionBeanLocal.getAllServices());
         } else {
             listOfServices = serviceSessionBeanLocal.searchServices(searchString);
+        }
+        try {
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "authenticationManagedBean");
+            
+            long userId = authenticationManagedBean.getUserId();
+            setUser(userSessionBean.findUserByUserId(userId));
+        } catch (Exception ex) {
+            Logger.getLogger(CheckoutManagedbean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void handleSearch() {
         init();
     }
-
-
+    
     public void loadSelectedService() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -72,10 +94,28 @@ public class ServiceManagedBean implements Serializable {
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
             provider = this.selectedService.getProvider();
+            List<Booking> bookings = selectedService.getBookings();
+            List<Review> reviews = new ArrayList<Review>();
+            for (Booking b : bookings) {
+                if (b.getReview() != null) {
+                    reviews.add(b.getReview());
+                }
+            }
+            setReviewsForSelectedService(reviews);
             System.out.println("Going to Individual service page with selected service: " + serviceName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
+    }
+    
+    public void loadServicesProvided(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        try{
+            this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(user.getUserId());
+        }catch(Exception e){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+        }
+        
     }
 
     public String getServiceName() {
@@ -164,5 +204,35 @@ public class ServiceManagedBean implements Serializable {
 
     public void setProvider(User provider) {
         this.provider = provider;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Service> getServicesProvided() {
+        return servicesProvided;
+    }
+
+    public void setServicesProvided(List<Service> servicesProvided) {
+        this.servicesProvided = servicesProvided;
+    }
+
+    /**
+     * @return the reviewsForSelectedService
+     */
+    public List<Review> getReviewsForSelectedService() {
+        return reviewsForSelectedService;
+    }
+
+    /**
+     * @param reviewsForSelectedService the reviewsForSelectedService to set
+     */
+    public void setReviewsForSelectedService(List<Review> reviewsForSelectedService) {
+        this.reviewsForSelectedService = reviewsForSelectedService;
     }
 }
