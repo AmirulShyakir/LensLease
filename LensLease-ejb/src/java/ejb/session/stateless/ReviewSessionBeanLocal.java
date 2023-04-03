@@ -8,7 +8,9 @@ package ejb.session.stateless;
 import entity.Review;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.BookingNotFoundException;
 import util.exception.ReviewNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -20,5 +22,11 @@ public interface ReviewSessionBeanLocal {
     public void createNewReview(Review review);
 
     public Review findReviewByReviewId(Long reviewId) throws ReviewNotFoundException;
+
+    public void createReview(long reviewId, long bookingId) throws BookingNotFoundException, ReviewNotFoundException;
+
+    public List<Review> getReviewsByUserId(long userId) throws UserNotFoundException;
+
+    public void submitNewReview(long reviewId, long bookingId) throws ReviewNotFoundException, BookingNotFoundException;
     
 }

@@ -28,24 +28,31 @@
             </h:form>
         </div>
         <div class="grid" style="min-height: 50VH; padding: 40px 20px;">
-            <div class="col-12 lg:col-2">
+            <div class="col-12 lg:col-2 min-w-max">
                 <h:form>
                     <div style="padding: 0px 20px">
-                        <p:avatar styleClass="mr-2" size="xlarge" shape="circle" style="min-width: 100px; min-height: 100px;">
-                            <p:graphicImage value="#{serviceManagedBean.user.photoUrl}"/>
-                        </p:avatar>
-                        <h4 style="margin-bottom: 0px; margin-top: 10px"><h:outputText value="#{serviceManagedBean.user.name}"/></h4><p class="subtitle" style="margin-top: 0px"><h:outputText value="#{serviceManagedBean.user.username}"/></p>
-                        <p:rating readonly="true" value="4" style="margin-bottom:15px; margin-top:0px;"/>
-                    </div>
-                    <hr style="width: 80%; margin-left: 0;"></hr>
-                    <div class="card">
-                        <p:menu>
-                            <p:menuitem value="My services" url="myServices.xhtml"/>
-                            <p:menuitem value="My bookings" url="myBookings.xhtml"/>
-                            <p:menuitem value="Portfolio" url="myServices.xhtml"/>
-                            <p:menuitem value="Reviews" url="myServices.xhtml"/>
-                            <p:menuitem value="Edit account" url="myServices.xhtml"/>
-                        </p:menu>
+                        <div class="flex flex-column align-items-center">
+                            <div>
+                                <p:avatar class="mx-4" styleClass="mr-2" size="xlarge" shape="circle" style="min-width: 100px; min-height: 100px;">
+                                    <p:graphicImage value="#{serviceManagedBean.user.photoUrl}"/>
+                                </p:avatar>
+                            </div>
+                            <div class="align-items-center">
+                                <h4 style="margin-bottom: 0px; margin-top: 10px"><h:outputText value="#{serviceManagedBean.user.name}"/></h4>
+                                <p class="subtitle" style="margin-top: 0px">@<h:outputText value="#{serviceManagedBean.user.username}"/></p>
+                            </div>
+                            <div class="grid align-items-center pl-3">
+                                <p:rating readonly="true" value="#{serviceManagedBean.user.getStarRating()}"/>
+                                <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() == 3}"></h:outputText></p>
+                            </div>
+                            <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() != 3}"></h:outputText></p>
+                        <p:divider/>
+                        </div>
+                        <a style="text-decoration: none; color: inherit" href="myServices.xhtml"><h5>My Services</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="myBookings.xhtml"><h5>My Bookings</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="portfolio.xhtml"><h5>Portfolio</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="reviews.xhtml"><h5>Reviews</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="editAccount.xhtml"><h5>Edit Account</h5></a>
                     </div>
                 </h:form>
             </div>

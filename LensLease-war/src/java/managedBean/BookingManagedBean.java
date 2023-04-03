@@ -6,19 +6,25 @@
 package managedBean;
 
 import ejb.session.stateless.BookingSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Booking;
+import entity.Review;
 import entity.User;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.el.ELContext;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import util.exception.BookingNotFoundException;
+import util.exception.ReviewNotFoundException;
 
 /**
  *
@@ -28,6 +34,8 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class BookingManagedBean implements Serializable {
 
+    @EJB
+    private ReviewSessionBeanLocal reviewSessionBean;
     @EJB
     private BookingSessionBeanLocal bookingSessionBean;
     @EJB
@@ -43,6 +51,11 @@ public class BookingManagedBean implements Serializable {
     private List<Booking> todayServices;
     private List<Booking> bookingsToBeRated;
     private List<Booking> upcomingBookings;
+    
+    //for editing and rating
+    private Booking selectedBooking;
+    private int starRating;
+    private String reviewDescription;
 
     /**
      * Creates a new instance of BookingManagedBean
@@ -64,19 +77,32 @@ public class BookingManagedBean implements Serializable {
         }
     }
 
+    public void createReview() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Review review = new Review();
+            review.setDescription(reviewDescription);
+            review.setStarRating(starRating);
+            review.setReviewDate(new Date());
+            reviewSessionBean.createNewReview(review);
+            reviewSessionBean.submitNewReview(review.getReviewId(), selectedBooking.getBookingId());
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review"));
+        }
+    }
 
     public void loadTodayBookingsForServices() {
         this.todayServicesProvided = bookingSessionBean.getTodayServicesByUser(this.user);
     }
     public void loadTodayBookingsAsRequester() {
-        this.todayServicesProvided = bookingSessionBean.getTodayServicesByRequester(this.user);
+        this.todayServices = bookingSessionBean.getTodayServicesByRequester(this.user);
     }
 
     public void loadPendingBookingsAsProvider() {
         this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsProvider(user);
     }
     public void loadPendingBookingsAsRequester() {
-        this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsRequester(user);
+        this.pendingBookingsAsRequester = bookingSessionBean.getPendingBookingRequestsAsRequester(user);
     }
     
     public void loadAllBookingsAsProvider(){
@@ -168,6 +194,48 @@ public class BookingManagedBean implements Serializable {
 
     public void setUpcomingBookings(List<Booking> upcomingBookings) {
         this.upcomingBookings = upcomingBookings;
+    }
+
+    /**
+     * @return the selectedBooking
+     */
+    public Booking getSelectedBooking() {
+        return selectedBooking;
+    }
+
+    /**
+     * @param selectedBooking the selectedBooking to set
+     */
+    public void setSelectedBooking(Booking selectedBooking) {
+        this.selectedBooking = selectedBooking;
+    }
+
+    /**
+     * @return the starRating
+     */
+    public int getStarRating() {
+        return starRating;
+    }
+
+    /**
+     * @param starRating the starRating to set
+     */
+    public void setStarRating(int starRating) {
+        this.starRating = starRating;
+    }
+
+    /**
+     * @return the reviewDescription
+     */
+    public String getReviewDescription() {
+        return reviewDescription;
+    }
+
+    /**
+     * @param reviewDescription the reviewDescription to set
+     */
+    public void setReviewDescription(String reviewDescription) {
+        this.reviewDescription = reviewDescription;
     }
     
 }
