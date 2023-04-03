@@ -47,7 +47,7 @@ public class User implements Serializable {
     private List<Booking> bookings;
     @OneToMany(mappedBy = "poster")
     private List<ForumTopic> forumTopics;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "replier")
     private List<ForumReply> forumReplys;
 
     public User() {

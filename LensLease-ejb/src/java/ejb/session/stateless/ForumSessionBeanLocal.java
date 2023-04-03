@@ -5,8 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.ForumReply;
 import entity.ForumTopic;
 import javax.ejb.Local;
+import util.exception.ForumTopicNotFoundException;
 
 /**
  *
@@ -16,5 +18,9 @@ import javax.ejb.Local;
 public interface ForumSessionBeanLocal {
 
     public void createNewForumTopic(ForumTopic forumTopic);
+
+    public ForumTopic findForumTopicById(Long forumTopicId) throws ForumTopicNotFoundException;
+
+    public void createNewForumReply(ForumReply forumReply);
     
 }

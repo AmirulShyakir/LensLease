@@ -5,10 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.ForumReply;
 import entity.ForumTopic;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import util.exception.ForumTopicNotFoundException;
 
 /**
  *
@@ -29,6 +32,25 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
     @Override
     public void createNewForumTopic(ForumTopic forumTopic) {
         em.persist(forumTopic);
+        em.flush();
+    }
+    
+    @Override
+    public ForumTopic findForumTopicById(Long forumTopicId) throws ForumTopicNotFoundException {
+        Query query = em.createQuery("SELECT f FROM ForumTopic f WHERE f.forumTopicId = :inForumTopicId");
+        query.setParameter("inForumTopicId", forumTopicId);
+        query.setMaxResults(1);
+        try {
+            ForumTopic booking = (ForumTopic)query.getSingleResult();
+            return booking;
+        } catch (Exception e) {
+            throw new ForumTopicNotFoundException("Booking not found with id " + forumTopicId);
+        }
+    }
+
+    @Override
+    public void createNewForumReply(ForumReply forumReply) {
+        em.persist(forumReply);
         em.flush();
     }
 }

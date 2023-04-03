@@ -28,6 +28,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.ForumTopicNotFoundException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -96,10 +97,11 @@ public class DataInitSessionBean {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        Calendar calendar = Calendar.getInstance();
+            Date thisInstance = calendar.getTime();
         if (em.find(ForumTopic.class, 1l) == null) {
             ArrayList<ForumTopicTagEnum> topics = new ArrayList<ForumTopicTagEnum>();
-            Calendar calendar = Calendar.getInstance();
-            Date thisInstance = calendar.getTime();
+            
             topics.add(ForumTopicTagEnum.EQUIPMENT);
             topics.add(ForumTopicTagEnum.PHOTOGRAPHY);
             try {
@@ -112,6 +114,17 @@ public class DataInitSessionBean {
             } catch (UserNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        if (em.find(ForumReply.class, 1l) == null) {
+            try {
+                ForumReply forumReply1 = new ForumReply("Reply1 Reply1 Reply1", thisInstance, userSessionBean.findUserByUserId(new Long(1)), forumSessionBean.findForumTopicById(new Long(1)));
+                ForumReply forumReply2 = new ForumReply("Reply2 Reply2 Reply2", thisInstance, userSessionBean.findUserByUserId(new Long(2)), forumSessionBean.findForumTopicById(new Long(1)));
+                forumSessionBean.createNewForumReply(forumReply1);
+                forumSessionBean.createNewForumReply(forumReply2);
+            } catch (UserNotFoundException | ForumTopicNotFoundException ex) {
+                Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
         }
     }
 
