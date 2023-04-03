@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
+import util.exception.UserAlreadyExistsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -83,6 +84,25 @@ public class UserSessionBean implements UserSessionBeanLocal {
                 }
             }
             throw new InvalidLoginException("Invalid username");
+        }
+    }
+    
+    @Override
+    public Long userSignup(User user) throws UserAlreadyExistsException {
+        Query emailQuery = em.createQuery("SELECT u FROM User u WHERE u.email = :email");
+        emailQuery.setParameter("email", user.getEmail());
+        
+        Query usernameQuery = em.createQuery("SELECT u FROM User u WHERE u.username = :username");
+        usernameQuery.setParameter("username", user.getUsername());
+
+        if (emailQuery.getResultList().isEmpty() && usernameQuery.getResultList().isEmpty()) {
+            em.persist(user);
+            em.flush();
+            return user.getUserId();
+        } else if (!emailQuery.getResultList().isEmpty()) {
+            throw new UserAlreadyExistsException("This email has already been registered");
+        } else {
+            throw new UserAlreadyExistsException("Username is unavailable, please choose another");
         }
     }
 }

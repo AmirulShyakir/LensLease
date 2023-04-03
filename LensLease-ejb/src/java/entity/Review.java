@@ -31,6 +31,8 @@ public class Review implements Serializable {
     
     @OneToOne(mappedBy = "review")
     private Booking booking;
+    //@OneToOne //unidirectional. to access service provider, is via booking, service
+    //private User reviewer;
 
     public Review() {
     }
