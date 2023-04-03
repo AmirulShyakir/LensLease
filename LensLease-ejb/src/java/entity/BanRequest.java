@@ -30,11 +30,13 @@ public class BanRequest implements Serializable {
     
     @ManyToOne
     private Service service;
+    @ManyToOne
+    private User user;
 
     public BanRequest() {
     }
 
-    public BanRequest(String description, Date requestDate, Service service) {
+    public BanRequest(String description, Date requestDate, Service service, User user) {
         this.description = description;
         this.requestDate = requestDate;
         this.service = service;
@@ -113,6 +115,14 @@ public class BanRequest implements Serializable {
      */
     public void setService(Service service) {
         this.service = service;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     
 }

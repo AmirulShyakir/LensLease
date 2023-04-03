@@ -2,14 +2,56 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="./../adminDefault.xhtml">
 
     <ui:define name="title">
-        title
+        Bookings | Admin Portal
     </ui:define>
 
     <ui:define name="content">
-        bookings
+        <h:form id="form">
+            <div class="px-8" >
+               <p:outputPanel style="text-align: center; padding:7px;margin-bottom: 20px;" >
+
+                    <span class="ui-input-icon-left">
+                        <i class="pi pi-search" />
+                        <p:inputText placeholder="Search" value="#{bookingManagedBean.searchString}" style="width: 450px; border-radius: 20px;">
+                            <p:ajax event="keyup" update="form" listener="#{bookingManagedBean.handleSearch}" />  
+                        </p:inputText>
+                    </span>
+
+                </p:outputPanel>
+                <h2 class="pl-3"><h:outputText value="Bookings"/></h2>
+
+                <p:dataTable widgetVar="requestTable"
+                             var="booking" 
+                             value="#{bookingManagedBean.listOfBookings}"
+                             >
+                    <p:column headerText="Booking Id">
+                                #{booking.bookingId}
+                    </p:column> 
+               
+                    <p:column headerText="Customer">
+                        <h:outputText value="#{booking.customer.username}"/>   
+                    </p:column>
+                    
+                    <p:column headerText="Service Type">
+                        <h:outputText value="#{booking.service.serviceType.toString()}"/>   
+                    </p:column>  
+                    
+                    <p:column headerText="Booking Date">
+                        <h:outputText value="#{booking.date}"/>   
+                    </p:column> 
+                    
+                    <p:column headerText="Booking Status">
+                        <h:outputText value="#{booking.bookingStatus}"/>   
+                    </p:column> 
+                </p:dataTable>
+            </div>
+        </h:form>
     </ui:define>
 
 </ui:composition>

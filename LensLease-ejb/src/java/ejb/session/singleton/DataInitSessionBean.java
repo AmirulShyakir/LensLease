@@ -72,16 +72,16 @@ public class DataInitSessionBean {
                  ArrayList<String> photos = new ArrayList();
                  photos.add("/studio-image.jpg");
                  
-                 Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(6)));
+                 Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00 , photos, false,userSessionBean.findUserByUserId(new Long(1)));
                  equipmentRental.setEarliestCollectionTime("9am");
                  equipmentRental.setLatestReturnTime("10pm");
                  equipmentRental.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
                  
-                 Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(7)));
+                 Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false,userSessionBean.findUserByUserId(new Long(2)));
                  photography.setPackageDurationHours("6 hours");
                  photography.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                 Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(8)));
+                 Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 50.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
                  photoEditing.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
                  
                  serviceSessionBeanLocal.createNewService(equipmentRental);
@@ -96,7 +96,7 @@ public class DataInitSessionBean {
             try {
                 ArrayList<String> photos = new ArrayList();
                 photos.add("/studio-image.jpg");
-                adminSessionBean.createNewBanRequest(new BanRequest("This post is horrigible!", new Date(), serviceSessionBeanLocal.findServiceByServiceId(new Long(10))));
+                adminSessionBean.createNewBanRequest(new BanRequest("This post is horrigible!", new Date(), serviceSessionBeanLocal.findServiceByServiceId(new Long(1)), null));
             } catch (ServiceNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
