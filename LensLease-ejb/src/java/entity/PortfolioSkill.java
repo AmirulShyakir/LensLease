@@ -25,8 +25,8 @@ public class PortfolioSkill implements Serializable {
     private Long portfolioSkillId;
     private String skillName;
     
-    @ManyToMany(mappedBy = "portfolioSkills")
-    private List<User> users;
+    @ManyToMany(mappedBy = "skills")
+    private List<Portfolio> portfolios;
 
     public PortfolioSkill() {
     }
@@ -82,18 +82,12 @@ public class PortfolioSkill implements Serializable {
         return "entity.PortfolioSkill[ id=" + getPortfolioSkillId() + " ]";
     }
 
-    /**
-     * @return the users
-     */
-    public List<User> getUsers() {
-        return users;
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
     }
 
-    /**
-     * @param users the users to set
-     */
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
     }
     
 }

@@ -24,10 +24,10 @@ public class PortfolioClient implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioClientId;
     private String clientName;
-    private String clientPhotoUrl;
+    private String clientLink;
 
-    @ManyToMany(mappedBy = "portfolioClients")
-    private List<User> users;
+    @ManyToMany(mappedBy = "clients")
+    private List<Portfolio> portfolios;
 
     public PortfolioClient() {
     }
@@ -46,19 +46,6 @@ public class PortfolioClient implements Serializable {
         this.clientName = clientName;
     }
 
-    /**
-     * @return the clientPhotoUrl
-     */
-    public String getClientPhotoUrl() {
-        return clientPhotoUrl;
-    }
-
-    /**
-     * @param clientPhotoUrl the clientPhotoUrl to set
-     */
-    public void setClientPhotoUrl(String clientPhotoUrl) {
-        this.clientPhotoUrl = clientPhotoUrl;
-    }
 
     public Long getPortfolioClientId() {
         return portfolioClientId;
@@ -93,18 +80,20 @@ public class PortfolioClient implements Serializable {
         return "entity.PortfolioClient[ id=" + portfolioClientId + " ]";
     }
 
-    /**
-     * @return the users
-     */
-    public List<User> getUsers() {
-        return users;
+    public String getClientLink() {
+        return clientLink;
     }
 
-    /**
-     * @param users the users to set
-     */
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setClientLink(String clientLink) {
+        this.clientLink = clientLink;
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
     }
     
 }

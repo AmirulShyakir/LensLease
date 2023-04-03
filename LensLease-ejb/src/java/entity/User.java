@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -37,14 +38,14 @@ public class User implements Serializable {
     private List<PortfolioSkill> portfolioSkills;
     @ManyToMany
     private List<PortfolioClient> portfolioClients;
-    @OneToMany(mappedBy = "user")
-    private List<PortfolioPost> portfolioPosts;
     
     //service & bookings
     @OneToMany(mappedBy = "provider")
     private List<Service> services;
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
+    @OneToOne
+    private Portfolio portfolio;
 
     public User() {
         this.setIsBanned(false);
@@ -86,20 +87,6 @@ public class User implements Serializable {
      */
     public void setPortfolioClients(List<PortfolioClient> portfolioClients) {
         this.portfolioClients = portfolioClients;
-    }
-
-    /**
-     * @return the portfolioPosts
-     */
-    public List<PortfolioPost> getPortfolioPosts() {
-        return portfolioPosts;
-    }
-
-    /**
-     * @param portfolioPosts the portfolioPosts to set
-     */
-    public void setPortfolioPosts(List<PortfolioPost> portfolioPosts) {
-        this.portfolioPosts = portfolioPosts;
     }
 
     /**
@@ -261,6 +248,14 @@ public class User implements Serializable {
      */
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
     
 }
