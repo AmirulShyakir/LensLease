@@ -18,8 +18,8 @@
 
                     <span class="ui-input-icon-left">
                         <i class="pi pi-search" />
-                        <p:inputText placeholder="Search" value="#{bookingManagedBean.searchString}" style="width: 450px; border-radius: 20px;">
-                            <p:ajax event="keyup" update="form" listener="#{bookingManagedBean.handleSearch}" />  
+                        <p:inputText placeholder="Search" value="#{bookingManagedBeanAdmin.searchString}" style="width: 450px; border-radius: 20px;">
+                            <p:ajax event="keyup" update="form" listener="#{bookingManagedBeanAdmin.handleSearch}" />  
                         </p:inputText>
                     </span>
 
@@ -28,7 +28,7 @@
 
                 <p:dataTable widgetVar="requestTable"
                              var="booking" 
-                             value="#{bookingManagedBean.listOfBookings}"
+                             value="#{bookingManagedBeanAdmin.listOfBookings}"
                              >
                     <p:column headerText="Booking Id">
                                 #{booking.bookingId}

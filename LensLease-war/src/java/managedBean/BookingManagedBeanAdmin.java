@@ -29,9 +29,9 @@ import util.exception.BookingNotFoundException;
  *
  * @author jonta
  */
-@Named(value = "bookingManagedBean")
+@Named(value = "bookingManagedBeanAdmin")
 @ViewScoped
-public class BookingManagedBean implements Serializable {
+public class BookingManagedBeanAdmin implements Serializable {
 
     @EJB
     private BookingSessionBeanLocal bookingSessionBeanLocal;
@@ -52,7 +52,7 @@ public class BookingManagedBean implements Serializable {
     /**
      * Creates a new instance of BookingManagedBean
      */
-    public BookingManagedBean() {
+    public BookingManagedBeanAdmin() {
     }
     
     @PostConstruct
