@@ -32,5 +32,6 @@ To either host online or expose web services and use that to deploy on localhost
 - [ ] Add forum topics // Dekai
 - [ ] Add forum reply // Dekai
 
-### Portfolio 
-- [ ] //Leeann
+### Account 
+- [ ] Portfolio //Leeann
+- [ ] Edit Account //Leeann
