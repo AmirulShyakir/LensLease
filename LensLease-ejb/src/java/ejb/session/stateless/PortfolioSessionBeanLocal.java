@@ -24,7 +24,7 @@ public interface PortfolioSessionBeanLocal {
     public Portfolio findPortfolioByUserId(Long userId) throws UserNotFoundException;
     
     //Description
-    public String getDescription(Portfolio portfolio);
+    public void updateDescription(Portfolio portfolio, String s);
     
     //Client
     public Long createClient(PortfolioClient client) throws IncompleteFieldsException;

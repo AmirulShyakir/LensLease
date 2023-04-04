@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -70,13 +71,18 @@ public class PortfolioManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             setPortfolio(portfolioSessionBean.findPortfolioByUserId(user.getUserId()));
-            setDescription(portfolioSessionBean.getDescription(portfolio));
+            setDescription(portfolio.getDescription());
             setAllClients(portfolio.getPortfolioClients());
             setAllSkills(portfolio.getPortfolioSkills());
             setImages(portfolio.getImagesUrl());
         } catch (Exception ex) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "error error", "This"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "This"));
         }
+    }
+    
+    public void updateDescription() {
+        portfolioSessionBean.updateDescription(portfolio, description);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful Update", "for user biography"));
     }
 
     public String getDescription() {

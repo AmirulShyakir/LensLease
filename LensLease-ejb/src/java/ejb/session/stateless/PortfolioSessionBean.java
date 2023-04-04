@@ -40,14 +40,12 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
-
+    
     @Override
-    public String getDescription(Portfolio portfolio) {
-        String desc = portfolio.getDescription();
-        if (desc.isEmpty()) {
-            desc = "Hi there, welcome to my portfolio!";
-        }
-        return desc;
+    public void updateDescription(Portfolio portfolio, String s) {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+        p.setDescription(s);
+        System.out.println(p.getDescription());
     }
     
     @Override
