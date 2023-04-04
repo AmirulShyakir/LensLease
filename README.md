@@ -7,7 +7,7 @@ Jonathan
 Junwei
 Leeann
 
-##To do list
+## To do list
 ### Ban 
 - [ ] BanRequest entity should have booking attribute (so admin can see which booking was this ban request for service from and see the User booking.customer that is the complainant) //Jon/Adriel
 - [ ] Banned services should not be visible on landing page (should not be bookable via individiualServicePage.xhtml with serviceId appended to link) //Jon/Adriel
