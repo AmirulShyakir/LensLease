@@ -21012,3 +21012,11 @@ h5 {
     font-size: 14px;
     border-radius: 0.5rem !important;
 }
+
+.forum-topics .ui-button.ui-state-default:first-child {
+    margin: 0px 14px 0px 0px;
+}
+
+.forum-topics .ui-button.ui-state-default::last-child {
+    margin: 0px 0px 0px 14px;
+}
