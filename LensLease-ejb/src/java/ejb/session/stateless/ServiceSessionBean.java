@@ -9,6 +9,7 @@ import entity.BanRequest;
 import entity.Booking;
 import entity.Schedule;
 import entity.Service;
+import entity.ServiceTypeEnum;
 import entity.User;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -89,6 +90,15 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         Query query = em.createQuery("SELECT s FROM Service s");
         return query.getResultList();
     }
+    
+    @Override
+    public List<Service> getServicesByType(ServiceTypeEnum serviceType) {
+        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType");
+        query.setParameter("serviceType", serviceType);
+
+        return query.getResultList();
+        
+    } 
 
     @Override
     public List<Service> getServicesByUser(Long userId) throws UserNotFoundException {
@@ -125,5 +135,21 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         }
 
         return q.getResultList();
-    } //end searchBooks
+    } 
+    
+    @Override
+    public List<Service> searchServicesWithType(String name, ServiceTypeEnum type) {
+        Query q;
+        if (name != null) {
+            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND "
+                    + "LOWER(s.serviceName) LIKE :name");
+            q.setParameter("type", type);
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+        } else {
+            q = em.createQuery("SELECT s FROM Service s WHERE service.serviceType =:type");
+             q.setParameter("type", type);
+        }
+
+        return q.getResultList();
+    } 
 }
