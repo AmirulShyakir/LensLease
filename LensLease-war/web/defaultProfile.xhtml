@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:outputStylesheet name="primeflex/primeflex.css" />
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">Title</ui:insert></title>
+    </h:head> 
+    <h:body style="background: #F5F5F7; border: 0; margin: 0">
+        <div style="text-align: left; background: black; color: white; font-size: 30px; ">            
+            <p:graphicImage url="/logo.png" style="height:60px; margin-top: 10px; margin-left:10px"/>
+        </div>
+        <div>
+            <h:form>
+                <p:growl id="messages"/>
+                <p:menubar>
+                    <p:menuitem value="Home" icon="pi pi-fw pi-home" url="landingPage.xhtml" style="padding-right: 2rem"/>
+                    <p:menuitem value="My Account" icon="pi pi-fw pi-user" url="myServices.xhtml" style="padding-right: 2rem"/>
+                    <f:facet name="options">
+                        <p:commandButton value="Logout" action="#{authenticationManagedBean.logout}" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" style="background-color: lightgrey; border-color: lightgrey"/>
+                    </f:facet>
+                </p:menubar>
+            </h:form>
+        </div>
+        <div class="grid" style="min-height: 50VH; padding: 40px 20px;">
+            <div class="col-12 lg:col-2 min-w-max">
+                <h:form>
+                    <div style="padding: 0px 20px">
+                        <div class="flex flex-column align-items-center">
+                            <div>
+                                <p:avatar class="mx-4" styleClass="mr-2" size="xlarge" shape="circle" style="min-width: 100px; min-height: 100px;">
+                                    <p:graphicImage value="#{serviceManagedBean.user.photoUrl}"/>
+                                </p:avatar>
+                            </div>
+                            <div class="align-items-center">
+                                <h4 style="margin-bottom: 0px; margin-top: 10px"><h:outputText value="#{serviceManagedBean.user.name}"/></h4>
+                                <p class="subtitle" style="margin-top: 0px">@<h:outputText value="#{serviceManagedBean.user.username}"/></p>
+                            </div>
+                            <div class="grid align-items-center pl-3">
+                                <p:rating readonly="true" value="#{serviceManagedBean.user.getStarRating()}"/>
+                                <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() == 3}"></h:outputText></p>
+                            </div>
+                            <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() != 3}"></h:outputText></p>
+                        <p:divider/>
+                        </div>
+                        <a style="text-decoration: none; color: inherit" href="myServices.xhtml"><h5>My Services</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="myBookings.xhtml"><h5>My Bookings</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="portfolio.xhtml"><h5>Portfolio</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="reviews.xhtml"><h5>Reviews</h5></a>
+                        <a style="text-decoration: none; color: inherit" href="editAccount.xhtml"><h5>Edit Account</h5></a>
+                    </div>
+                </h:form>
+            </div>
+
+            <div class="col-12 lg:col-10" style="background: #ffffff;">
+                <ui:insert name="content">Content</ui:insert>  
+            </div>
+        </div>
+    </h:body>   
+</html>

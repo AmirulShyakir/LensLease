@@ -6,12 +6,11 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -26,8 +25,8 @@ public class PortfolioClient implements Serializable {
     private String clientName;
     private String clientLink;
 
-    @ManyToMany(mappedBy = "clients")
-    private List<Portfolio> portfolios;
+    @ManyToOne
+    private Portfolio portfolio;
 
     public PortfolioClient() {
     }
@@ -45,7 +44,6 @@ public class PortfolioClient implements Serializable {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
-
 
     public Long getPortfolioClientId() {
         return portfolioClientId;
@@ -88,12 +86,12 @@ public class PortfolioClient implements Serializable {
         this.clientLink = clientLink;
     }
 
-    public List<Portfolio> getPortfolios() {
-        return portfolios;
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
-    public void setPortfolios(List<Portfolio> portfolios) {
-        this.portfolios = portfolios;
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
     
 }

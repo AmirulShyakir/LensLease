@@ -5,10 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.Portfolio;
 import entity.PortfolioClient;
 import entity.PortfolioSkill;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.IncompleteFieldsException;
+import util.exception.SkillAlreadyExistsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -17,24 +20,22 @@ import util.exception.UserNotFoundException;
  */
 @Local
 public interface PortfolioSessionBeanLocal {
+   
+    public Portfolio findPortfolioByUserId(Long userId) throws UserNotFoundException;
     
     //Description
-    public String getDescription(Long portfolioId) throws UserNotFoundException;
+    public String getDescription(Portfolio portfolio);
     
     //Client
-    public Long addClient(PortfolioClient client);
-    public Long editClient(Long portfolioId, PortfolioClient client);
-    public void removeClient(Long portfolioId);
+    public Long createClient(PortfolioClient client) throws IncompleteFieldsException;
+    public void removeClient(PortfolioClient client);
     
     //Skills
-    public List<PortfolioSkill> getSkills();
-    public Long addSkill(PortfolioSkill skill);
-    public Long removeSkill(Long portfolioId);
+    public Long addSkill(Portfolio portfolio, String s) throws SkillAlreadyExistsException;
+    public void removeSkill(Portfolio portfolio, PortfolioSkill skill);
     
     //Gallery
-    public List<String> getPhotos();
-    public void addPhoto(String photoURL);
+    public List<String> getPhotos(Portfolio portfolio);
+    public void addPhoto(Portfolio portfolio, String photoURL);
     
-    //Portfolio
-    public void editPortfolio();
 }

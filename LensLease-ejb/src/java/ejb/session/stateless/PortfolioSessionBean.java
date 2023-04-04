@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package ejb.session.stateless;
-
 import entity.Portfolio;
 import entity.PortfolioClient;
 import entity.PortfolioSkill;
@@ -15,6 +14,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.IncompleteFieldsException;
+import util.exception.SkillAlreadyExistsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -30,71 +31,79 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     @PersistenceContext(unitName = "LensLease-ejbPU")
     private EntityManager em;
 
+    @Override
     public Portfolio findPortfolioByUserId(Long userId) throws UserNotFoundException {
         try {
             User u = userSessionBean.findUserByUserId(userId);
-            Query query = em.createQuery("SELECT p FROM Portfolio p WHERE p.user.userId = :userId");
-            query.setParameter("userId", userId);
-            query.setMaxResults(1);
-            return (Portfolio) query.getSingleResult();
+            return u.getPortfolio();
         } catch (UserNotFoundException ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
 
     @Override
-    public String getDescription(Long userId) throws UserNotFoundException {
-        try {
-            Portfolio p = findPortfolioByUserId(userId);
-            return p.getDescription();
-        } catch (UserNotFoundException ex) {
-            throw new UserNotFoundException(ex.getMessage());
+    public String getDescription(Portfolio portfolio) {
+        String desc = portfolio.getDescription();
+        if (desc.isEmpty()) {
+            desc = "Hi there, welcome to my portfolio!";
+        }
+        return desc;
+    }
+    
+    @Override
+    public Long createClient(PortfolioClient client) throws IncompleteFieldsException {
+        if (client.getClientName() != null && client.getClientLink() != null) {
+            em.persist(client);
+            em.flush();
+            return client.getPortfolioClientId();
+        } else {
+            throw new IncompleteFieldsException("Please complete all fields to create client");
         }
     }
 
     @Override
-    public Long addClient(PortfolioClient client) {
+    public void removeClient(PortfolioClient client) {
+        Portfolio portfolio = client.getPortfolio();
+        portfolio.getPortfolioClients().remove(client);
+        em.remove(client);
+    }
+
+    @Override
+    public Long addSkill(Portfolio portfolio, String s) throws SkillAlreadyExistsException {
+        Query query = em.createQuery("SELECT s FROM (SELECT p.portfolioSkills FROM Portfolio p WHERE p.portfolioId = :portfolioId) s"
+                + "WHERE s.skillName = :newSkill");
+        query.setParameter("portfolioId", portfolio.getPortfolioId());
+        query.setParameter("newSkill", s.trim());
         
+        if (query.getResultList().isEmpty()) {
+            PortfolioSkill skill = new PortfolioSkill();
+            skill.setSkillName(s.trim());
+            skill.setPortfolio(portfolio);
+            portfolio.getPortfolioSkills().add(skill);
+            em.persist(skill);
+            em.flush();
+            return skill.getPortfolioSkillId();
+        } else {
+            throw new SkillAlreadyExistsException("Skill has been added already");
+        }
     }
 
     @Override
-    public Long editClient(Long portfolioId, PortfolioClient client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void removeSkill(Portfolio portfolio, PortfolioSkill skill) {
+        if (portfolio.getPortfolioSkills().contains(skill)) {
+            portfolio.getPortfolioSkills().remove(skill);
+            em.remove(skill);
+        }
     }
 
     @Override
-    public void removeClient(Long portfolioId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<String> getPhotos(Portfolio portfolio) {
+        return portfolio.getImagesUrl();
     }
 
     @Override
-    public List<PortfolioSkill> getSkills() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Long addSkill(PortfolioSkill skill) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Long removeSkill(Long portfolioId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<String> getPhotos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void addPhoto(String photoURL) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void editPortfolio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addPhoto(Portfolio portfolio, String photoURL) {
+        portfolio.getImagesUrl().add(photoURL);
     }
 
 }

@@ -6,36 +6,37 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
- * @author Amirul
+ * @author leeannong
  */
 @Entity
 public class Portfolio implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioId;
     private String title;
     private String description;
+    private String thumbnailUrl;
     private List<String> imagesUrl;
-       
-    @OneToOne(mappedBy = "portfolio")
-    private User user;
-    @ManyToMany
-    private List<PortfolioClient> clients;
-    @ManyToMany
-    private List<PortfolioSkill> skills;
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioSkill> portfolioSkills;
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioClient> portfolioClients;
 
     public Portfolio() {
+        this.imagesUrl = new ArrayList<>();
     }
     
     /**
@@ -65,7 +66,21 @@ public class Portfolio implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    /**
+     * @return the thumbnailUrl
+     */
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    /**
+     * @param thumbnailUrl the thumbnailUrl to set
+     */
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
     /**
      * @return the imagesUrl
      */
@@ -114,34 +129,20 @@ public class Portfolio implements Serializable {
         return "entity.PortfolioPost[ id=" + portfolioId + " ]";
     }
 
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
+    public List<PortfolioSkill> getPortfolioSkills() {
+        return portfolioSkills;
     }
 
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
+    public void setPortfolioSkills(List<PortfolioSkill> portfolioSkills) {
+        this.portfolioSkills = portfolioSkills;
     }
 
-    public List<PortfolioClient> getClients() {
-        return clients;
+    public List<PortfolioClient> getPortfolioClients() {
+        return portfolioClients;
     }
 
-    public void setClients(List<PortfolioClient> clients) {
-        this.clients = clients;
-    }
-
-    public List<PortfolioSkill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<PortfolioSkill> skills) {
-        this.skills = skills;
+    public void setPortfolioClients(List<PortfolioClient> portfolioClients) {
+        this.portfolioClients = portfolioClients;
     }
     
 }
