@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       >
     <h:head>
-        <title>Login | LensLease</title>
+        <title>Sign up | LensLease</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <h:outputStylesheet name="css/default.css"/>
         <h:outputStylesheet name="primeflex/primeflex.css"/>
@@ -21,22 +21,22 @@
                 </div>
                 <div id="login-right" >
                     <div style="height: 80px;">
-                        <p:button value="Log in" id="login_button_left"/>
-                        <p:button value="Sign up" href="signup.xhtml" id="login_button_right"/>
+                        <p:button value="Log in" href="login.xhtml" id="signup_button_left"/>
+                        <p:button value="Sign up" id="signup_button_right"/>
                     </div>
                     <div class="ui-fluid">
                         <h:form>
-                            <h4>Username</h4>
-                            <p:inputText id="username" value="#{authenticationManagedBean.username}" required="true" requiredMessage="Username is required"/><br/>
-                            <p:message for="username"/>
-                            <h4>Password</h4>
-                            <p:password id="password" value="#{authenticationManagedBean.password}" redisplay="true"
-                                        required="true" requiredMessage="Password is required"/><br/>
-                            <p:message for="password"/>
-                            <p:commandButton type="submit" value="Login" action="#{authenticationManagedBean.login}" styleClass="ui-button-raised" ajax="false"/>
-                            <p:messages id="messages" showDetail="true" closable="true">
-                                <p:autoUpdate/>
-                            </p:messages>
+                            <h:panelGrid columns="2" cellpadding="7">
+                                <h:outputLabel value="Name" /> <p:inputText id="name" value="#{authenticationManagedBean.name}" required="true"/>
+                                <h:outputLabel value="Email" /> <p:inputText id="email" value="#{authenticationManagedBean.email}" required="true"/>
+                                <h:outputLabel value="Contact Number" /> <p:inputText id="contact" value="#{authenticationManagedBean.contact}" required="true"/>
+                                <h:outputLabel value="Username" /><p:inputText id="username" value="#{authenticationManagedBean.username}" required="true"/>
+                                <h:outputLabel value="Password" /><p:password redisplay="true" value="#{authenticationManagedBean.password}" required="true" requiredMessage="Password is required"/><br/>
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton type="submit" value="Sign up" style="padding-left: 12px; padding-right: 12px"
+                                             action="#{authenticationManagedBean.signup}"
+                                             ajax="false"/>
 
                             <!-- Error msg
                             <div class="col-12 md:col-4" style="margin-top: 2vh">

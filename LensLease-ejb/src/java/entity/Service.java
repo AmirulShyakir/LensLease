@@ -31,14 +31,16 @@ public class Service implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private String serviceDescription;
+    
+    //to display different stuff on checkout page
     private boolean isRental;
+    private boolean isEditing;
     
     //for rental
     private String earliestCollectionTime;
     private String latestReturnTime;
-    //for videography, photography services
+    //for videography, photography services and editing (rendered as estimated completion window
     private String packageDurationHours;
-    //for editing need figure out
 
     private boolean isDelisted;
 
@@ -62,6 +64,16 @@ public class Service implements Serializable {
         this.servicePhotos = servicePhotos;
         this.isBanned = isBanned;
         this.provider = provider;
+        
+        if (serviceType == serviceType.EQUIPMENT_RENTAL) {
+            this.isRental = true;
+            this.packageDurationHours = "Full Day Rental";
+        } else {
+            this.isRental = false;
+            if (serviceType == serviceType.PHOTO_EDITING ||serviceType == serviceType.VIDEO_EDITING) {
+                this.isEditing = true;
+            }
+        }
     }
     
     
@@ -74,8 +86,12 @@ public class Service implements Serializable {
         
         if (serviceType == serviceType.EQUIPMENT_RENTAL) {
             this.isRental = true;
+            this.packageDurationHours = "Full Day Rental";
         } else {
             this.isRental = false;
+            if (serviceType == serviceType.PHOTO_EDITING ||serviceType == serviceType.VIDEO_EDITING) {
+                this.isEditing = true;
+            }
         }
     }
     
@@ -315,6 +331,20 @@ public class Service implements Serializable {
 
     public void setIsDelisted(boolean isDelisted) {
         this.isDelisted = isDelisted;
+    }
+
+    /**
+     * @return the isEditing
+     */
+    public boolean isEditing() {
+        return isEditing;
+    }
+
+    /**
+     * @param isEditing the isEditing to set
+     */
+    public void setIsEditing(boolean isEditing) {
+        this.isEditing = isEditing;
     }
     
 }
