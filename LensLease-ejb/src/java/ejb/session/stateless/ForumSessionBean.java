@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.ForumReply;
 import entity.ForumTopic;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -52,5 +53,25 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
     public void createNewForumReply(ForumReply forumReply) {
         em.persist(forumReply);
         em.flush();
+    }
+    
+    
+    @Override
+    public List<ForumTopic> getAllForumTopics() {
+        Query query = em.createQuery("SELECT f FROM ForumTopic f");
+        return query.getResultList();
+    }
+    
+    public List<ForumTopic> searchForumTopics(String name) {
+        Query q;
+        if (name != null) {
+            q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
+                    + "LOWER(f.topicName) LIKE :name");
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+        } else {
+            q = em.createQuery("SELECT f FROM ForumTopic f");
+        }
+
+        return q.getResultList();
     }
 }

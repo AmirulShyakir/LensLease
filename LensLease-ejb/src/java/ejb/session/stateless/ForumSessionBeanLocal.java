@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.ForumReply;
 import entity.ForumTopic;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.ForumTopicNotFoundException;
 
@@ -22,5 +23,9 @@ public interface ForumSessionBeanLocal {
     public ForumTopic findForumTopicById(Long forumTopicId) throws ForumTopicNotFoundException;
 
     public void createNewForumReply(ForumReply forumReply);
+
+    public List<ForumTopic> getAllForumTopics();
+
+    public List<ForumTopic> searchForumTopics(String name);
     
 }

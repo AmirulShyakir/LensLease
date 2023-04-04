@@ -10,8 +10,6 @@ import entity.Schedule;
 import entity.Service;
 import entity.User;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,7 +38,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     @Override
     public void editService(Service service) throws ServiceNotFoundException {
         Service oldService = findServiceByServiceId(service.getServiceId());
-        
+
         oldService.setServiceName(service.getServiceName());
         oldService.setServiceType(service.getServiceType());
         oldService.setServiceCost(service.getServiceCost());
@@ -56,7 +54,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         Service service = findServiceByServiceId(serviceId);
         service.setIsDelisted(true);
     }
-    
+
     @Override
     public void relistService(Long serviceId) throws ServiceNotFoundException {
         Service service = findServiceByServiceId(serviceId);
@@ -103,7 +101,8 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
             throw new ServiceNotFoundException("Service not found with id " + serviceId);
         }
     }
-    
+
+    @Override
     public List<Service> searchServices(String name) {
         Query q;
         if (name != null) {
