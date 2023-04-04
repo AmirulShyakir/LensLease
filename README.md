@@ -1,11 +1,8 @@
 # LensLease
 
-Adriel
-Amirul
-Dekai
-Jonathan
-Junwei
-Leeann
+Adriel | Amirul | Dekai | Jonathan | Junwei | Leeann
+
+To either host online or expose web services and use that to deploy on localhost
 
 ## To do list
 ### Ban 
