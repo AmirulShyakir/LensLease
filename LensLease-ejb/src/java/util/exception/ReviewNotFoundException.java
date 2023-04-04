@@ -5,20 +5,18 @@
  */
 package util.exception;
 
-/**
- *
- * @author leeannong
- */
-public class UserAlreadyExistsException extends Exception {
-    public UserAlreadyExistsException()
+
+
+public class ReviewNotFoundException extends Exception
+{
+    public ReviewNotFoundException()
     {
     }
     
     
     
-    public UserAlreadyExistsException(String msg)
+    public ReviewNotFoundException(String msg)
     {
         super(msg);
     }
-    
 }

@@ -10,5 +10,5 @@ package entity;
  * @author Amirul
  */
 public enum BookingStatusEnum {
-    PENDING, CONFIRMED, COMPLETED, RATED, CANCELLED, REJECTED
+    PENDING, CONFIRMED, COMPLETED, CANCELLED, REJECTED, TORATE
 }

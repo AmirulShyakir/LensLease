@@ -93,5 +93,5 @@ public class PortfolioClient implements Serializable {
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
     }
-    
+
 }

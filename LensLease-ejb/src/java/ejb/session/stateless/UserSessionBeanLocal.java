@@ -9,6 +9,7 @@ import entity.User;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.InvalidLoginException;
+import util.exception.UserAlreadyExistsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -27,5 +28,7 @@ public interface UserSessionBeanLocal {
     public User findUserByUsername(String username) throws UserNotFoundException;
 
     public User userLogin(String username, String password) throws UserNotFoundException, InvalidLoginException;
+    
+    public Long userSignup(User user) throws UserAlreadyExistsException;
     
 }

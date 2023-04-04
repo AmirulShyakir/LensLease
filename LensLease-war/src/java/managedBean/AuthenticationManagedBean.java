@@ -1,37 +1,86 @@
 package managedBean;
 
+import ejb.session.stateless.AdminSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
+import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Admin;
+import entity.Review;
+import entity.User;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import util.exception.AdminNotFoundException;
+import util.exception.InvalidLoginException;
+import util.exception.UserAlreadyExistsException;
+import util.exception.UserNotFoundException;
 
 @Named(value = "authenticationManagedBean")
 @SessionScoped
 public class AuthenticationManagedBean implements Serializable {
 
+    @EJB
+    private ReviewSessionBeanLocal reviewSessionBean;
+
+    @EJB
+    private AdminSessionBeanLocal adminSessionBean;
+    private String adminUsername = null;
+    private String adminPassword = null;
+    private long adminId = -1;
+
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
+
     private String username = null;
     private String password = null;
-    private int userId = -1;
+    private long userId = -1;
+    private String name;
+    private String email;
+    private String contact;
+    private List<Review> reviews;
 
     public AuthenticationManagedBean() {
     }
 
     public String login() {
-        //by right supposed to use a session bean to
-        //do validation here
-        //...
-        //simulate username/password
-        if (username.equals("user1") && password.equals("password")) {
-            //login successful
-            //store the logged in user id
-            userId = 10;
-            //do redirect
-            return "/secret/secret.xhtml?faces-redirect=true";
-        } else {
-            //login failed
-            username = null;
-            password = null;
-            userId = -1;
-            return "login.xhtml";
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            User u = userSessionBean.userLogin(getUsername(), getPassword());
+            setUserId(u.getUserId());
+            return "/secret/landingPage.xhtml?faces-redirect=true";
+        } catch (UserNotFoundException | InvalidLoginException ex) {
+            setUsername(null);
+            setPassword(null);
+            setUserId(-1);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+            return "/login.xhtml";
+        }
+    }
+
+    public String signup() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            User u = new User();
+            u.setName(name);
+            u.setEmail(email);
+            u.setContactNumber(contact);
+            u.setUsername(username);
+            u.setPassword(password);
+            Long id = userSessionBean.userSignup(u);
+            setUserId(id);
+            System.out.println("signup");
+            return "/secret/landingPage.xhtml?faces-redirect=true";
+        } catch (UserAlreadyExistsException ex) {
+            setUsername(null);
+            setPassword(null);
+            setUserId(-1);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage()));
+            return "/signup.xhtml";
         }
     }
 
@@ -42,8 +91,37 @@ public class AuthenticationManagedBean implements Serializable {
         return "/login.xhtml?faces-redirect=true";
     }
 
-    //getter and setter for the attributes
+    public String adminLogin() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Admin a = adminSessionBean.adminLogin(getUsername(), getPassword());
+            setAdminId(a.getAdminId());
+            return "/secret/index.xhtml?faces-redirect=true";
+        } catch (AdminNotFoundException | InvalidLoginException ex) {
+            setAdminUsername(null);
+            setAdminPassword(null);
+            setAdminId(-1);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+            return "/login.xhtml";
+        }
+    }
 
+    public String adminLogout() {
+        setAdminUsername(null);
+        setAdminPassword(null);
+        setAdminId(-1);
+        return "/login.xhtml?faces-redirect=true";
+    }
+
+    public void loadReviewsForUser() {
+        try {
+            this.setReviews(reviewSessionBean.getReviewsByUserId(this.userId));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(AuthenticationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //getter and setter for the attributes
     public String getUsername() {
         return username;
     }
@@ -60,12 +138,92 @@ public class AuthenticationManagedBean implements Serializable {
         this.password = password;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
-   
+
+    /**
+     * @return the adminUsername
+     */
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    /**
+     * @param adminUsername the adminUsername to set
+     */
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
+
+    /**
+     * @return the adminPassword
+     */
+    public String getAdminPassword() {
+        return adminPassword;
+    }
+
+    /**
+     * @param adminPassword the adminPassword to set
+     */
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
+    }
+
+    /**
+     * @return the adminId
+     */
+    public long getAdminId() {
+        return adminId;
+    }
+
+    /**
+     * @param adminId the adminId to set
+     */
+    public void setAdminId(long adminId) {
+        this.adminId = adminId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    /**
+     * @return the reviews
+     */
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    /**
+     * @param reviews the reviews to set
+     */
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
 }
