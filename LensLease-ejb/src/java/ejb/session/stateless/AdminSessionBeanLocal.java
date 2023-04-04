@@ -6,10 +6,13 @@
 package ejb.session.stateless;
 
 import entity.Admin;
+import entity.BanRequest;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
+import util.exception.ServiceNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -27,5 +30,13 @@ public interface AdminSessionBeanLocal {
     public Admin findAdminByUsername(String username) throws AdminNotFoundException;
 
     public Admin adminLogin(String username, String password) throws AdminNotFoundException, InvalidLoginException;
+
+    public List<BanRequest> getAllBanRequests();
+
+    public void createNewBanRequest(BanRequest banRequest);
+
+    public BanRequest findBanRequestById(Long banRequestId);
+
+    public void acceptBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
     
 }

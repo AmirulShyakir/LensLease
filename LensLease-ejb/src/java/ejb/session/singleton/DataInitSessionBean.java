@@ -12,6 +12,7 @@ import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
+import entity.BanRequest;
 import entity.Booking;
 import entity.BookingStatusEnum;
 import entity.Review;
@@ -293,6 +294,17 @@ public class DataInitSessionBean {
                 review5.setBooking(booking5);
                 
             } catch (BookingNotFoundException ex) {
+                Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        if (em.find(BanRequest.class, 1l) == null) {
+         
+            try {
+                ArrayList<String> photos = new ArrayList();
+                photos.add("/studio-image.jpg");
+                adminSessionBean.createNewBanRequest(new BanRequest("This post is horrigible!", new Date(), serviceSessionBeanLocal.findServiceByServiceId(new Long(1)), null));
+            } catch (ServiceNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
             
