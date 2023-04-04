@@ -178,53 +178,53 @@ public class DataInitSessionBean {
             try {
                 Booking booking1 = new Booking();
                 booking1.setDate(new Date());
-                booking1.setStartTime("0900");
-                booking1.setPreferredLocation("Sembawang");
-                booking1.setComments("Comment");
+                booking1.setStartTime("9am");
+                booking1.setProjectSpecifications("I need a video done for my sons birthday");
+                booking1.setComments("Would be nice if you could whatsapp me first");
                 booking1.setBookingStatus(BookingStatusEnum.PENDING);
                 booking1.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking1.setCustomer(userSessionBean.findUserByUserId(new Long(2)));
                 
                 Booking booking2 = new Booking();
                 booking2.setDate(new Date());
-                booking2.setStartTime("1300");
-                booking2.setPreferredLocation("Orchard");
-                booking2.setComments("Comment");
+                booking2.setStartTime("10am");
+                booking2.setProjectSpecifications("I need this done urgently");
+                booking2.setComments("Please make it quick");
                 booking2.setBookingStatus(BookingStatusEnum.PENDING);
                 booking2.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(12)));
                 booking2.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
                 
                 Booking booking3 = new Booking();
                 booking3.setDate(new Date());
-                booking3.setStartTime("0500");
-                booking3.setPreferredLocation("Clementi");
-                booking3.setComments("Comment");
+                booking3.setStartTime("5pm");
+                booking3.setProjectSpecifications("make the video less serious, its meant to be funny");
+                booking3.setComments("You can use whatever software you want");
                 booking3.setBookingStatus(BookingStatusEnum.PENDING);
                 booking3.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(13)));
                 booking3.setCustomer(userSessionBean.findUserByUserId(new Long(4)));
                 
                 Booking booking4 = new Booking();
                 booking4.setDate(new Date());
-                booking4.setStartTime("2100");
+                booking4.setStartTime("11pm");
                 booking4.setPreferredLocation("Jurong East");
-                booking4.setComments("Comment");
+                booking4.setComments("Let me know if it comes with batteries");
                 booking4.setBookingStatus(BookingStatusEnum.PENDING);
                 booking4.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(4)));
                 booking4.setCustomer(userSessionBean.findUserByUserId(new Long(5)));
                 
                 Booking booking5 = new Booking();
                 booking5.setDate(new Date());
-                booking5.setStartTime("0700");
-                booking5.setPreferredLocation("Bedok");
-                booking5.setComments("Comment");
+                booking5.setStartTime("3pm");
+                booking5.setProjectSpecifications("Okay i will message you the storyboard i came up with");
+                booking5.setComments("i need your email address so i can share the google drive");
                 booking5.setBookingStatus(BookingStatusEnum.PENDING);
                 booking5.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking5.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
                 
                 Booking booking6 = new Booking();
                 booking6.setDate(new Date());
-                booking6.setStartTime("2000");
-                booking6.setPreferredLocation("Eusoff Hall");
+                booking6.setStartTime("12pm");
+                booking6.setProjectSpecifications("Help me edit a video for Eusoff Hall please");
                 booking6.setComments("Comment");
                 booking6.setBookingStatus(BookingStatusEnum.TORATE);
                 booking6.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));

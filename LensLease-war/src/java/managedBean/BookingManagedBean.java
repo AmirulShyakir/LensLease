@@ -24,7 +24,7 @@ import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import util.exception.BookingNotFoundException;
-import util.exception.ReviewNotFoundException;
+import util.exception.ReviewAlreadyExistException;
 
 /**
  *
@@ -53,6 +53,7 @@ public class BookingManagedBean implements Serializable {
     private List<Booking> upcomingBookings;
     
     //for editing and rating
+    private long selectedBookingId;
     private Booking selectedBooking;
     private int starRating;
     private String reviewDescription;
@@ -84,10 +85,10 @@ public class BookingManagedBean implements Serializable {
             review.setDescription(reviewDescription);
             review.setStarRating(starRating);
             review.setReviewDate(new Date());
-            reviewSessionBean.createNewReview(review);
-            reviewSessionBean.submitNewReview(review.getReviewId(), selectedBooking.getBookingId());
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review"));
+            reviewSessionBean.submitNewReview(review,selectedBooking.getBookingId());
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Review submmited successfully"));
+        } catch (BookingNotFoundException | ReviewAlreadyExistException e) {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review" + e.getMessage()));
         }
     }
 
@@ -209,6 +210,16 @@ public class BookingManagedBean implements Serializable {
     public void setSelectedBooking(Booking selectedBooking) {
         this.selectedBooking = selectedBooking;
     }
+    
+    public void loadSelectedBooking() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            this.selectedBooking = bookingSessionBean.findBookingByBookingId(selectedBookingId);
+//            System.out.println("Going to Individual service page with selected service: " + serviceName);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+        }
+    }
 
     /**
      * @return the starRating
@@ -236,6 +247,20 @@ public class BookingManagedBean implements Serializable {
      */
     public void setReviewDescription(String reviewDescription) {
         this.reviewDescription = reviewDescription;
+    }
+
+    /**
+     * @return the selectedBookingId
+     */
+    public long getSelectedBookingId() {
+        return selectedBookingId;
+    }
+
+    /**
+     * @param selectedBookingId the selectedBookingId to set
+     */
+    public void setSelectedBookingId(long selectedBookingId) {
+        this.selectedBookingId = selectedBookingId;
     }
     
 }
