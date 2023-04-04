@@ -173,7 +173,24 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         q.setParameter("inStatus", BookingStatusEnum.PENDING);
         List<Booking> pendingBookingRequests = q.getResultList();
         return pendingBookingRequests;
-
+    }
+    
+    @Override
+    public void setBookingAsCompleted(Booking booking){
+        Booking toBeUpdated = em.find(Booking.class, booking.getBookingId());
+        toBeUpdated.setBookingStatus(BookingStatusEnum.COMPLETED);
+    }
+    
+    @Override
+    public void setBookingAsRejected(Booking booking){
+        Booking toBeUpdated = em.find(Booking.class, booking.getBookingId());
+        toBeUpdated.setBookingStatus(BookingStatusEnum.REJECTED);
+    }
+    
+    @Override
+    public void setBookingAsConfirmed(Booking booking){
+        Booking toBeUpdated = em.find(Booking.class, booking.getBookingId());
+        toBeUpdated.setBookingStatus(BookingStatusEnum.CONFIRMED);
     }
 
 }

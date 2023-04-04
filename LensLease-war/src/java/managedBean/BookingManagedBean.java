@@ -122,6 +122,22 @@ public class BookingManagedBean implements Serializable {
         this.upcomingBookings = bookingSessionBean.getConfirmedBookingsAsRequester(user);
     }
     
+    public String setBookingAsCompleted(Booking booking){
+        bookingSessionBean.setBookingAsCompleted(booking);
+        System.out.println("Booking has been completed " + booking.getBookingStatus());
+        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+    public String setBookingAsRejected(Booking booking){
+        bookingSessionBean.setBookingAsRejected(booking);
+        System.out.println("Booking has been rejected " + booking.getBookingStatus());
+        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+    public String setBookingAsConfirmed(Booking booking){
+        bookingSessionBean.setBookingAsConfirmed(booking);
+        System.out.println("Booking has been confirmed " + booking.getBookingStatus());
+        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+    
     public User getUser() {
         return user;
     }
