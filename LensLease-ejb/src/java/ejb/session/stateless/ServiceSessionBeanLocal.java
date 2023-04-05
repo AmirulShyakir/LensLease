@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.BanRequest;
 import entity.Schedule;
 import entity.Service;
+import entity.ServiceTypeEnum;
 import entity.User;
 import java.util.List;
 import javax.ejb.Local;
@@ -40,5 +41,9 @@ public interface ServiceSessionBeanLocal {
     public void relistService(Long serviceId) throws ServiceNotFoundException;
 
     public void editService(Service service) throws ServiceNotFoundException;
+
+    public List<Service> getServicesByType(ServiceTypeEnum serviceType);
+
+    public List<Service> searchServicesWithType(String name, ServiceTypeEnum type);
     
 }

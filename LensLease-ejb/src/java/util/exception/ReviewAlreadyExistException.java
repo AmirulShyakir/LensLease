@@ -7,15 +7,15 @@ package util.exception;
 
 
 
-public class ReviewNotFoundException extends Exception
+public class ReviewAlreadyExistException extends Exception
 {
-    public ReviewNotFoundException()
+    public ReviewAlreadyExistException()
     {
     }
     
     
     
-    public ReviewNotFoundException(String msg)
+    public ReviewAlreadyExistException(String msg)
     {
         super(msg);
     }

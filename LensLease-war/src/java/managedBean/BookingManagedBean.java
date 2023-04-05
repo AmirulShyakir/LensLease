@@ -5,9 +5,11 @@
  */
 package managedBean;
 
+import ejb.session.stateless.BanRequestSessionBeanLocal;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.BanRequest;
 import entity.Booking;
 import entity.Review;
 import entity.User;
@@ -23,8 +25,10 @@ import javax.ejb.EJB;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import util.exception.BanRequestAlreadyExistException;
 import util.exception.BookingNotFoundException;
-import util.exception.ReviewNotFoundException;
+import util.exception.ReviewAlreadyExistException;
+import util.exception.ServiceNotFoundException;
 
 /**
  *
@@ -35,11 +39,15 @@ import util.exception.ReviewNotFoundException;
 public class BookingManagedBean implements Serializable {
 
     @EJB
+    private BanRequestSessionBeanLocal banRequestSessionBean;
+
+    @EJB
     private ReviewSessionBeanLocal reviewSessionBean;
     @EJB
     private BookingSessionBeanLocal bookingSessionBean;
     @EJB
     private UserSessionBeanLocal userSessionBean;
+    
     
     private User user;
     private List<Booking> todayServicesProvided;
@@ -53,9 +61,11 @@ public class BookingManagedBean implements Serializable {
     private List<Booking> upcomingBookings;
     
     //for editing and rating
+    private long selectedBookingId;
     private Booking selectedBooking;
     private int starRating;
     private String reviewDescription;
+    private String reportDescription;
 
     /**
      * Creates a new instance of BookingManagedBean
@@ -84,10 +94,23 @@ public class BookingManagedBean implements Serializable {
             review.setDescription(reviewDescription);
             review.setStarRating(starRating);
             review.setReviewDate(new Date());
-            reviewSessionBean.createNewReview(review);
-            reviewSessionBean.submitNewReview(review.getReviewId(), selectedBooking.getBookingId());
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review"));
+            reviewSessionBean.submitNewReview(review,selectedBooking.getBookingId());
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Review submmited successfully"));
+        } catch (BookingNotFoundException | ReviewAlreadyExistException e) {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review" + e.getMessage()));
+        }
+    }
+    public void createBanRequest() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            BanRequest report = new BanRequest();
+            report.setRequestDate(new Date());
+            report.setDescription(reviewDescription);
+            report.setService(selectedBooking.getService());
+            banRequestSessionBean.submitNewBanRequest(report, selectedBooking.getService().getServiceId());
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Report submmited successfully"));
+        } catch (ServiceNotFoundException | BanRequestAlreadyExistException e) {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit report" + e.getMessage()));
         }
     }
 
@@ -119,6 +142,22 @@ public class BookingManagedBean implements Serializable {
     
     public void loadUpcomingBookings(){
         this.upcomingBookings = bookingSessionBean.getConfirmedBookingsAsRequester(user);
+    }
+    
+    public String setBookingAsToRate(Booking booking){
+        bookingSessionBean.setBookingAsToRate(booking);
+        System.out.println("Booking has been completed " + booking.getBookingStatus());
+        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+    public String setBookingAsRejected(Booking booking){
+        bookingSessionBean.setBookingAsRejected(booking);
+        System.out.println("Booking has been rejected " + booking.getBookingStatus());
+        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+    public String setBookingAsConfirmed(Booking booking){
+        bookingSessionBean.setBookingAsConfirmed(booking);
+        System.out.println("Booking has been confirmed " + booking.getBookingStatus());
+        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
     }
     
     public User getUser() {
@@ -209,6 +248,16 @@ public class BookingManagedBean implements Serializable {
     public void setSelectedBooking(Booking selectedBooking) {
         this.selectedBooking = selectedBooking;
     }
+    
+    public void loadSelectedBooking() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            this.selectedBooking = bookingSessionBean.findBookingByBookingId(selectedBookingId);
+//            System.out.println("Going to Individual service page with selected service: " + serviceName);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+        }
+    }
 
     /**
      * @return the starRating
@@ -236,6 +285,28 @@ public class BookingManagedBean implements Serializable {
      */
     public void setReviewDescription(String reviewDescription) {
         this.reviewDescription = reviewDescription;
+    }
+
+    /**
+     * @return the selectedBookingId
+     */
+    public long getSelectedBookingId() {
+        return selectedBookingId;
+    }
+
+    /**
+     * @param selectedBookingId the selectedBookingId to set
+     */
+    public void setSelectedBookingId(long selectedBookingId) {
+        this.selectedBookingId = selectedBookingId;
+    }
+
+    public String getReportDescription() {
+        return reportDescription;
+    }
+
+    public void setReportDescription(String reportDescription) {
+        this.reportDescription = reportDescription;
     }
     
 }

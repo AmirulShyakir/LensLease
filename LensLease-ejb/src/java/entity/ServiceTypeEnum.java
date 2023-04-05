@@ -10,5 +10,31 @@ package entity;
  * @author Amirul
  */
 public enum ServiceTypeEnum {
-    PHOTOGRAPHY, VIDEOGRAPHY, PHOTO_EDITING, VIDEO_EDITING, EQUIPMENT_RENTAL
+    PHOTOGRAPHY{
+        @Override
+        public String toString() {
+            return "Photography";
+        }
+    }, VIDEOGRAPHY{
+         @Override
+            public String toString() {
+                return "Videography";
+            }
+    }, PHOTO_EDITING{
+     @Override
+            public String toString() {
+                return "Photo Editing";
+            }
+    }, VIDEO_EDITING{
+         @Override
+            public String toString() {
+                return "Video Editing";
+            }
+    }, EQUIPMENT_RENTAL{
+         @Override
+            public String toString() {
+                return "Equipment Rental";
+            }
+    }
+    
 }
