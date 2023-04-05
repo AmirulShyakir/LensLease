@@ -23,6 +23,7 @@ To either host online or expose web services and use that to deploy on localhost
 - [ ] welcome page for all users should be homePage (logged out version of landingPage.xhtml). header/navigation bar for logged out users to only have sign in option that leads to login page. logged out users upon clicking any service should have popup alert to tell them to log in //Jon / Adriel
 
 ### Bookings and Services
+- [x] Users should not be able to book their own services //Amirul
 - [ ] Cancel booking as user (only for PENDING AND CONFIRMED) //Amirul
 - [ ] Cards for services in myServices.xhtml //Jun Wei 
 - [ ] addNewService page or modal //Jun Wei / Leeann
