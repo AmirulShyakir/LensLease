@@ -48,7 +48,7 @@ public interface BookingSessionBeanLocal {
 
     public List<Booking> getConfirmedBookingsAsRequester(User user);
 
-    public void setBookingAsCompleted(Booking booking);
+    public void setBookingAsToRate(Booking booking);
 
     public void setBookingAsRejected(Booking booking);
 

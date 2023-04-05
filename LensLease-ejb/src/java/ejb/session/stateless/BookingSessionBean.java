@@ -176,9 +176,9 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
     }
     
     @Override
-    public void setBookingAsCompleted(Booking booking){
+    public void setBookingAsToRate(Booking booking){
         Booking toBeUpdated = em.find(Booking.class, booking.getBookingId());
-        toBeUpdated.setBookingStatus(BookingStatusEnum.COMPLETED);
+        toBeUpdated.setBookingStatus(BookingStatusEnum.TORATE);
     }
     
     @Override
