@@ -7,8 +7,11 @@ To either host online or expose web services and use that to deploy on localhost
 ## To do list
 ### Ban 
 - [ ] BanRequest entity should have booking attribute (so admin can see which booking was this ban request for service from and see the User booking.customer that is the complainant) //Jon/Adriel
-- [ ] Banned services should not be visible on landing page (should not be bookable via individiualServicePage.xhtml with serviceId appended to link) //Jon/Adriel
-- [ ] Banned users should not be able to book or accept bookings //Amirul / Jun Wei
+- [ ] Banned services should not be visible on landing page //Jon/Adriel
+- [x] Banned users should not be able to book services in checkout.xhtml //Amirul 
+- [x] Banned services should not be bookable in checkout.xhtml //Amirul 
+- [x] Services which provider is banned should not be bookable in checkout.xhtml //Amirul 
+- [ ] Banned users should not be able to accept requests // Jun Wei
 - [ ] Ban request for service function as a button "Report service" in individualServicePage.xhtml //Amirul
 - [ ] Ban request for user function as a button "Report user" within the card in myBookings.xhtml -> All bookings (only for CONFIRMED and TORATE and COMPLETED status)
 
