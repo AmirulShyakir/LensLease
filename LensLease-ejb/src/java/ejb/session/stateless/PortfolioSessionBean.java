@@ -4,18 +4,18 @@
  * and open the template in the editor.
  */
 package ejb.session.stateless;
+
 import entity.Portfolio;
 import entity.PortfolioClient;
 import entity.PortfolioSkill;
 import entity.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import util.exception.IncompleteFieldsException;
-import util.exception.SkillAlreadyExistsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -40,20 +40,23 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
             throw new UserNotFoundException(ex.getMessage());
         }
     }
-    
+
     @Override
     public void updateDescription(Portfolio portfolio, String s) {
         Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
         p.setDescription(s);
         System.out.println(p.getDescription());
     }
-    
+
     @Override
-    public Long createClient(PortfolioClient client) throws IncompleteFieldsException {
+    public Portfolio createClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
         if (client.getClientName() != null && client.getClientLink() != null) {
             em.persist(client);
+            client.setPortfolio(p);
+            p.getPortfolioClients().add(client);
             em.flush();
-            return client.getPortfolioClientId();
+            return p;
         } else {
             throw new IncompleteFieldsException("Please complete all fields to create client");
         }
@@ -67,31 +70,39 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     }
 
     @Override
-    public Long addSkill(Portfolio portfolio, String s) throws SkillAlreadyExistsException {
-        Query query = em.createQuery("SELECT s FROM (SELECT p.portfolioSkills FROM Portfolio p WHERE p.portfolioId = :portfolioId) s"
-                + "WHERE s.skillName = :newSkill");
-        query.setParameter("portfolioId", portfolio.getPortfolioId());
-        query.setParameter("newSkill", s.trim());
-        
-        if (query.getResultList().isEmpty()) {
-            PortfolioSkill skill = new PortfolioSkill();
-            skill.setSkillName(s.trim());
-            skill.setPortfolio(portfolio);
-            portfolio.getPortfolioSkills().add(skill);
-            em.persist(skill);
-            em.flush();
-            return skill.getPortfolioSkillId();
-        } else {
-            throw new SkillAlreadyExistsException("Skill has been added already");
-        }
-    }
+    public Portfolio updateSkills(Portfolio portfolio, List<String> skillString) {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
 
-    @Override
-    public void removeSkill(Portfolio portfolio, PortfolioSkill skill) {
-        if (portfolio.getPortfolioSkills().contains(skill)) {
-            portfolio.getPortfolioSkills().remove(skill);
-            em.remove(skill);
+        if (skillString.isEmpty()) {
+            p.setPortfolioSkills(new ArrayList<>());
         }
+
+        //Remove duplicates
+        List<PortfolioSkill> current = p.getPortfolioSkills();
+
+        if (current.isEmpty()) {
+            for (String s : skillString) {
+                PortfolioSkill skill = new PortfolioSkill(s);
+                em.persist(skill);
+                skill.setPortfolio(p);
+                p.getPortfolioSkills().add(skill);
+            }
+            return p;
+        }
+
+        for (String s : skillString) {
+            for (PortfolioSkill k : current) {
+                if (!k.getSkillName().equals(s)) {
+                    PortfolioSkill skill = new PortfolioSkill(s);
+                    em.persist(skill);
+                    skill.setPortfolio(p);
+                    p.getPortfolioSkills().add(skill);
+                }
+            }
+        }
+
+        em.flush();
+        return p;
     }
 
     @Override

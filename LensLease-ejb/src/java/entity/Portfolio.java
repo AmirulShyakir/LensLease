@@ -37,6 +37,8 @@ public class Portfolio implements Serializable {
 
     public Portfolio() {
         this.imagesUrl = new ArrayList<>();
+        this.portfolioSkills = new ArrayList<>();
+        this.portfolioClients = new ArrayList<>();
     }
     
     /**

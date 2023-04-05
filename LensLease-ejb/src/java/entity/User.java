@@ -34,12 +34,6 @@ public class User implements Serializable {
     private String photoUrl;
     private boolean isBanned;
     
-    //portfolio
-    @ManyToMany
-    private List<PortfolioSkill> portfolioSkills;
-    @ManyToMany
-    private List<PortfolioClient> portfolioClients;
-    
     //service & bookings
     @OneToMany(mappedBy = "provider")
     private List<Service> services;
@@ -99,34 +93,6 @@ public class User implements Serializable {
         } 
         String formatted = df.format(rating);
         return formatted;
-    }
-    
-    /**
-     * @return the portfolioSkills
-     */
-    public List<PortfolioSkill> getPortfolioSkills() {
-        return portfolioSkills;
-    }
-
-    /**
-     * @param portfolioSkills the portfolioSkills to set
-     */
-    public void setPortfolioSkills(List<PortfolioSkill> portfolioSkills) {
-        this.portfolioSkills = portfolioSkills;
-    }
-
-    /**
-     * @return the portfolioClients
-     */
-    public List<PortfolioClient> getPortfolioClients() {
-        return portfolioClients;
-    }
-
-    /**
-     * @param portfolioClients the portfolioClients to set
-     */
-    public void setPortfolioClients(List<PortfolioClient> portfolioClients) {
-        this.portfolioClients = portfolioClients;
     }
 
     /**

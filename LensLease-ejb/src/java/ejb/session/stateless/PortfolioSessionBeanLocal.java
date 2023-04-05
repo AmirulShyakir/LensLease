@@ -11,7 +11,6 @@ import entity.PortfolioSkill;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.IncompleteFieldsException;
-import util.exception.SkillAlreadyExistsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -27,12 +26,11 @@ public interface PortfolioSessionBeanLocal {
     public void updateDescription(Portfolio portfolio, String s);
     
     //Client
-    public Long createClient(PortfolioClient client) throws IncompleteFieldsException;
+    public Portfolio createClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException;
     public void removeClient(PortfolioClient client);
     
     //Skills
-    public Long addSkill(Portfolio portfolio, String s) throws SkillAlreadyExistsException;
-    public void removeSkill(Portfolio portfolio, PortfolioSkill skill);
+    public Portfolio updateSkills(Portfolio portfolio, List<String> skills);
     
     //Gallery
     public List<String> getPhotos(Portfolio portfolio);

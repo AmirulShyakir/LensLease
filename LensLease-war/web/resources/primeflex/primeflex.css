@@ -74,6 +74,28 @@ h5 {
     z-index: 100;
 }
 
+.nav-big {
+    margin-top: 10px;
+    text-align: right;
+}
+
+@media screen and (min-width: 1001px) {
+    .nav-small {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .nav-big {
+        display: none !important;
+    }
+
+    .nav-small {
+        margin-top: 14px;
+        text-align: right;
+    }
+}
+
 .contentbody {
     min-height: 50VH;
     padding: 40px 20px;

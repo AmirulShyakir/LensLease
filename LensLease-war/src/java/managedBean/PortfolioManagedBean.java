@@ -14,6 +14,7 @@ import entity.User;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
+import util.exception.IncompleteFieldsException;
 
 /**
  *
@@ -41,11 +43,15 @@ public class PortfolioManagedBean implements Serializable {
     private User user;
     private Portfolio portfolio;
     private String description;
-    private PortfolioSkill skill;
+    private List<String> inputSkills;
     private List<PortfolioSkill> allSkills;
     private PortfolioClient client;
     private List<PortfolioClient> allClients;
     private List<String> images;
+    private int serialNumber = 0;
+    
+    private String clientName;
+    private String clientLink;
 
     /**
      * Creates a new instance of PortfolioManagedBean
@@ -73,10 +79,10 @@ public class PortfolioManagedBean implements Serializable {
             setPortfolio(portfolioSessionBean.findPortfolioByUserId(user.getUserId()));
             setDescription(portfolio.getDescription());
             setAllClients(portfolio.getPortfolioClients());
-            setAllSkills(portfolio.getPortfolioSkills());
+            setInputSkills(portfolio.getPortfolioSkills());
             setImages(portfolio.getImagesUrl());
         } catch (Exception ex) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "This"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage()));
         }
     }
     
@@ -84,7 +90,42 @@ public class PortfolioManagedBean implements Serializable {
         portfolioSessionBean.updateDescription(portfolio, description);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful Update", "for user biography"));
     }
-
+    
+    public void generateSerial() {
+        serialNumber++;
+    }
+    
+    public void saveClient() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            if (client.getPortfolioClientId() == null) {
+                this.portfolio = portfolioSessionBean.createClient(portfolio, client);
+                setAllClients(portfolio.getPortfolioClients());
+                context.addMessage(null, new FacesMessage("Client successfully added"));
+            } else {
+                context.addMessage(null, new FacesMessage("Client successfully updated"));
+            }
+            
+        } catch (IncompleteFieldsException ex) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage()));
+        }
+    }
+    
+    public void updateSkills() {
+        trimSkillName();
+        portfolioSessionBean.updateSkills(portfolio, inputSkills);
+        System.out.println(portfolio.getPortfolioSkills());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful Update", "for skills"));
+    }
+    
+    public void trimSkillName() {
+        List<String> trimmed = new ArrayList<>();
+        for (String s : inputSkills) {
+            trimmed.add(s.trim());
+        }
+        inputSkills = trimmed;
+    }
+    
     public String getDescription() {
         return description;
     }
@@ -109,22 +150,6 @@ public class PortfolioManagedBean implements Serializable {
         this.portfolio = portfolio;
     }
 
-    public PortfolioSkill getSkill() {
-        return skill;
-    }
-
-    public void setSkill(PortfolioSkill skill) {
-        this.skill = skill;
-    }
-
-    public List<PortfolioSkill> getAllSkills() {
-        return allSkills;
-    }
-
-    public void setAllSkills(List<PortfolioSkill> allSkills) {
-        this.allSkills = allSkills;
-    }
-
     public PortfolioClient getClient() {
         return client;
     }
@@ -147,6 +172,50 @@ public class PortfolioManagedBean implements Serializable {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getClientLink() {
+        return clientLink;
+    }
+
+    public void setClientLink(String clientLink) {
+        this.clientLink = clientLink;
+    }
+
+    public List<String> getInputSkills() {
+        return inputSkills;
+    }
+
+    public void setInputSkills(List<PortfolioSkill> skills) {
+        List<String> skillString = new ArrayList<>();
+        for (PortfolioSkill s : skills) {
+            skillString.add(s.getSkillName());
+        }
+        this.inputSkills = skillString;
+    }
+
+    public List<PortfolioSkill> getAllSkills() {
+        return allSkills;
+    }
+
+    public void setAllSkills(List<PortfolioSkill> allSkills) {
+        this.allSkills = allSkills;
     }
     
     
