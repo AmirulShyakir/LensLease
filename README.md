@@ -38,4 +38,4 @@ To either host online or expose web services and use that to deploy on localhost
 
 ### Account 
 - [ ] Portfolio //Leeann
-- [ ] Edit Account //Leeann
+- [ ] Edit Account //Junwei
