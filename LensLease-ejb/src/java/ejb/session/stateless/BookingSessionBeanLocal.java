@@ -49,5 +49,7 @@ public interface BookingSessionBeanLocal {
     public List<Booking> getConfirmedBookingsAsRequester(User user);
 
     public void submitBookingRequest(Booking booking, long serviceId, long userId) throws ServiceNotFoundException, UserNotFoundException, BookingNotFoundException, BookingNotSubmittedException;
+
+    public void setBookingAsCancelled(Booking booking);
     
 }

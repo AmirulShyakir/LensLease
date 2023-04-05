@@ -183,6 +183,12 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
     }
     
     @Override
+    public void setBookingAsCancelled(Booking booking){
+        Booking toBeUpdated = em.find(Booking.class, booking.getBookingId());
+        toBeUpdated.setBookingStatus(BookingStatusEnum.CANCELLED);
+    }
+    
+    @Override
     public List<Booking> searchBookings(String name) {
         Query q;
         List<Booking> bookings;
