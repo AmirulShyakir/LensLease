@@ -5,14 +5,13 @@
  */
 package ejb.session.stateless;
 
-import entity.Admin;
+import entity.Portfolio;
 import entity.User;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
 import util.exception.UserAlreadyExistsException;
 import util.exception.UserNotFoundException;
@@ -29,45 +28,48 @@ public class UserSessionBean implements UserSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     @Override
     public void createNewUser(User user) {
+        Portfolio p = new Portfolio();
+        p.setDescription("Hi there, welcome to my portfolio!");
+        user.setPortfolio(p);
         em.persist(user);
+        em.persist(p);
         em.flush();
     }
-    
+
     @Override
     public List<User> getAllUsers() {
         Query query = em.createQuery("SELECT u FROM User u");
         return query.getResultList();
     }
-    
+
     @Override
     public User findUserByUserId(Long userId) throws UserNotFoundException {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.userId = :inUserId");
         query.setParameter("inUserId", userId);
         query.setMaxResults(1);
         try {
-            User user = (User)query.getSingleResult();
+            User user = (User) query.getSingleResult();
             return user;
         } catch (Exception e) {
             throw new UserNotFoundException("User not found with id " + userId);
         }
     }
-    
+
     @Override
     public User findUserByUsername(String username) throws UserNotFoundException {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :inUsername");
         query.setParameter("inUsername", username);
         query.setMaxResults(1);
         try {
-            User user = (User)query.getSingleResult();
+            User user = (User) query.getSingleResult();
             return user;
         } catch (Exception e) {
             throw new UserNotFoundException("User not found with username " + username);
         }
     }
-    
+
     @Override
     public User userLogin(String username, String password) throws UserNotFoundException, InvalidLoginException {
         List<User> users = getAllUsers();
@@ -86,17 +88,21 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new InvalidLoginException("Invalid username");
         }
     }
-    
+
     @Override
     public Long userSignup(User user) throws UserAlreadyExistsException {
         Query emailQuery = em.createQuery("SELECT u FROM User u WHERE u.email = :email");
         emailQuery.setParameter("email", user.getEmail());
-        
+
         Query usernameQuery = em.createQuery("SELECT u FROM User u WHERE u.username = :username");
         usernameQuery.setParameter("username", user.getUsername());
 
         if (emailQuery.getResultList().isEmpty() && usernameQuery.getResultList().isEmpty()) {
+            Portfolio p = new Portfolio();
+            p.setDescription("Hi there, welcome to my portfolio!");
+            user.setPortfolio(p);
             em.persist(user);
+            em.persist(p);
             em.flush();
             return user.getUserId();
         } else if (!emailQuery.getResultList().isEmpty()) {
