@@ -26,6 +26,7 @@ import javax.persistence.Query;
 import util.exception.BookingNotFoundException;
 import util.exception.BookingNotSubmittedException;
 import util.exception.ServiceNotFoundException;
+import util.exception.UserIsBannedException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -82,13 +83,16 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
     }
 
     @Override
-    public void submitBookingRequest(Booking booking, long serviceId, long userId) throws ServiceNotFoundException, UserNotFoundException, BookingNotFoundException, BookingNotSubmittedException {
+    public void submitBookingRequest(Booking booking, long serviceId, long userId) throws ServiceNotFoundException, UserNotFoundException, BookingNotFoundException, BookingNotSubmittedException, UserIsBannedException {
         Service service = serviceSessionBean.findServiceByServiceId(serviceId);
         User serviceProvider = service.getProvider();
         User user = userSessionBean.findUserByUserId(userId);
 
         if (serviceProvider.equals(user)) {
             throw new BookingNotSubmittedException("You cannot book your own services");
+        }
+        if (user.isBanned()) {
+            throw new UserIsBannedException("You are banned from booking services");
         }
         createNewBooking(booking);
         booking.setService(service);
