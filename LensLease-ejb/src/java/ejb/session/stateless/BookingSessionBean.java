@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -192,5 +193,28 @@ public class BookingSessionBean implements BookingSessionBeanLocal {
         Booking toBeUpdated = em.find(Booking.class, booking.getBookingId());
         toBeUpdated.setBookingStatus(BookingStatusEnum.CONFIRMED);
     }
+    
+    @Override
+    public List<Booking> searchBookings(String name) {
+        Query q;
+        List<Booking> bookings;
+        if (name != null) {
+            q = em.createQuery("SELECT b FROM Booking b WHERE "
+                    + "LOWER(b.customer.username) LIKE :name");
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+            bookings = q.getResultList();
+            q = em.createQuery("SELECT b FROM Booking b WHERE "
+                    + "LOWER(b.bookingId) =:id");
+            q.setParameter("id",name);
+            bookings.addAll(q.getResultList());
+          
+           
+        } else {
+            q = em.createQuery("SELECT s FROM Booking s");
+            bookings = q.getResultList();
+        }
 
+        return bookings;
+    }
+    
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Login Example</title>
+    </h:head>
+    <h:body >
+        <h:form style="display:block; text-align:center;" >
+
+            <p:panel style="border:0px">
+                <h1 style="font-family: Arial"> Welcome To LensLease</h1>
+
+                <h:outputText value="Username" /><br></br>
+                <h:inputText
+                    value="#{authenticationManagedBean.adminUsername}"/><br/>
+                <br></br>
+                <h:outputText value="Password" /><br></br>
+                <h:inputSecret
+                    value="#{authenticationManagedBean.adminPassword}"/><br/>
+
+                <!-- using action instead of actionListener -->
+                <br></br><br></br>
+                <p:commandButton value="Login"
+                                 action="#{authenticationManagedBean.adminLogin}"/>
+            </p:panel>  
+        </h:form>
+    </h:body>
+</html>

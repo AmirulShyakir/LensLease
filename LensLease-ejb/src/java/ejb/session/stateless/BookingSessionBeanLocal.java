@@ -34,6 +34,7 @@ public interface BookingSessionBeanLocal {
 
     public List<Booking> getBookingsAsSupplier(User user);
 
+    public List<Booking> searchBookings(String name);
     public List<Booking> getTodayServicesByUser(User user);
 
     public List<Booking> getPendingBookingRequestsAsProvider(User user);

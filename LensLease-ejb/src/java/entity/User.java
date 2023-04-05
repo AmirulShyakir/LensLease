@@ -46,6 +46,8 @@ public class User implements Serializable {
     private List<Service> services;
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
+    @OneToMany(mappedBy = "user")
+    private List<BanRequest> banRequests;
 
     public User() {
         this.setIsBanned(false);
@@ -301,6 +303,14 @@ public class User implements Serializable {
      */
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
+    }
+
+    public List<BanRequest> getBanRequests() {
+        return banRequests;
+    }
+
+    public void setBanRequests(List<BanRequest> banRequests) {
+        this.banRequests = banRequests;
     }
     
 }
