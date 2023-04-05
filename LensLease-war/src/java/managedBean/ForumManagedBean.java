@@ -9,13 +9,14 @@ import ejb.session.stateless.ForumSessionBeanLocal;
 import entity.ForumTopic;
 import entity.ForumTopicTagEnum;
 import entity.User;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
+import javax.faces.view.ViewScoped;
 import javax.faces.context.FacesContext;
 
 /**
@@ -23,8 +24,11 @@ import javax.faces.context.FacesContext;
  * @author tohdekai
  */
 @Named(value = "forumManagedBean")
-@Dependent
-public class ForumManagedBean {
+@ViewScoped
+public class ForumManagedBean implements Serializable{
+    
+    public ForumManagedBean() {
+    }
 
     @EJB
     private ForumSessionBeanLocal forumSessionBean;
@@ -48,7 +52,7 @@ public class ForumManagedBean {
         if (getSearchString() == null || getSearchString().equals("")) {
             setListOfForumTopics(forumSessionBean.getAllForumTopics());
         } else {
-            listOfForumTopics = forumSessionBean.searchForumTopics(getSearchString());
+            listOfForumTopics = forumSessionBean.searchForumTopics(searchString);
         }
     }
 
