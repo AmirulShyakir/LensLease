@@ -111,6 +111,7 @@ public class CheckoutManagedbean implements Serializable {
             booking.setProjectSpecifications(projectSpecifications);
             bookingSessionBean.submitBookingRequest(booking, serviceId, getUser().getUserId());
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully submitted booking request "));
+            context.getExternalContext().getFlash().setKeepMessages(true);
             return "landingPage.xhtml?faces-redirect=true";
         } catch (Exception ex) {
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));

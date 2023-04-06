@@ -152,9 +152,8 @@ public class ServiceManagedBean implements Serializable {
             banRequest.setRequestDate(new Date());
             banRequest.setDescription(reportDescription);
             adminSessionBean.submitReportService(banRequest,serviceId, user.getUserId());
-            //reviewSessionBean.createNewReview(review);
-            //bookingSessionBean.submitBookingRequest(booking, serviceId, getUser().getUserId());
-            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully reported service "));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully reported service "));
+            context.getExternalContext().getFlash().setKeepMessages(true);
             return "landingPage.xhtml?faces-redirect=true";
         } catch (Exception ex) {
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
