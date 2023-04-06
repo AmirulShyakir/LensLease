@@ -7,9 +7,9 @@ package ejb.session.stateless;
 
 import entity.Portfolio;
 import entity.PortfolioClient;
-import entity.PortfolioSkill;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.ImageDuplicateException;
 import util.exception.IncompleteFieldsException;
 import util.exception.UserNotFoundException;
 
@@ -27,13 +27,13 @@ public interface PortfolioSessionBeanLocal {
     
     //Client
     public Portfolio createClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException;
-    public void removeClient(PortfolioClient client);
+    public Portfolio updateClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException;
+    public Portfolio removeClient(PortfolioClient client);
     
     //Skills
     public Portfolio updateSkills(Portfolio portfolio, List<String> skills);
     
     //Gallery
-    public List<String> getPhotos(Portfolio portfolio);
-    public void addPhoto(Portfolio portfolio, String photoURL);
+    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException;
     
 }
