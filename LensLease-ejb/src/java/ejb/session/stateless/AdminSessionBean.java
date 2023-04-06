@@ -6,9 +6,13 @@
 package ejb.session.stateless;
 
 import entity.Admin;
+import entity.BanRequest;
+import entity.Service;
+import entity.User;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -18,6 +22,8 @@ import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
+import util.exception.ServiceNotFoundException;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -31,6 +37,11 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @EJB
+    UserSessionBeanLocal userSessionBeanLocal;
+    
+    @EJB
+    ServiceSessionBeanLocal serviceSessionBeanLocal;
     
     @Override
     public void createNewAdmin(Admin admin) {
@@ -88,4 +99,42 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             throw new InvalidLoginException("Invalid username");
         }
     }
+
+    @Override
+    public List<BanRequest> getAllBanRequests() {
+        Query query = em.createQuery("SELECT b FROM BanRequest b");
+        return query.getResultList();
+    }
+    
+    @Override
+    public void createNewBanRequest(BanRequest banRequest) {
+        em.persist(banRequest);
+        em.flush();
+    }
+    @Override
+    public BanRequest findBanRequestById(Long banRequestId)  {
+        Query query = em.createQuery("SELECT a FROM BanRequest a WHERE a.banRequestId = :inBRId");
+        query.setParameter("inBRId", banRequestId);
+        query.setMaxResults(1);
+            BanRequest banRequest = (BanRequest) query.getSingleResult();
+            return banRequest;
+    }
+    
+    //changes user/service ban to true, deletes ban request after
+    @Override
+    public void acceptBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException{
+        BanRequest banRequest= findBanRequestById(banRequestId);
+        Service service = banRequest.getService();
+        User user;
+        if (service == null) {
+            user = banRequest.getUser();
+            User userToBan = userSessionBeanLocal.findUserByUserId(user.getUserId());
+            userToBan.setIsBanned(true);
+        } else {
+            Service serviceToBan = serviceSessionBeanLocal.findServiceByServiceId(service.getServiceId());
+            serviceToBan.setIsBanned(true);
+        }  
+        em.remove(banRequest);
+    }
+
 }

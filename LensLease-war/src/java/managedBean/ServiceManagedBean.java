@@ -5,7 +5,6 @@
  */
 package managedBean;
 
-import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Booking;
@@ -52,13 +51,20 @@ public class ServiceManagedBean implements Serializable {
     private boolean isBanned;
     private User provider;
     private Long providerId;
-    
+    private int serviceTypeInt;
+    private String serviceDescription;
+    private String collectionTime;
+    private String returnTime;
+
     private Service selectedService;
     private List<Review> reviewsForSelectedService;
     private List<Service> listOfServices;
     private List<Service> servicesProvided;
-    
-    private Long serviceId; 
+    private List<Service> listOfEquipmentRental;
+    private List<Service> listOfEditingServices;
+    private List<Service> listOfPhotographyServices;
+
+    private Long serviceId;
 
     private String searchString;
     private String searchType = "";
@@ -67,14 +73,25 @@ public class ServiceManagedBean implements Serializable {
     public void init() {
         if (getSearchString() == null || getSearchString().equals("")) {
             setListOfServices(serviceSessionBeanLocal.getAllServices());
+            setListOfEquipmentRental(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.EQUIPMENT_RENTAL));
+            setListOfEditingServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTO_EDITING));
+            listOfEditingServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEO_EDITING));
+            setListOfPhotographyServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTOGRAPHY));
+            listOfPhotographyServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEOGRAPHY));
         } else {
             listOfServices = serviceSessionBeanLocal.searchServices(searchString);
+            listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTO_EDITING);
+            listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEO_EDITING));
+            listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);
+            listOfPhotographyServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEOGRAPHY));
+            listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.EQUIPMENT_RENTAL);
+
         }
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "authenticationManagedBean");
-            
+
             long userId = authenticationManagedBean.getUserId();
             setUser(userSessionBean.findUserByUserId(userId));
         } catch (Exception ex) {
@@ -85,7 +102,7 @@ public class ServiceManagedBean implements Serializable {
     public void handleSearch() {
         init();
     }
-    
+
     public void loadSelectedService() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -95,7 +112,7 @@ public class ServiceManagedBean implements Serializable {
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
             provider = this.selectedService.getProvider();
-            providerId = this.provider.getUserId();
+            providerId = provider.getUserId();
             List<Booking> bookings = selectedService.getBookings();
             List<Review> reviews = new ArrayList<Review>();
             for (Booking b : bookings) {
@@ -104,20 +121,33 @@ public class ServiceManagedBean implements Serializable {
                 }
             }
             setReviewsForSelectedService(reviews);
+
             System.out.println("Going to Individual service page with selected service: " + serviceName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
     }
-    
-    public void loadServicesProvided(){
+
+    public void loadServicesProvided() {
         FacesContext context = FacesContext.getCurrentInstance();
-        try{
+        try {
             this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(user.getUserId());
-        }catch(Exception e){
+        } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
-        
+    }
+
+    public void loadProviderServices() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(providerId);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+        }
+    }
+
+    public void createService() {
+        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime);
     }
 
     public String getServiceName() {
@@ -199,7 +229,7 @@ public class ServiceManagedBean implements Serializable {
     public void setSearchType(String searchType) {
         this.searchType = searchType;
     }
-    
+
     public User getProvider() {
         return provider;
     }
@@ -238,11 +268,85 @@ public class ServiceManagedBean implements Serializable {
         this.reviewsForSelectedService = reviewsForSelectedService;
     }
 
+    public List<Service> getListOfEquipmentRental() {
+        return listOfEquipmentRental;
+    }
+
+    public void setListOfEquipmentRental(List<Service> listOfEquipmentRental) {
+        this.listOfEquipmentRental = listOfEquipmentRental;
+    }
+
+    public List<Service> getListOfEditingServices() {
+        return listOfEditingServices;
+    }
+
+    public void setListOfEditingServices(List<Service> listOfEditingServices) {
+        this.listOfEditingServices = listOfEditingServices;
+    }
+
+    public List<Service> getListOfPhotographyServices() {
+        return listOfPhotographyServices;
+    }
+
+    public void setListOfPhotographyServices(List<Service> listOfPhotographyServices) {
+        this.listOfPhotographyServices = listOfPhotographyServices;
+    }
+
+    public int getServiceTypeInt() {
+        return serviceTypeInt;
+    }
+
+    public void setServiceTypeInt(int serviceTypeInt) {
+        this.serviceTypeInt = serviceTypeInt;
+    }
+
+    public String getCollectionTime() {
+        return collectionTime;
+    }
+
+    public void setCollectionTime(String collectionTime) {
+        this.collectionTime = collectionTime;
+    }
+
+    public String getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(String returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
+    }
+
     public Long getProviderId() {
         return providerId;
     }
 
     public void setProviderId(Long providerId) {
         this.providerId = providerId;
+    }
+
+    public int calculateStarRating(Long sId) {
+        Service service = serviceSessionBeanLocal.findServiceByServiceId(sId);
+        List<Booking> bookings = service.getBookings();
+        List<Review> reviews = new ArrayList<Review>();
+        for (Booking b : bookings) {
+            if (b.getReview() != null) {
+                reviews.add(b.getReview());
+            }
+        }
+        double rating = 0;
+        int count = 1;
+        for (Review r : reviews) {
+            rating = (rating + r.getStarRating()) / count;
+            count++;
+        }
+        return (int) Math.round(rating);
     }
 }

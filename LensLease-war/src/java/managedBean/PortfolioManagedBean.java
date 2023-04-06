@@ -6,10 +6,12 @@
 package managedBean;
 
 import ejb.session.stateless.PortfolioSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Portfolio;
 import entity.PortfolioClient;
 import entity.PortfolioSkill;
+import entity.Review;
 import entity.User;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,6 +44,9 @@ import util.exception.IncompleteFieldsException;
 public class PortfolioManagedBean implements Serializable {
 
     @EJB
+    private ReviewSessionBeanLocal reviewSessionBean;
+
+    @EJB
     private UserSessionBeanLocal userSessionBean;
 
     @EJB
@@ -59,6 +64,7 @@ public class PortfolioManagedBean implements Serializable {
     private Long providerId;
     private User provider;
     private Portfolio providerPortfolio;
+    private List<Review> reviews;
 
     private String clientName;
     private String clientLink;
@@ -191,6 +197,7 @@ public class PortfolioManagedBean implements Serializable {
         try {
             setPortfolio(portfolioSessionBean.findPortfolioByUserId(providerId));
             setUser(userSessionBean.findUserByUserId(providerId));
+            setReviews(reviewSessionBean.getReviewsByUserId(providerId));
             setDescription(portfolio.getDescription());
             setAllClients(portfolio.getPortfolioClients());
             convertSkillsToString(portfolio.getPortfolioSkills());
@@ -310,6 +317,14 @@ public class PortfolioManagedBean implements Serializable {
 
     public void setProviderId(Long providerId) {
         this.providerId = providerId;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
 }

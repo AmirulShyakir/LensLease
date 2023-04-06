@@ -111,4 +111,24 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserAlreadyExistsException("Username is unavailable, please choose another");
         }
     }
+    
+    @Override
+    public void changePassword(Long userId, String currentPassword, String newPassword) throws InvalidLoginException{
+        User user = em.find(User.class, userId);
+        if(currentPassword.equals(user.getPassword())){
+            user.setPassword(newPassword);
+        } else {
+            throw new InvalidLoginException("Please input the correct current password!");
+        }
+    }
+    
+    @Override
+    public void updateDetails(Long userId, String name, String username, String email, String contactNumber, String photoURL){
+        User user = em.find(User.class, userId);
+        user.setName(name);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setContactNumber(contactNumber);
+        user.setPhotoUrl(photoURL);
+    }
 }

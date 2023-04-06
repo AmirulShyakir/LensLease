@@ -38,8 +38,12 @@ public class User implements Serializable {
     private List<Service> services;
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
+
     @OneToOne
     private Portfolio portfolio;
+    @OneToMany(mappedBy = "user")
+    private List<BanRequest> banRequests;
+
 
     public User() {
         this.setIsBanned(false);
@@ -255,12 +259,21 @@ public class User implements Serializable {
         this.isBanned = isBanned;
     }
 
+
     public Portfolio getPortfolio() {
         return portfolio;
     }
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
+    }
+    
+    public List<BanRequest> getBanRequests() {
+        return banRequests;
+    }
+
+    public void setBanRequests(List<BanRequest> banRequests) {
+        this.banRequests = banRequests;
     }
     
 }

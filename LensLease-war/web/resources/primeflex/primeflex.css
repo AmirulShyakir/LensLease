@@ -4,6 +4,10 @@
     font-family: "Poppins", sans-serif, "Gill Sans",  sans-serif, Arial, "Arial CE";
 }
 
+body {
+    background-color: #F5F5F7;
+}
+
 p {
     font-size: 14px;
     font-weight: 400;
@@ -38,6 +42,11 @@ h5 {
     font-size: 12px;
     font-weight: 400;
     color: #BEBEBE;
+}
+
+.customFooter th{
+    background-color: #ffffff;
+    background-image: none;
 }
 
 .grid {
@@ -85,10 +94,11 @@ h5 {
     }
 
     .portfolio-card {
-        margin: 50px 15%;
-        padding: 80px 6%;
+        margin: 50px 20vw;
+        padding: 50px 3%;
         background: white;
-        border-radius: 9px
+        border-radius: 9px;
+        width: 60vw;
     }
 
 }
@@ -104,10 +114,11 @@ h5 {
     }
 
     .portfolio-card {
-        margin: 50px 5%;
+        margin: 20px 10vw;
         padding: 50px 10%;
         background: white;
-        border-radius: 9px
+        border-radius: 9px;
+        width: 80vw
     }
 }
 

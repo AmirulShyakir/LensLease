@@ -12,6 +12,7 @@ import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
+import entity.BanRequest;
 import entity.Booking;
 import entity.BookingStatusEnum;
 import entity.Review;
@@ -102,19 +103,19 @@ public class DataInitSessionBean {
                 equipmentRental2.setEarliestCollectionTime("10am");
                 equipmentRental2.setLatestReturnTime("11pm");
                 equipmentRental2.setPackageDurationHours("Full Day Rental");
-                equipmentRental2.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                equipmentRental2.setServiceDescription("Description Camera Lens Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 Service equipmentRental3 = new Service("SD Card Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 10.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
                 equipmentRental3.setEarliestCollectionTime("10am");
                 equipmentRental3.setLatestReturnTime("11pm");
                 equipmentRental3.setPackageDurationHours("Full Day Rental");
-                equipmentRental3.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                equipmentRental3.setServiceDescription("Description SD Card Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 Service equipmentRental4 = new Service("Lighting Equipment Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 30.00, photos, false, userSessionBean.findUserByUserId(new Long(4)));
                 equipmentRental4.setEarliestCollectionTime("7am");
                 equipmentRental4.setLatestReturnTime("11pm");
                 equipmentRental4.setPackageDurationHours("Full Day Rental");
-                equipmentRental4.setServiceDescription("Description Camera Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                equipmentRental4.setServiceDescription("Description Lighting Equipment Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 serviceSessionBeanLocal.createNewService(equipmentRental);
                 serviceSessionBeanLocal.createNewService(equipmentRental2);
@@ -128,15 +129,15 @@ public class DataInitSessionBean {
 
                 Service photography2 = new Service("Graduation Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 500.00, photos, false, userSessionBean.findUserByUserId(new Long(2)));
                 photography2.setPackageDurationHours("3 hours");
-                photography2.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                photography2.setServiceDescription("Description Graduation Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 Service videography = new Service("Music Video Shoot", ServiceTypeEnum.VIDEOGRAPHY, 2000.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
                 videography.setPackageDurationHours("8 hours");
-                videography.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                videography.setServiceDescription("Description Music Video Shoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 Service videography2 = new Service("Product Videography", ServiceTypeEnum.VIDEOGRAPHY, 300.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
                 videography2.setPackageDurationHours("2 hours");
-                videography2.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                videography2.setServiceDescription("Description Product Videography Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 serviceSessionBeanLocal.createNewService(photography);
                 serviceSessionBeanLocal.createNewService(photography2);
@@ -150,11 +151,11 @@ public class DataInitSessionBean {
 
                 Service photoEditing1 = new Service("Photo ID Touchup", ServiceTypeEnum.PHOTO_EDITING, 5.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
                 photoEditing1.setPackageDurationHours("2 days");
-                photoEditing1.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                photoEditing1.setServiceDescription("Description Photo ID Touchup Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 Service videoEditing = new Service("Davinci Resolve", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
                 videoEditing.setPackageDurationHours("2 weeks");
-                videoEditing.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                videoEditing.setServiceDescription("Description Davinci Resolve Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 Service videoEditing2 = new Service("Premier Pro", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
                 videoEditing2.setPackageDurationHours("2 weeks");
@@ -162,7 +163,7 @@ public class DataInitSessionBean {
 
                 Service videoEditing3 = new Service("Final Cut Pro X", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
                 videoEditing3.setPackageDurationHours("2 weeks");
-                videoEditing3.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+                videoEditing3.setServiceDescription("Description Final Cut Pro X Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
                 serviceSessionBeanLocal.createNewService(photoEditing);
                 serviceSessionBeanLocal.createNewService(photoEditing1);
@@ -178,53 +179,53 @@ public class DataInitSessionBean {
             try {
                 Booking booking1 = new Booking();
                 booking1.setDate(new Date());
-                booking1.setStartTime("0900");
-                booking1.setPreferredLocation("Sembawang");
-                booking1.setComments("Comment");
+                booking1.setStartTime("9am");
+                booking1.setProjectSpecifications("I need a video done for my sons birthday");
+                booking1.setComments("Would be nice if you could whatsapp me first");
                 booking1.setBookingStatus(BookingStatusEnum.PENDING);
                 booking1.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking1.setCustomer(userSessionBean.findUserByUserId(new Long(2)));
                 
                 Booking booking2 = new Booking();
                 booking2.setDate(new Date());
-                booking2.setStartTime("1300");
-                booking2.setPreferredLocation("Orchard");
-                booking2.setComments("Comment");
+                booking2.setStartTime("10am");
+                booking2.setProjectSpecifications("I need this done urgently");
+                booking2.setComments("Please make it quick");
                 booking2.setBookingStatus(BookingStatusEnum.PENDING);
                 booking2.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(12)));
                 booking2.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
                 
                 Booking booking3 = new Booking();
                 booking3.setDate(new Date());
-                booking3.setStartTime("0500");
-                booking3.setPreferredLocation("Clementi");
-                booking3.setComments("Comment");
+                booking3.setStartTime("5pm");
+                booking3.setProjectSpecifications("make the video less serious, its meant to be funny");
+                booking3.setComments("You can use whatever software you want");
                 booking3.setBookingStatus(BookingStatusEnum.PENDING);
                 booking3.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(13)));
                 booking3.setCustomer(userSessionBean.findUserByUserId(new Long(4)));
                 
                 Booking booking4 = new Booking();
                 booking4.setDate(new Date());
-                booking4.setStartTime("2100");
+                booking4.setStartTime("11pm");
                 booking4.setPreferredLocation("Jurong East");
-                booking4.setComments("Comment");
+                booking4.setComments("Let me know if it comes with batteries");
                 booking4.setBookingStatus(BookingStatusEnum.PENDING);
                 booking4.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(4)));
                 booking4.setCustomer(userSessionBean.findUserByUserId(new Long(5)));
                 
                 Booking booking5 = new Booking();
                 booking5.setDate(new Date());
-                booking5.setStartTime("0700");
-                booking5.setPreferredLocation("Bedok");
-                booking5.setComments("Comment");
+                booking5.setStartTime("3pm");
+                booking5.setProjectSpecifications("Okay i will message you the storyboard i came up with");
+                booking5.setComments("i need your email address so i can share the google drive");
                 booking5.setBookingStatus(BookingStatusEnum.PENDING);
                 booking5.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking5.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
                 
                 Booking booking6 = new Booking();
                 booking6.setDate(new Date());
-                booking6.setStartTime("2000");
-                booking6.setPreferredLocation("Eusoff Hall");
+                booking6.setStartTime("12pm");
+                booking6.setProjectSpecifications("Help me edit a video for Eusoff Hall please");
                 booking6.setComments("Comment");
                 booking6.setBookingStatus(BookingStatusEnum.TORATE);
                 booking6.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
@@ -293,6 +294,17 @@ public class DataInitSessionBean {
                 review5.setBooking(booking5);
                 
             } catch (BookingNotFoundException ex) {
+                Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        if (em.find(BanRequest.class, 1l) == null) {
+         
+            try {
+                ArrayList<String> photos = new ArrayList();
+                photos.add("/studio-image.jpg");
+                adminSessionBean.createNewBanRequest(new BanRequest("This post is horrigible!", new Date(), serviceSessionBeanLocal.findServiceByServiceId(new Long(1)), null));
+            } catch (ServiceNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
             

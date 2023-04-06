@@ -30,5 +30,9 @@ public interface UserSessionBeanLocal {
     public User userLogin(String username, String password) throws UserNotFoundException, InvalidLoginException;
     
     public Long userSignup(User user) throws UserAlreadyExistsException;
+
+    public void changePassword(Long userId, String currentPassword, String newPassword) throws InvalidLoginException;
+
+    public void updateDetails(Long userId, String name, String username, String email, String contactNumber, String photoURL);
     
 }

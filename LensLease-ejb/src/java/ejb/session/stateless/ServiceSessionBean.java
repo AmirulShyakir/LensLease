@@ -9,6 +9,7 @@ import entity.BanRequest;
 import entity.Booking;
 import entity.Schedule;
 import entity.Service;
+import entity.ServiceTypeEnum;
 import entity.User;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +41,21 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @Override
+    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime) {
+        User user = em.find(User.class, userId);
+        Service service = new Service();
+        service.setServiceName(name);
+        service.setServiceType(ServiceTypeEnum.values()[serviceType]);
+        service.setServiceCost(cost);
+        service.setServiceDescription(description);
+        service.setEarliestCollectionTime(collectionTime);
+        service.setLatestReturnTime(returnTime);
+        user.getServices().add(service);
+        service.setProvider(user);
+        em.persist(service);
+        em.flush();
+    }
     @Override
     public void createNewService(Service service) {
         em.persist(service);
@@ -89,6 +105,15 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         Query query = em.createQuery("SELECT s FROM Service s");
         return query.getResultList();
     }
+    
+    @Override
+    public List<Service> getServicesByType(ServiceTypeEnum serviceType) {
+        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType");
+        query.setParameter("serviceType", serviceType);
+
+        return query.getResultList();
+        
+    } 
 
     @Override
     public List<Service> getServicesByUser(Long userId) throws UserNotFoundException {
@@ -125,5 +150,21 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         }
 
         return q.getResultList();
-    } //end searchBooks
+    } 
+    
+    @Override
+    public List<Service> searchServicesWithType(String name, ServiceTypeEnum type) {
+        Query q;
+        if (name != null) {
+            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND "
+                    + "LOWER(s.serviceName) LIKE :name");
+            q.setParameter("type", type);
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+        } else {
+            q = em.createQuery("SELECT s FROM Service s WHERE service.serviceType =:type");
+             q.setParameter("type", type);
+        }
+
+        return q.getResultList();
+    } 
 }
