@@ -5,9 +5,12 @@
  */
 package managedBean;
 
+import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.BookingSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.BanRequest;
 import entity.Booking;
 import entity.Review;
 import entity.Service;
@@ -17,6 +20,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +38,12 @@ import javax.faces.context.FacesContext;
 @ViewScoped
 public class ServiceManagedBean implements Serializable {
 
+    @EJB
+    private AdminSessionBeanLocal adminSessionBean;
+
+    @EJB
+    private ReviewSessionBeanLocal reviewSessionBean;
+
     /**
      * Creates a new instance of ServiceManagedBean
      */
@@ -43,6 +53,7 @@ public class ServiceManagedBean implements Serializable {
     private ServiceSessionBeanLocal serviceSessionBeanLocal;
     @EJB
     private UserSessionBeanLocal userSessionBean;
+    
 
     private User user;
     private String serviceName;
@@ -60,7 +71,7 @@ public class ServiceManagedBean implements Serializable {
     private List<Service> listOfEditingServices;
     private List<Service> listOfPhotographyServices;
    
-    
+    private String reportDescription;
     private Long serviceId; 
 
     private String searchString;
@@ -132,6 +143,22 @@ public class ServiceManagedBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
         
+    }
+    
+    public String submitReportService() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            BanRequest banRequest = new BanRequest();
+            banRequest.setRequestDate(new Date());
+            banRequest.setDescription(reportDescription);
+            adminSessionBean.submitReportService(banRequest,serviceId, user.getUserId());
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully reported service "));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "landingPage.xhtml?faces-redirect=true";
+        } catch (Exception ex) {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
+            return "reportService.xhtml";
+        }
     }
 
     public String getServiceName() {
@@ -274,5 +301,19 @@ public class ServiceManagedBean implements Serializable {
 
     public void setListOfPhotographyServices(List<Service> listOfPhotographyServices) {
         this.listOfPhotographyServices = listOfPhotographyServices;
+    }
+
+    /**
+     * @return the reportDescription
+     */
+    public String getReportDescription() {
+        return reportDescription;
+    }
+
+    /**
+     * @param reportDescription the reportDescription to set
+     */
+    public void setReportDescription(String reportDescription) {
+        this.reportDescription = reportDescription;
     }
 }
