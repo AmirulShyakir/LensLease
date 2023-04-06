@@ -26,11 +26,11 @@
             </div>
             <div class="nav-small col-9">
                 <h:form>
-                    <p:growl id="messages"/>
+                    <p:growl id="messages" showDetail="true"/>
                     <p:menuButton icon="pi pi-bars" styleClass="ui-button-flat" style="padding-right:10px;">
-                        <p:menuitem value="Home" action="landingPage.xhtml" icon="pi pi-home" />
-                        <p:menuitem value="Forum" action="landingPage.xhtml" icon="pi pi-comments" />
-                        <p:menuitem value="Account" action="myServices.xhtml" icon="pi pi-user" />
+                        <p:menuitem value="Home" action="landingPage.xhtml?faces-redirect=true" icon="pi pi-home" />
+                        <p:menuitem value="Forum" action="landingPage.xhtml?faces-redirect=true" icon="pi pi-comments" />
+                        <p:menuitem value="Account" action="myServices.xhtml?faces-redirect=true" icon="pi pi-user" />
                         <p:divider />
                         <p:menuitem value="Log out" action="#{authenticationManagedBean.logout}" icon="pi pi-sign-out" />
                     </p:menuButton>
@@ -43,22 +43,27 @@
                     <div style="padding: 20px">
                         <div class="flex flex-column align-items-center">
                             <div>
-                                <p:avatar class="mx-4" styleClass="mr-2" size="xlarge" shape="circle" style="min-width: 100px; min-height: 100px;">
+                                <p:avatar class="mx-4" size="xlarge" shape="circle" style="min-width: 100px; min-height: 100px;">
                                     <p:graphicImage value="#{serviceManagedBean.user.photoUrl}"/>
                                 </p:avatar>
                             </div>
                             <div class="align-items-center">
-                                <h4 style="margin-bottom: 0px; margin-top: 10px"><h:outputText value="#{serviceManagedBean.user.name}"/></h4>
-                                <p class="subtitle" style="margin-top: 0px">@<h:outputText value="#{serviceManagedBean.user.username}"/></p>
+                                <h4 style="margin-bottom: 0px; text-align: center"><h:outputText value="#{serviceManagedBean.user.name}"/></h4>
+                                <p class="subtitle" style="margin-top: 0px; text-align: center">@<h:outputText value="#{serviceManagedBean.user.username}"/></p>
                             </div>
-                            <div class="grid align-items-center pl-2">
-                                <p:rating readonly="true" value="#{serviceManagedBean.user.getStarRating()}"/>
-                                <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() == 3}"></h:outputText></p>
+                            <div class="align-items-center">
+                                <div>
+                                    <p:rating class="ml-2" style="color: #568DF5" readonly="true" value="#{serviceManagedBean.user.getStarRating()}"/>
+                                </div>
+                                <div>
+                                    <p style="font-size: 14px; color: #568DF5; font-weight: 500; text-align: center; margin-top: 5px">
+                                        <h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() == 3}"></h:outputText></p>
+                                </div>
                             </div>
                             <p><h:outputText value="#{serviceManagedBean.user.getFormattedRating()}" rendered="#{serviceManagedBean.user.getFormattedRating().length() != 3}"></h:outputText></p>
                             <p:divider style="margin-top: -10px"/>
                         </div>
-                        <div style="padding-left: 10px">
+                        <div class="ml-4">
                             <a style="text-decoration: none; color: inherit" href="myServices.xhtml"><h5><i class="pi pi-briefcase" style="padding-right: 10px" />My Services</h5></a>
                             <a style="text-decoration: none; color: inherit" href="myBookings.xhtml"><h5><i class="pi pi-calendar" style="padding-right: 10px" />My Bookings</h5></a>
                             <a style="text-decoration: none; color: inherit" href="myPortfolio.xhtml"><h5><i class="pi pi-id-card" style="padding-right: 10px" />Portfolio</h5></a>

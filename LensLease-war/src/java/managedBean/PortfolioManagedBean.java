@@ -55,6 +55,10 @@ public class PortfolioManagedBean implements Serializable {
     private List<PortfolioClient> allClients;
     private List<String> images;
     private UploadedFiles newImages;
+    
+    private Long providerId;
+    private User provider;
+    private Portfolio providerPortfolio;
 
     private String clientName;
     private String clientLink;
@@ -88,7 +92,7 @@ public class PortfolioManagedBean implements Serializable {
             convertSkillsToString(portfolio.getPortfolioSkills());
             setImages(portfolio.getImagesUrl());
         } catch (Exception ex) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error " + ex.getMessage(), ex.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error ", ex.getMessage()));
         }
     }
 
@@ -115,7 +119,7 @@ public class PortfolioManagedBean implements Serializable {
             }
 
         } catch (IncompleteFieldsException ex) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error " + ex.getMessage(), ""));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error ", ex.getMessage()));
         }
         PrimeFaces.current().executeScript("PF('clientDialog').hide()");
         PrimeFaces.current().ajax().update("form:clients");
@@ -138,7 +142,7 @@ public class PortfolioManagedBean implements Serializable {
         }
         this.portfolio = portfolioSessionBean.updateSkills(portfolio, inputSkills);
         convertSkillsToString(portfolio.getPortfolioSkills());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful Update", "for skills"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Skill successfully updated", ""));
     }
 
     public void uploadImages() {
@@ -158,7 +162,7 @@ public class PortfolioManagedBean implements Serializable {
 //                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error " + ex.getMessage(), ""));
 //                }
             }
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Images have been uploaded ", ""));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Images have been uploaded", ""));
             PrimeFaces.current().ajax().update("form:gallery");
         }
     }
@@ -180,6 +184,20 @@ public class PortfolioManagedBean implements Serializable {
             System.out.println(ex.getMessage());
         }
         return "empty";
+    }
+    
+    public void loadProviderDetails() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            setPortfolio(portfolioSessionBean.findPortfolioByUserId(providerId));
+            setUser(userSessionBean.findUserByUserId(providerId));
+            setDescription(portfolio.getDescription());
+            setAllClients(portfolio.getPortfolioClients());
+            convertSkillsToString(portfolio.getPortfolioSkills());
+            setImages(portfolio.getImagesUrl());
+        } catch (Exception ex) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error ", ex.getMessage()));
+        }
     }
 
     public String getDescription() {
@@ -268,6 +286,30 @@ public class PortfolioManagedBean implements Serializable {
 
     public void setNewImages(UploadedFiles newImages) {
         this.newImages = newImages;
+    }
+
+    public User getProvider() {
+        return provider;
+    }
+
+    public void setProvider(User provider) {
+        this.provider = provider;
+    }
+
+    public Portfolio getProviderPortfolio() {
+        return providerPortfolio;
+    }
+
+    public void setProviderPortfolio(Portfolio providerPortfolio) {
+        this.providerPortfolio = providerPortfolio;
+    }
+
+    public Long getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
     }
 
 }

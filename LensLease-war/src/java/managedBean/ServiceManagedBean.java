@@ -51,6 +51,7 @@ public class ServiceManagedBean implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private User provider;
+    private Long providerId;
     
     private Service selectedService;
     private List<Review> reviewsForSelectedService;
@@ -94,6 +95,7 @@ public class ServiceManagedBean implements Serializable {
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
             provider = this.selectedService.getProvider();
+            providerId = this.provider.getUserId();
             List<Booking> bookings = selectedService.getBookings();
             List<Review> reviews = new ArrayList<Review>();
             for (Booking b : bookings) {
@@ -234,5 +236,13 @@ public class ServiceManagedBean implements Serializable {
      */
     public void setReviewsForSelectedService(List<Review> reviewsForSelectedService) {
         this.reviewsForSelectedService = reviewsForSelectedService;
+    }
+
+    public Long getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
     }
 }

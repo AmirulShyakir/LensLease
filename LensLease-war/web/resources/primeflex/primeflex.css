@@ -83,6 +83,14 @@ h5 {
     .nav-small {
         display: none !important;
     }
+
+    .portfolio-card {
+        margin: 50px 15%;
+        padding: 80px 6%;
+        background: white;
+        border-radius: 9px
+    }
+
 }
 
 @media screen and (max-width: 1000px) {
@@ -93,6 +101,13 @@ h5 {
     .nav-small {
         margin-top: 14px;
         text-align: right;
+    }
+
+    .portfolio-card {
+        margin: 50px 5%;
+        padding: 50px 10%;
+        background: white;
+        border-radius: 9px
     }
 }
 
