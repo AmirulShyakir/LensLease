@@ -267,7 +267,8 @@ public class User implements Serializable {
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
-
+    }
+    
     public List<BanRequest> getBanRequests() {
         return banRequests;
     }

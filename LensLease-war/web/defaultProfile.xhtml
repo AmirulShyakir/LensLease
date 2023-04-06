@@ -45,7 +45,8 @@
                         <div class="flex flex-column align-items-center">
                             <div>
                                 <p:avatar class="mx-4" styleClass="mr-2" size="xlarge" shape="circle" style="min-width: 100px; min-height: 100px;">
-                                    <p:graphicImage value="#{serviceManagedBean.user.photoUrl}"/>
+                                    <p:graphicImage value="#{serviceManagedBean.user.photoUrl}" rendered="#{serviceManagedBean.user.photoUrl != null}"/>
+                                    <p:graphicImage value="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" rendered="#{serviceManagedBean.user.photoUrl == null}"/>
                                 </p:avatar>
                             </div>
                             <div class="align-items-center">

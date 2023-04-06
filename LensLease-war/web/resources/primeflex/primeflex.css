@@ -39,6 +39,10 @@ h5 {
     font-weight: 400;
     color: #BEBEBE;
 }
+.customFooter th{
+    background-color: #ffffff;
+    background-image: none;
+}
 
 .grid {
     display: flex;
