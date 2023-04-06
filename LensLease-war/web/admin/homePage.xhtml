@@ -8,40 +8,87 @@
                 template="./../adminDefault.xhtml">
 
     <ui:define name="title">
-        Home Page | LensLease
+        Home Page | LensLease Admin
     </ui:define>
 
     <ui:define name="content">
+        <h:outputStylesheet name="primeflex/primeflex.css" />
         <h:form id="form1">
         <div class="px-8" >
             <h2 class="pl-3"><h:outputText value="Admin Dashboard"/></h2>
-            <div class="grid flex-row flex-wrap justify-content-end align-content-center px-5" >
-                <div class="col flex justify-content-center flex-wrap flex-row">
-                    <p:card class="h-16rem w-20rem" style="border-radius: 20px" >
-                        <f:facet name="title" >
-                            <h3 class="pl-2">Users</h3>
-                        </f:facet>
-                    </p:card>
-                </div>
-                <div class="col flex justify-content-center flex-wrap flex-row" >
-                    <p:card class="h-16rem w-20rem align-items-center justify-content-center" style="border-radius: 20px">
-                        <f:facet name="title">
-                            <h3 class="pl-2">Ban Requests</h3>  
-                        </f:facet>
-                        <div class=" flex justify-content-center flex-row" >
-                            <!--<p:knob value="#{adminDataManagedBean.listOfBanRequests.size()}"  width="40px"  disabled="true" colorTheme="hot-sneaks" class="mb-8"/>-->
+            <div class="surface-ground px-3 py-5 md:px-4 lg:px-6">
+                <div class="grid">
+                    <div class="col-12 md:col-6 lg:col-3">
+                        <h:link style=" text-decoration: none; color: black;" outcome="adminUsers">
+                        <div class="shadow-2 p-3 border-round h-10rem">
+                            <div class="flex justify-content-between mb-3 bg-blue-100" >
+                                <div>
+                                    <span class="block text-500 font-medium mb-3"><h3 style="margin-top: 4px">Users</h3></span>
+                                    <div class="text-900 font-medium text-xl"><h4 style="margin-bottom: 0px; margin-top: 0px">TODO </h4></div>
+                                </div>
+                                <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                    <i class="pi pi-users text-blue-500 text-xl"></i>
+                                </div>
+                            </div>
+                            <span class="text-green-500 font-medium"><p>Active Users</p> </span>
+                            <!--<span class="text-500">since last visit</span>-->
                         </div>
-                    </p:card>
-                </div>
-                <div class="col flex justify-content-center flex-wrap flex-row">
-                    <p:card class="h-16rem w-20rem" style="border-radius: 20px">
-                        <f:facet name="title">
-                            <h3 class="pl-2">Active Bookings</h3>
-                        </f:facet>
-                    </p:card>
+                        </h:link>
+                    </div>
+                    <div class="col-12 md:col-6 lg:col-3">
+                        <a style=" text-decoration: none; color: black;" href="#banRequests">
+                        <div class="surface-card shadow-2 p-3 border-round h-10rem">
+                            <div class="flex justify-content-between mb-3">
+                                <div>
+                                    <span class="block text-500 font-medium mb-3"><h3 style="margin-top: 4px">Ban Requests</h3></span>
+                                    <div class="font-medium text-xl"><h4 style="margin-bottom: 0px; margin-top: 0px">#{adminDataManagedBean.listOfBanRequests.size()}</h4></div>
+                                </div>
+                                <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width:2.5rem;height:2.5rem">
+                                    <i class="pi pi-inbox text-orange-500 text-xl"></i>
+                                </div>
+                            </div>
+                            <span class="text-green-500"><p>Unattended Ban Requests</p> </span>
+                            <!--<span class="text-500">since last week</span>-->
+                        </div>
+                        </a>
+                    </div>
+                    <div class="col-12 md:col-6 lg:col-3">
+                        <h:link style=" text-decoration: none; color: black;" outcome="adminServices">
+                        <div class="surface-card shadow-2 p-3 border-round h-10rem">
+                            <div class="flex justify-content-between mb-3">
+                                <div>
+                                    <span class="block text-500 font-medium mb-3"><h3 style="margin-top: 4px">Services</h3></span>
+                                    <div class="text-900 font-medium text-xl"><h4 style="margin-bottom: 0px; margin-top: 0px">#{serviceManagedBean.listOfServices.size()}</h4></div>
+                                </div>
+                                <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width:2.5rem;height:2.5rem">
+                                    <i class="pi pi-camera text-cyan-500 text-xl"></i>
+                                </div>
+                            </div>
+                            <span class="text-green-500 font-medium"><p>Registered Services</p></span>
+                            <!--<span class="text-500">newly registered</span>-->
+                        </div>
+                        </h:link>
+                    </div>
+                    <div class="col-12 md:col-6 lg:col-3">
+                        <h:link style=" text-decoration: none; color: black;" outcome="adminBookings">
+                        <div class="surface-card shadow-2 p-3 border-round h-10rem">
+                            <div class="flex justify-content-between mb-3">
+                                <div>
+                                    <span class="block text-500 font-medium mb-3"><h3 style="margin-top: 4px">Bookings</h3></span>
+                                    <div class="text-900 font-medium text-xl"><h4 style="margin-bottom: 0px; margin-top: 0px">#{bookingManagedBeanAdmin.listOfBookings.size()}</h4></div>
+                                </div>
+                                <div class="flex align-items-center justify-content-center border-round" style="width:2.5rem;height:2.5rem;">
+                                    <i class="pi pi-calendar-plus  text-xl"></i>
+                                </div>
+                            </div>
+                            <span class="text-green-500 font-medium"><p>Active Bookings</p></span>
+                            <!--<span class="text-500">responded</span>-->
+                        </div>
+                        </h:link>
+                    </div>
                 </div>
             </div>
-            <h2 class="pl-3"><h:outputText value="Ban Requests"/></h2>
+            <h2 class="pl-3" id="banRequests"><h:outputText value="Ban Requests"/></h2>
            
                 <p:dataTable widgetVar="requestTable"
                     var="banRequest" 
@@ -55,25 +102,70 @@
                     </p:column>  
 
                     <p:column headerText="Request Date">
-                        <h:outputText value="#{banRequest.requestDate}"/>   
+                        <h:outputText value="#{banRequest.requestDate}">
+                            <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="#{adminDataManagedBean.timeZome}"/>
+                        </h:outputText>   
                     </p:column>
                     
-                    <p:column headerText="Service">
-                        <h:outputText value="#{banRequest.service.serviceName}"/>   
+                    <p:column headerText="Complaint By">
+                        <h:outputText value="#{banRequest.complainer.username}"/>   
                     </p:column>
                     
                      <p:column headerText="Actions">
-                         <p:commandButton value="View Request" update=":form1:requestDetails" oncomplete="PF('requestDialog').show()" title="View">          
+<!--                         <p:commandButton value="View Request" update=":form1:requestDetails" oncomplete="PF('requestDialog').show()" title="View">          
                              <f:setPropertyActionListener value="#{banRequest}" target="#{adminDataManagedBean.selectedBanRequest}" /> 
                              <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
-                         </p:commandButton>
+                         </p:commandButton>-->
+                         <p:button outcome="individualBanRequest" value="View Details">
+                             <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
+                         </p:button>
 
                     </p:column>       
                 </p:dataTable>
+            <br></br>
+            <h3>Past Ban Requests</h3>
+            <p:dataTable widgetVar="requestTable"
+                         var="banRequest" 
+                         value="#{adminDataManagedBean.listOfPastBanRequests}"
+                         >
+                <p:column headerText="Request Id" >
+                        #{banRequest.banRequestId}
+                </p:column> 
+                <p:column headerText="Description">
+                    <h:outputText value="#{banRequest.description}"/>   
+                </p:column>  
+
+                <p:column headerText="Request Date">
+                    <h:outputText value="#{banRequest.requestDate}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="#{adminDataManagedBean.timeZome}"/>
+                    </h:outputText>   
+                </p:column>
+
+                <p:column headerText="Complaint By">
+                    <h:outputText value="#{banRequest.complainer.username}"/>   
+                </p:column>
+                <p:column headerText="Accepted" sortBy="#{banRequest.isRejected}">                   
+                    <h:outputText rendered="#{!banRequest.isRejected}" class="pi pi-check"/>
+                    <h:outputText rendered="#{banRequest.isRejected}" class="pi pi-times"/>    
+                </p:column>
+
+                <p:column headerText="Actions">
+                    <!--                         <p:commandButton value="View Request" update=":form1:requestDetails" oncomplete="PF('requestDialog').show()" title="View">          
+                                                 <f:setPropertyActionListener value="#{banRequest}" target="#{adminDataManagedBean.selectedBanRequest}" /> 
+                                                 <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
+                                             </p:commandButton>-->
+                    <p:button outcome="individualBanRequest" value="View Details">
+                        <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
+                    </p:button>
+
+                </p:column>       
+            </p:dataTable>
+
         </div>
-        
-            <p:dialog  header="Request Details" widgetVar="requestDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" >
-                <p:ajax event="close" update=":form1:requestDetails" listener="#{adminDataManagedBean.acceptBanRequest}"/>
+           
+            
+<!--            <p:dialog  header="Request Details" widgetVar="requestDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" >
+                <p:ajax event="close" update=":form1:requestDetails" listener="/>
                 <p:outputPanel id="requestDetails"  style="width: 500px; height: 400px" class="grid flex-column flex-wrap justify-content-end align-content-center px-5">
                     
                     <p:panelGrid columns="2" rendered="#{not empty adminDataManagedBean.selectedBanRequest}" style="width: 400px; height: 300px">
@@ -84,15 +176,15 @@
                             <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                         </h:outputText>
                        
-                        <h:outputText value="Service Id" rendered="#{adminDataManagedBean.selectedBanRequest.service != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.service.serviceId}" rendered="#{adminDataManagedBean.selectedBanRequest.service != null}"/>  
-                        <h:outputText value="Service Name" rendered="#{adminDataManagedBean.selectedBanRequest.service != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.service.serviceName}" rendered="#{adminDataManagedBean.selectedBanRequest.service != null}"/>  
+                        <h:outputText value="Service Id" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.serviceId}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>  
+                        <h:outputText value="Service Name" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.serviceName}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>  
                         
-                        <h:outputText value="User Id" rendered="#{adminDataManagedBean.selectedBanRequest.user != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.user.userId}" rendered="#{adminDataManagedBean.selectedBanRequest.user != null}"/>  
-                        <h:outputText value="Username" rendered="#{adminDataManagedBean.selectedBanRequest.user != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.user.username}" rendered="#{adminDataManagedBean.selectedBanRequest.user != null}"/> 
+                        <h:outputText value="User Id" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.userId}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>  
+                        <h:outputText value="Username" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.username}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/> 
                     </p:panelGrid>
                     <br></br> <br></br>
                     <div class=" flex justify-content-center">
@@ -102,9 +194,9 @@
                     </div>
                    
                 </p:outputPanel>
-            </p:dialog>
+            </p:dialog>-->
         </h:form>
-        
+
        
 
     </ui:define>

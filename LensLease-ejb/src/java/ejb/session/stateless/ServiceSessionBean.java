@@ -93,8 +93,9 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     
     @Override
     public List<Service> getServicesByType(ServiceTypeEnum serviceType) {
-        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType");
+        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType AND s.isBanned = false ");
         query.setParameter("serviceType", serviceType);
+//        query.setParameter("bool", false);
 
         return query.getResultList();
         
@@ -127,7 +128,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     public List<Service> searchServices(String name) {
         Query q;
         if (name != null) {
-            q = em.createQuery("SELECT s FROM Service s WHERE "
+            q = em.createQuery("SELECT s FROM Service s WHERE AND s.isBanned = false"
                     + "LOWER(s.serviceName) LIKE :name");
             q.setParameter("name", "%" + name.toLowerCase() + "%");
         } else {
@@ -141,7 +142,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     public List<Service> searchServicesWithType(String name, ServiceTypeEnum type) {
         Query q;
         if (name != null) {
-            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND "
+            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND s.isBanned = false AND "
                     + "LOWER(s.serviceName) LIKE :name");
             q.setParameter("type", type);
             q.setParameter("name", "%" + name.toLowerCase() + "%");

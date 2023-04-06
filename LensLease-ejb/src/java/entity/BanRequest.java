@@ -27,19 +27,29 @@ public class BanRequest implements Serializable {
     private String description;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date requestDate;
+    private boolean isAttendedTo;
+    private boolean isRejected;
+    @ManyToOne
+    private User complainer;
     
     @ManyToOne
-    private Service service;
+    private Service serviceToBan;
     @ManyToOne
-    private User user;
+    private User userToBan;
+    @ManyToOne
+    private Booking booking;
 
     public BanRequest() {
     }
 
-    public BanRequest(String description, Date requestDate, Service service, User user) {
+    public BanRequest(String description, Date requestDate, Boolean isAttendedTo, User complainer, Service service, User user,  Booking booking) {
         this.description = description;
         this.requestDate = requestDate;
-        this.service = service;
+        this.isAttendedTo = isAttendedTo;
+        this.complainer = complainer;
+        this.serviceToBan = service;
+        this.userToBan = user;
+        this.booking = booking;
     }
     
     public Long getBanRequestId() {
@@ -103,26 +113,58 @@ public class BanRequest implements Serializable {
         this.requestDate = requestDate;
     }
 
+    public boolean isIsAttendedTo() {
+        return isAttendedTo;
+    }
+
+    public void setIsAttendedTo(boolean isAttendedTo) {
+        this.isAttendedTo = isAttendedTo;
+    }
+
+    public User getComplainer() {
+        return complainer;
+    }
+
+    public void setComplainer(User complainer) {
+        this.complainer = complainer;
+    }
+
     /**
      * @return the service
      */
-    public Service getService() {
-        return service;
+    public Service getServiceToBan() {
+        return serviceToBan;
     }
 
     /**
-     * @param service the service to set
+     * @param serviceToBan the service to set
      */
-    public void setService(Service service) {
-        this.service = service;
+    public void setServiceToBan(Service serviceToBan) {
+        this.serviceToBan = serviceToBan;
     }
 
-    public User getUser() {
-        return user;
+    public User getUserToBan() {
+        return userToBan;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserToBan(User userToBan) {
+        this.userToBan = userToBan;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
+    public boolean isIsRejected() {
+        return isRejected;
+    }
+
+    public void setIsRejected(boolean isRejected) {
+        this.isRejected = isRejected;
     }
     
 }

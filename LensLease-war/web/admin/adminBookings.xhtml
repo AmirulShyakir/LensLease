@@ -43,11 +43,13 @@
                     </p:column>  
                     
                     <p:column headerText="Booking Date">
-                        <h:outputText value="#{booking.date}"/>   
+                        <h:outputText value="#{booking.date}">
+                            <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="#{bookingManagedBeanAdmin.timeZome}"/>
+                        </h:outputText>   
                     </p:column> 
                     
                     <p:column headerText="Booking Status">
-                        <h:outputText value="#{booking.bookingStatus}"/>   
+                        <h:outputText value="#{booking.bookingStatus.toString()}"/>   
                     </p:column> 
                 </p:dataTable>
             </div>
