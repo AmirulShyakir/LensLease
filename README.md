@@ -12,7 +12,7 @@ To either host online or expose web services and use that to deploy on localhost
 - [x] Banned services should not be bookable in checkout.xhtml //Amirul 
 - [x] Services which provider is banned should not be bookable in checkout.xhtml //Amirul 
 - [ ] Banned users should not be able to accept requests // Jun Wei
-- [ ] Ban request for service function as a button "Report service" in individualServicePage.xhtml //Amirul
+- [x] Ban request for service function as a button "Report service" in individualServicePage.xhtml //Amirul
 - [ ] Ban request for user function as a button "Report user" within the card in myBookings.xhtml -> All bookings (only for CONFIRMED and TORATE and COMPLETED status)
 
 ### Admin 
