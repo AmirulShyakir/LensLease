@@ -42,11 +42,16 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime) {
+    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime,String packageDuration) {
         User user = em.find(User.class, userId);
         Service service = new Service();
         service.setServiceName(name);
         service.setServiceType(ServiceTypeEnum.values()[serviceType]);
+        service.setPackageDurationHours(packageDuration);
+        if(service.getServiceType() == ServiceTypeEnum.EQUIPMENT_RENTAL){
+            service.setIsRental(true);
+            service.setPackageDurationHours(packageDuration);
+        }
         service.setServiceCost(cost);
         service.setServiceDescription(description);
         service.setEarliestCollectionTime(collectionTime);
@@ -63,11 +68,17 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     }
 
     @Override
-    public void editService(Service service) throws ServiceNotFoundException {
+    public void editService(Service service, int serviceTypeInt, String collectionTime, String returnTime) throws ServiceNotFoundException {
         Service oldService = findServiceByServiceId(service.getServiceId());
         
         oldService.setServiceName(service.getServiceName());
-        oldService.setServiceType(service.getServiceType());
+        oldService.setServiceType(ServiceTypeEnum.values()[serviceTypeInt]);
+        if(ServiceTypeEnum.values()[serviceTypeInt] == ServiceTypeEnum.EQUIPMENT_RENTAL){
+            oldService.setIsRental(true);
+        }
+        oldService.setEarliestCollectionTime(collectionTime);
+        oldService.setLatestReturnTime(returnTime);
+        oldService.setServiceDescription(service.getServiceDescription());
         oldService.setServiceCost(service.getServiceCost());
         oldService.setServicePhotos(service.getServicePhotos());
         oldService.setIsBanned(service.isBanned());

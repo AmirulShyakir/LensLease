@@ -25,6 +25,7 @@ import javax.ejb.EJB;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import util.exception.ServiceNotFoundException;
 
 /**
  *
@@ -55,7 +56,8 @@ public class ServiceManagedBean implements Serializable {
     private String serviceDescription;
     private String collectionTime;
     private String returnTime;
-    
+    private String packageDuration;
+
     private Service selectedService;
     private List<Review> reviewsForSelectedService;
     private List<Service> listOfServices;
@@ -63,9 +65,8 @@ public class ServiceManagedBean implements Serializable {
     private List<Service> listOfEquipmentRental;
     private List<Service> listOfEditingServices;
     private List<Service> listOfPhotographyServices;
-   
-    
-    private Long serviceId; 
+
+    private Long serviceId;
 
     private String searchString;
     private String searchType = "";
@@ -81,19 +82,18 @@ public class ServiceManagedBean implements Serializable {
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEOGRAPHY));
         } else {
             listOfServices = serviceSessionBeanLocal.searchServices(searchString);
-            listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.PHOTO_EDITING);
-            listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.VIDEO_EDITING));
+            listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTO_EDITING);
+            listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEO_EDITING));
             listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEOGRAPHY));
-            listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.EQUIPMENT_RENTAL);
+            listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.EQUIPMENT_RENTAL);
 
-            
         }
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "authenticationManagedBean");
-            
+
             long userId = authenticationManagedBean.getUserId();
             setUser(userSessionBean.findUserByUserId(userId));
         } catch (Exception ex) {
@@ -104,7 +104,7 @@ public class ServiceManagedBean implements Serializable {
     public void handleSearch() {
         init();
     }
-    
+
     public void loadSelectedService() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -127,18 +127,22 @@ public class ServiceManagedBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
     }
-    
-    public void loadServicesProvided(){
+
+    public void loadServicesProvided() {
         FacesContext context = FacesContext.getCurrentInstance();
-        try{
+        try {
             this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(user.getUserId());
-        }catch(Exception e){
+        } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
     }
-    
-    public void createService(){
-        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(),serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime);
+
+    public void createService() {
+        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime, packageDuration);
+    }
+
+    public void editService() throws ServiceNotFoundException {
+        serviceSessionBeanLocal.editService(selectedService, serviceTypeInt, collectionTime, returnTime);
     }
 
     public String getServiceName() {
@@ -220,7 +224,7 @@ public class ServiceManagedBean implements Serializable {
     public void setSearchType(String searchType) {
         this.searchType = searchType;
     }
-    
+
     public User getProvider() {
         return provider;
     }
@@ -313,5 +317,17 @@ public class ServiceManagedBean implements Serializable {
 
     public void setServiceDescription(String serviceDescription) {
         this.serviceDescription = serviceDescription;
+    }
+
+    public void onServiceTypeChange() {
+        System.out.println("Service type changed: " + serviceTypeInt);
+    }
+
+    public String getPackageDuration() {
+        return packageDuration;
+    }
+
+    public void setPackageDuration(String packageDuration) {
+        this.packageDuration = packageDuration;
     }
 }
