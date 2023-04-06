@@ -28,8 +28,8 @@ To either host online or expose web services and use that to deploy on localhost
 ### Bookings and Services
 - [x] Users should not be able to book their own services //Amirul
 - [x] Cancel booking as user (only for PENDING AND CONFIRMED) //Amirul
-- [ ] Cards for services in myServices.xhtml //Jun Wei 
-- [ ] addNewService page or modal //Jun Wei / Leeann
+- [x] Cards for services in myServices.xhtml //Jun Wei 
+- [x] addNewService page or modal //Jun Wei / Leeann
 - [ ] search function in myServices.xhtml and myBookings.xhtml... can scrap? //Leeann
 
 ### Forum 
@@ -38,4 +38,4 @@ To either host online or expose web services and use that to deploy on localhost
 
 ### Account 
 - [ ] Portfolio //Leeann
-- [ ] Edit Account //Junwei
+- [x] Edit Account //Junwei
