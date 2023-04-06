@@ -22,7 +22,7 @@ import util.exception.UserNotFoundException;
 @Local
 public interface ServiceSessionBeanLocal {
 
-    public void createNewService(Service service);
+    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime);
 
     public List<Service> getAllServices();
 
@@ -45,5 +45,7 @@ public interface ServiceSessionBeanLocal {
     public List<Service> getServicesByType(ServiceTypeEnum serviceType);
 
     public List<Service> searchServicesWithType(String name, ServiceTypeEnum type);
+
+    public void createNewService(Service service);
     
 }

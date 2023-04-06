@@ -42,6 +42,21 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
+    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime) {
+        User user = em.find(User.class, userId);
+        Service service = new Service();
+        service.setServiceName(name);
+        service.setServiceType(ServiceTypeEnum.values()[serviceType]);
+        service.setServiceCost(cost);
+        service.setServiceDescription(description);
+        service.setEarliestCollectionTime(collectionTime);
+        service.setLatestReturnTime(returnTime);
+        user.getServices().add(service);
+        service.setProvider(user);
+        em.persist(service);
+        em.flush();
+    }
+    @Override
     public void createNewService(Service service) {
         em.persist(service);
         em.flush();

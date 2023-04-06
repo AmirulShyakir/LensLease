@@ -51,6 +51,10 @@ public class ServiceManagedBean implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private User provider;
+    private int serviceTypeInt;
+    private String serviceDescription;
+    private String collectionTime;
+    private String returnTime;
     
     private Service selectedService;
     private List<Review> reviewsForSelectedService;
@@ -131,7 +135,10 @@ public class ServiceManagedBean implements Serializable {
         }catch(Exception e){
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
-        
+    }
+    
+    public void createService(){
+        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(),serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime);
     }
 
     public String getServiceName() {
@@ -274,5 +281,37 @@ public class ServiceManagedBean implements Serializable {
 
     public void setListOfPhotographyServices(List<Service> listOfPhotographyServices) {
         this.listOfPhotographyServices = listOfPhotographyServices;
+    }
+
+    public int getServiceTypeInt() {
+        return serviceTypeInt;
+    }
+
+    public void setServiceTypeInt(int serviceTypeInt) {
+        this.serviceTypeInt = serviceTypeInt;
+    }
+
+    public String getCollectionTime() {
+        return collectionTime;
+    }
+
+    public void setCollectionTime(String collectionTime) {
+        this.collectionTime = collectionTime;
+    }
+
+    public String getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(String returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
 }
