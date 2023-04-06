@@ -88,17 +88,28 @@ h5 {
     text-align: right;
 }
 
+
 @media screen and (min-width: 1001px) {
     .nav-small {
         display: none !important;
     }
 
-    .portfolio-card {
-        margin: 50px 20vw;
-        padding: 50px 3%;
+    .portfolio-left {
+        float: left;
+        margin: 40px 3vw;
+        padding: 50px 3vw;
         background: white;
         border-radius: 9px;
         width: 60vw;
+    }
+
+    .portfolio-right {
+        float: right;
+        margin: 40px 0;
+        padding: 50px 2vw;
+        background: white;
+        border-radius: 9px;
+        width: 30vw;
     }
 
 }
@@ -113,12 +124,22 @@ h5 {
         text-align: right;
     }
 
-    .portfolio-card {
-        margin: 20px 10vw;
+    .portfolio-left {
+        float: top;
+        margin: 50px 5vw;
         padding: 50px 10%;
         background: white;
         border-radius: 9px;
-        width: 80vw
+        width: 90vw;
+    }
+
+    .portfolio-right {
+        float: bottom;
+        margin: 50px 5vw;
+        padding: 50px 2vw;
+        background: white;
+        border-radius: 9px;
+        width: 90vw;
     }
 }
 
