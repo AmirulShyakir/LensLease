@@ -60,7 +60,7 @@ public class userListManagedBean implements Serializable {
             setListOfUsers((List<User>) userSessionBeanLocal.findUserByUsername(getSearchString()));
             getListOfUsers().addAll(userSessionBeanLocal.findUserByUsername(getSearchString()));
         }
-        try {
+        try{
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "authenticationManagedBean");
