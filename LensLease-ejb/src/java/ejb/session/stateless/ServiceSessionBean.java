@@ -128,7 +128,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     public List<Service> searchServices(String name) {
         Query q;
         if (name != null) {
-            q = em.createQuery("SELECT s FROM Service s WHERE AND s.isBanned = false"
+            q = em.createQuery("SELECT s FROM Service s WHERE "
                     + "LOWER(s.serviceName) LIKE :name");
             q.setParameter("name", "%" + name.toLowerCase() + "%");
         } else {

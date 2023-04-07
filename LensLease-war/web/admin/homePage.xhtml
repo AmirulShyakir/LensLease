@@ -24,7 +24,7 @@
                             <div class="flex justify-content-between mb-3 bg-blue-100" >
                                 <div>
                                     <span class="block text-500 font-medium mb-3"><h3 style="margin-top: 4px">Users</h3></span>
-                                    <div class="text-900 font-medium text-xl"><h4 style="margin-bottom: 0px; margin-top: 0px">TODO </h4></div>
+                                    <div class="text-900 font-medium text-xl"><h4 style="margin-bottom: 0px; margin-top: 0px">#{userListManagedBean.listOfUsers.size()} </h4></div>
                                 </div>
                                 <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
                                     <i class="pi pi-users text-blue-500 text-xl"></i>
@@ -88,8 +88,9 @@
                     </div>
                 </div>
             </div>
-            <h2 class="pl-3" id="banRequests"><h:outputText value="Ban Requests"/></h2>
-           
+            <div class="pl-3">
+            <h2  id="banRequests"><h:outputText value="Ban Requests"/></h2>
+            <h3>Unattended Ban Requests</h3>
                 <p:dataTable widgetVar="requestTable"
                     var="banRequest" 
                     value="#{adminDataManagedBean.listOfBanRequests}"
@@ -160,7 +161,7 @@
 
                 </p:column>       
             </p:dataTable>
-
+            </div>
         </div>
            
             

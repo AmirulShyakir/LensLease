@@ -70,14 +70,14 @@ public class ServiceManagedBean implements Serializable {
     public void init() {
          listOfServices = serviceSessionBeanLocal.getAllServices();
         if (getSearchString() == null || getSearchString().equals("")) {
-//            listOfServices = serviceSessionBeanLocal.getAllServices();
+            listOfServices = serviceSessionBeanLocal.getAllServices();
             setListOfEquipmentRental(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.EQUIPMENT_RENTAL));
             setListOfEditingServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTO_EDITING));
             listOfEditingServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEO_EDITING));
             setListOfPhotographyServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTOGRAPHY));
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEOGRAPHY));
         } else {
-//            listOfServices = serviceSessionBeanLocal.getAllServices();
+            listOfServices = serviceSessionBeanLocal.searchServices(searchString);
             listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.PHOTO_EDITING);
             listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.VIDEO_EDITING));
             listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);

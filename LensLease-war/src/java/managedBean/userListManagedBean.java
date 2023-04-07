@@ -44,7 +44,7 @@ public class userListManagedBean implements Serializable {
     private Long userId;
     
     private List<User> listOfUsers;
-    private List<User> usersProvided;
+//    private List<User> usersProvided;
     
     private String searchString;
     private String searchType = "";
@@ -57,19 +57,9 @@ public class userListManagedBean implements Serializable {
         if (getSearchString() == null || getSearchString().equals("")) {
             setListOfUsers(userSessionBeanLocal.getAllUsers());
         } else {
-            setListOfUsers((List<User>) userSessionBeanLocal.findUserByUsername(getSearchString()));
-            getListOfUsers().addAll(userSessionBeanLocal.findUserByUsername(getSearchString()));
+             listOfUsers = userSessionBeanLocal.searchUsersByUsername(getSearchString());  
         }
-        try{
-            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-            AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
-                    .getELResolver().getValue(elContext, null, "authenticationManagedBean");
-            
-            long userId = authenticationManagedBean.getUserId();
-            setUser(userSessionBeanLocal.findUserByUserId(userId));
-        } catch (Exception ex) {
-            Logger.getLogger(CheckoutManagedbean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
     
     public void handleSearch() {
@@ -92,14 +82,14 @@ public class userListManagedBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load user"));
         }
     }
-       public void loadUsersProvided(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        try{
-            this.usersProvided = userSessionBeanLocal.getAllUsers();
-        }catch(Exception e){
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load users"));
-        } 
-       }
+//       public void loadUsersProvided(){
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        try{
+//            this.usersProvided = userSessionBeanLocal.getAllUsers();
+//        }catch(Exception e){
+//            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load users"));
+//        } 
+//       }
 
 
 
@@ -257,16 +247,16 @@ public class userListManagedBean implements Serializable {
     /**
      * @return the usersProvided
      */
-    public List<User> getUsersProvided() {
-        return usersProvided;
-    }
-
-    /**
-     * @param usersProvided the usersProvided to set
-     */
-    public void setUsersProvided(List<User> usersProvided) {
-        this.usersProvided = usersProvided;
-    }
+//    public List<User> getUsersProvided() {
+//        return usersProvided;
+//    }
+//
+//    /**
+//     * @param usersProvided the usersProvided to set
+//     */
+//    public void setUsersProvided(List<User> usersProvided) {
+//        this.usersProvided = usersProvided;
+//    }
 
     /**
      * @return the searchString

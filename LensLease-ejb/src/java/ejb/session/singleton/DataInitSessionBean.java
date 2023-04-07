@@ -90,10 +90,22 @@ public class DataInitSessionBean {
         if (em.find(Service.class, 1l) == null) {
             try {
                 ArrayList<String> photos = new ArrayList();
-                photos.add("/studio-image.jpg");
-
+                photos.add("/resources/images/studio-image.jpg");
+                photos.add("/resources/images/photography-image.jpg");
+                ArrayList<String> photos2 = new ArrayList();
+                photos2.add("/resources/images/photography-image.jpg");
+                photos2.add("/resources/images/studio-image.jpg");
+                ArrayList<String> photos3 = new ArrayList();
+                photos3.add("/resources/images/editing-image.jpg");
+                photos3.add("/resources/images/studio-image.jpg");
+                ArrayList<String> photos4 = new ArrayList();
+                photos4.add("/resources/images/editing2-image.png");
+                photos4.add("/resources/images/studio-image.jpg");
+                ArrayList<String> photos5 = new ArrayList();
+                photos5.add("/resources/images/vertical-photography-image.jpg");
+                photos5.add("/resources/images/studio-image.jpg");
                 //Rentals
-                Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00, photos, false, userSessionBean.findUserByUserId(new Long(1)));
+                Service equipmentRental = new Service("Camera Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 100.00, photos2, false, userSessionBean.findUserByUserId(new Long(1)));
                 equipmentRental.setEarliestCollectionTime("9am");
                 equipmentRental.setLatestReturnTime("10pm");
                 equipmentRental.setPackageDurationHours("Full Day Rental");
@@ -111,7 +123,7 @@ public class DataInitSessionBean {
                 equipmentRental3.setPackageDurationHours("Full Day Rental");
                 equipmentRental3.setServiceDescription("Description SD Card Rental Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service equipmentRental4 = new Service("Lighting Equipment Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 30.00, photos, false, userSessionBean.findUserByUserId(new Long(4)));
+                Service equipmentRental4 = new Service("Lighting Equipment Rental", ServiceTypeEnum.EQUIPMENT_RENTAL, 30.00, photos5, false, userSessionBean.findUserByUserId(new Long(4)));
                 equipmentRental4.setEarliestCollectionTime("7am");
                 equipmentRental4.setLatestReturnTime("11pm");
                 equipmentRental4.setPackageDurationHours("Full Day Rental");
@@ -123,19 +135,19 @@ public class DataInitSessionBean {
                 serviceSessionBeanLocal.createNewService(equipmentRental4);
 
                 //services package
-                Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos, false, userSessionBean.findUserByUserId(new Long(1)));
+                Service photography = new Service("Wedding Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 1000.00, photos2, false, userSessionBean.findUserByUserId(new Long(1)));
                 photography.setPackageDurationHours("6 hours");
                 photography.setServiceDescription("Description Wedding Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service photography2 = new Service("Graduation Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 500.00, photos, false, userSessionBean.findUserByUserId(new Long(2)));
+                Service photography2 = new Service("Graduation Photoshoot", ServiceTypeEnum.PHOTOGRAPHY, 500.00, photos5, false, userSessionBean.findUserByUserId(new Long(2)));
                 photography2.setPackageDurationHours("3 hours");
                 photography2.setServiceDescription("Description Graduation Photoshoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service videography = new Service("Music Video Shoot", ServiceTypeEnum.VIDEOGRAPHY, 2000.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
+                Service videography = new Service("Music Video Shoot", ServiceTypeEnum.VIDEOGRAPHY, 2000.00, photos2, false, userSessionBean.findUserByUserId(new Long(3)));
                 videography.setPackageDurationHours("8 hours");
                 videography.setServiceDescription("Description Music Video Shoot Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service videography2 = new Service("Product Videography", ServiceTypeEnum.VIDEOGRAPHY, 300.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
+                Service videography2 = new Service("Product Videography", ServiceTypeEnum.VIDEOGRAPHY, 300.00, photos5, false, userSessionBean.findUserByUserId(new Long(5)));
                 videography2.setPackageDurationHours("2 hours");
                 videography2.setServiceDescription("Description Product Videography Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
@@ -145,19 +157,19 @@ public class DataInitSessionBean {
                 serviceSessionBeanLocal.createNewService(videography2);
 
                 //editing
-                Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 20.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
+                Service photoEditing = new Service("Photoshop Services", ServiceTypeEnum.PHOTO_EDITING, 20.00, photos3, false, userSessionBean.findUserByUserId(new Long(3)));
                 photoEditing.setPackageDurationHours("1 week");
                 photoEditing.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service photoEditing1 = new Service("Photo ID Touchup", ServiceTypeEnum.PHOTO_EDITING, 5.00, photos, false, userSessionBean.findUserByUserId(new Long(3)));
+                Service photoEditing1 = new Service("Photo ID Touchup", ServiceTypeEnum.PHOTO_EDITING, 5.00, photos4, false, userSessionBean.findUserByUserId(new Long(3)));
                 photoEditing1.setPackageDurationHours("2 days");
                 photoEditing1.setServiceDescription("Description Photo ID Touchup Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service videoEditing = new Service("Davinci Resolve", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
+                Service videoEditing = new Service("Davinci Resolve", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos3, false, userSessionBean.findUserByUserId(new Long(5)));
                 videoEditing.setPackageDurationHours("2 weeks");
                 videoEditing.setServiceDescription("Description Davinci Resolve Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
-                Service videoEditing2 = new Service("Premier Pro", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos, false, userSessionBean.findUserByUserId(new Long(5)));
+                Service videoEditing2 = new Service("Premier Pro", ServiceTypeEnum.VIDEO_EDITING, 200.00, photos4, false, userSessionBean.findUserByUserId(new Long(5)));
                 videoEditing2.setPackageDurationHours("2 weeks");
                 videoEditing2.setServiceDescription("Description Photoshop Services Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 
