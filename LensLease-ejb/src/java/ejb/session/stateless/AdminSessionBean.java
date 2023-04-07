@@ -160,7 +160,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             User complainant = userSessionBeanLocal.findUserByUserId(complainantId);
             Service service = serviceSessionBeanLocal.findServiceByServiceId(serviceId);
             createNewBanRequest(banRequest);
-            banRequest.setService(service);
+            banRequest.setServiceToBan(service);
             service.getBanRequests().add(banRequest);
             banRequest.setComplainant(complainant);
         } catch (Exception e) {
