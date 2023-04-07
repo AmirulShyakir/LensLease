@@ -22,6 +22,7 @@ import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
+import util.exception.ReportNotMadeException;
 import util.exception.ServiceNotFoundException;
 import util.exception.UserNotFoundException;
 
@@ -152,5 +153,20 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         banRequest.setIsAttendedTo(true);
         banRequest.setIsRejected(true);
     }
-
+    
+    @Override
+    public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException {
+        try {
+            User complainant = userSessionBeanLocal.findUserByUserId(complainantId);
+            Service service = serviceSessionBeanLocal.findServiceByServiceId(serviceId);
+            createNewBanRequest(banRequest);
+            banRequest.setService(service);
+            service.getBanRequests().add(banRequest);
+            banRequest.setComplainant(complainant);
+        } catch (Exception e) {
+            throw new ReportNotMadeException("Report not made as " + e.getMessage());
+        }
+       
+        
+    }
 }

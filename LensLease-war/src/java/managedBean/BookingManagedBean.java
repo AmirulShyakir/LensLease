@@ -122,6 +122,14 @@ public class BookingManagedBean implements Serializable {
         this.upcomingBookings = bookingSessionBean.getConfirmedBookingsAsRequester(user);
     }
     
+    public String setBookingAsCancelled(Booking booking){
+        bookingSessionBean.setBookingAsCancelled(booking);
+        System.out.println("Booking has been cancelled " + booking.getBookingStatus());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Confirmed", "You have cancelled booking");
+        FacesContext.getCurrentInstance().addMessage(null, message);    
+        return "myBookings.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+    
     public User getUser() {
         return user;
     }
@@ -262,5 +270,4 @@ public class BookingManagedBean implements Serializable {
     public void setSelectedBookingId(long selectedBookingId) {
         this.selectedBookingId = selectedBookingId;
     }
-    
 }

@@ -7,9 +7,12 @@ To either host online or expose web services and use that to deploy on localhost
 ## To do list
 ### Ban 
 - [X] BanRequest entity should have booking attribute (so admin can see which booking was this ban request for service from and see the User booking.customer that is the complainant) //Jon/Adriel
-- [X] Banned services should not be visible on landing page (should not be bookable via individiualServicePage.xhtml with serviceId appended to link) //Jon/Adriel
-- [ ] Banned users should not be able to book or accept bookings //Amirul / Jun Wei
-- [ ] Ban request for service function as a button "Report service" in individualServicePage.xhtml //Amirul
+- [X] Banned services should not be visible on landing page //Jon/Adriel
+- [x] Banned users should not be able to book services in checkout.xhtml //Amirul 
+- [x] Banned services should not be bookable in checkout.xhtml //Amirul 
+- [x] Services which provider is banned should not be bookable in checkout.xhtml //Amirul 
+- [ ] Banned users should not be able to accept requests // Jun Wei
+- [x] Ban request for service function as a button "Report service" in individualServicePage.xhtml //Amirul
 - [ ] Ban request for user function as a button "Report user" within the card in myBookings.xhtml -> All bookings (only for CONFIRMED and TORATE and COMPLETED status)
 
 ### Admin 
@@ -23,9 +26,10 @@ To either host online or expose web services and use that to deploy on localhost
 - [X] welcome page for all users should be homePage (logged out version of landingPage.xhtml). header/navigation bar for logged out users to only have sign in option that leads to login page. logged out users upon clicking any service should have popup alert to tell them to log in //Jon / Adriel
 
 ### Bookings and Services
-- [ ] Cancel booking as user (only for PENDING AND CONFIRMED) //Amirul
-- [ ] Cards for services in myServices.xhtml //Jun Wei 
-- [ ] addNewService page or modal //Jun Wei / Leeann
+- [x] Users should not be able to book their own services //Amirul
+- [x] Cancel booking as user (only for PENDING AND CONFIRMED) //Amirul
+- [x] Cards for services in myServices.xhtml //Jun Wei 
+- [x] addNewService page or modal //Jun Wei / Leeann
 - [ ] search function in myServices.xhtml and myBookings.xhtml... can scrap? //Leeann
 
 ### Forum 
@@ -35,4 +39,4 @@ To either host online or expose web services and use that to deploy on localhost
 
 ### Account 
 - [ ] Portfolio //Leeann
-- [ ] Edit Account //Leeann
+- [x] Edit Account //Junwei
