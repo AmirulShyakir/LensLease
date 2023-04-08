@@ -46,7 +46,7 @@ public class User implements Serializable {
     private List<Service> services;
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userToBan")
     private List<BanRequest> banRequests;
 
     public User() {

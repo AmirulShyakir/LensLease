@@ -40,6 +40,11 @@ public interface AdminSessionBeanLocal {
 
     public void acceptBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
 
+    
+
+    public void rejectBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
+
+    public List<BanRequest> getPastBanRequests();
     public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException;
     
 }

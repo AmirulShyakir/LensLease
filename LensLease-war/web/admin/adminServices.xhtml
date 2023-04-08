@@ -18,7 +18,7 @@
 
                     <span class="ui-input-icon-left">
                         <i class="pi pi-search" />
-                        <p:inputText placeholder="Search" value="#{serviceManagedBean.searchString}" style="width: 450px; border-radius: 20px;">
+                        <p:inputText placeholder="Search Name" value="#{serviceManagedBean.searchString}" style="width: 450px; border-radius: 20px;">
                             <p:ajax event="keyup" update="form" listener="#{serviceManagedBean.handleSearch}" />  
                         </p:inputText>
                     </span>
@@ -30,7 +30,10 @@
                              var="service" 
                              value="#{serviceManagedBean.listOfServices}"
                              >
-                    <p:column headerText="Service Name" sortBy="#{service.serviceName}" sortOrder="#{service.serviceName}" >
+                    <p:column headerText="Id" width="5rem">
+                        <h:outputText value="#{service.serviceId}" />
+                    </p:column>
+                    <p:column headerText="Service Name"  >
                                 #{service.serviceName}
                     </p:column> 
                     <p:column headerText="Service Type" sortBy="#{service.serviceType.toString()}">

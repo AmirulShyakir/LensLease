@@ -79,8 +79,9 @@ public class ServiceManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+         listOfServices = serviceSessionBeanLocal.getAllServices();
         if (getSearchString() == null || getSearchString().equals("")) {
-            setListOfServices(serviceSessionBeanLocal.getAllServices());
+            listOfServices = serviceSessionBeanLocal.getAllServices();
             setListOfEquipmentRental(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.EQUIPMENT_RENTAL));
             setListOfEditingServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTO_EDITING));
             listOfEditingServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEO_EDITING));
@@ -93,8 +94,7 @@ public class ServiceManagedBean implements Serializable {
             listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEOGRAPHY));
             listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.EQUIPMENT_RENTAL);
-
-            
+          
         }
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
