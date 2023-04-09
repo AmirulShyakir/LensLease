@@ -39,9 +39,6 @@ public class BanRequest implements Serializable {
     private User userToBan;
     @ManyToOne
     private Booking booking;
-    private User user;
-    @OneToOne
-    private User complainant;
 
     public BanRequest() {
     }
@@ -170,19 +167,4 @@ public class BanRequest implements Serializable {
     public void setIsRejected(boolean isRejected) {
         this.isRejected = isRejected;
     }
-
-    /**
-     * @return the complainant
-     */
-    public User getComplainant() {
-        return complainant;
-    }
-
-    /**
-     * @param complainant the complainant to set
-     */
-    public void setComplainant(User complainant) {
-        this.complainant = complainant;
-    }
-    
 }

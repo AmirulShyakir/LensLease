@@ -10,6 +10,7 @@ import entity.BanRequest;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AdminNotFoundException;
+import util.exception.BanRequestAlreadyExistException;
 import util.exception.InvalidLoginException;
 import util.exception.ReportNotMadeException;
 import util.exception.ServiceNotFoundException;
@@ -45,6 +46,10 @@ public interface AdminSessionBeanLocal {
     public void rejectBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
 
     public List<BanRequest> getPastBanRequests();
-    public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException;
+    public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException, BanRequestAlreadyExistException ;
+
+    public void submitNewBookingBanRequestAsUser(BanRequest report, long bookingId) throws ServiceNotFoundException, BanRequestAlreadyExistException;
+
+    public void submitNewBookingBanRequestAsProvider(BanRequest report, long bookingId) throws ServiceNotFoundException, BanRequestAlreadyExistException;
     
 }

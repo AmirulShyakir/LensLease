@@ -170,8 +170,9 @@ public class ServiceManagedBean implements Serializable {
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "landingPage.xhtml?faces-redirect=true";
         } catch (Exception ex) {
-            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
-            return "reportService.xhtml";
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "landingPage.xhtml?faces-redirect=true";
         }
     }
 
@@ -330,6 +331,7 @@ public class ServiceManagedBean implements Serializable {
      */
     public void setReportDescription(String reportDescription) {
         this.reportDescription = reportDescription;
+    }
 
     public int getServiceTypeInt() {
         return serviceTypeInt;
