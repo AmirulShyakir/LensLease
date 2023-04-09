@@ -57,6 +57,7 @@ public class ServiceManagedBean implements Serializable {
     private String collectionTime;
     private String returnTime;
     private String packageDuration;
+    private String imageURL;
 
     private Service selectedService;
     private List<Review> reviewsForSelectedService;
@@ -138,11 +139,11 @@ public class ServiceManagedBean implements Serializable {
     }
 
     public void createService() {
-        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime, packageDuration);
+        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime, packageDuration, imageURL);
     }
 
     public void editService() throws ServiceNotFoundException {
-        serviceSessionBeanLocal.editService(selectedService, serviceTypeInt, collectionTime, returnTime);
+        serviceSessionBeanLocal.editService(selectedService);
     }
 
     public String getServiceName() {
@@ -329,5 +330,13 @@ public class ServiceManagedBean implements Serializable {
 
     public void setPackageDuration(String packageDuration) {
         this.packageDuration = packageDuration;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }
