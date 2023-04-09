@@ -29,6 +29,7 @@ import javax.ejb.EJB;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import util.exception.ServiceNotFoundException;
 
 /**
  *
@@ -62,7 +63,13 @@ public class ServiceManagedBean implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private User provider;
-    
+    private int serviceTypeInt;
+    private String serviceDescription;
+    private String collectionTime;
+    private String returnTime;
+    private String packageDuration;
+    private String imageURL;
+
     private Service selectedService;
     private List<Review> reviewsForSelectedService;
     private List<Service> listOfServices;
@@ -73,6 +80,7 @@ public class ServiceManagedBean implements Serializable {
    
     private String reportDescription;
     private Long serviceId; 
+
 
     private String searchString;
     private String searchType = "";
@@ -89,18 +97,17 @@ public class ServiceManagedBean implements Serializable {
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEOGRAPHY));
         } else {
             listOfServices = serviceSessionBeanLocal.searchServices(searchString);
-            listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.PHOTO_EDITING);
-            listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.VIDEO_EDITING));
+            listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTO_EDITING);
+            listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEO_EDITING));
             listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEOGRAPHY));
             listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.EQUIPMENT_RENTAL);
-          
         }
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "authenticationManagedBean");
-            
+
             long userId = authenticationManagedBean.getUserId();
             setUser(userSessionBean.findUserByUserId(userId));
         } catch (Exception ex) {
@@ -111,7 +118,7 @@ public class ServiceManagedBean implements Serializable {
     public void handleSearch() {
         init();
     }
-    
+
     public void loadSelectedService() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -134,15 +141,22 @@ public class ServiceManagedBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
     }
-    
-    public void loadServicesProvided(){
+
+    public void loadServicesProvided() {
         FacesContext context = FacesContext.getCurrentInstance();
-        try{
+        try {
             this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(user.getUserId());
-        }catch(Exception e){
+        } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
-        
+    }
+
+    public void createService() {
+        serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime, packageDuration, imageURL);
+    }
+
+    public void editService() throws ServiceNotFoundException {
+        serviceSessionBeanLocal.editService(selectedService);
     }
     
     public String submitReportService() {
@@ -156,8 +170,9 @@ public class ServiceManagedBean implements Serializable {
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "landingPage.xhtml?faces-redirect=true";
         } catch (Exception ex) {
-            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
-            return "reportService.xhtml";
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "landingPage.xhtml?faces-redirect=true";
         }
     }
 
@@ -240,7 +255,7 @@ public class ServiceManagedBean implements Serializable {
     public void setSearchType(String searchType) {
         this.searchType = searchType;
     }
-    
+
     public User getProvider() {
         return provider;
     }
@@ -303,6 +318,7 @@ public class ServiceManagedBean implements Serializable {
         this.listOfPhotographyServices = listOfPhotographyServices;
     }
 
+
     /**
      * @return the reportDescription
      */
@@ -315,5 +331,58 @@ public class ServiceManagedBean implements Serializable {
      */
     public void setReportDescription(String reportDescription) {
         this.reportDescription = reportDescription;
+    }
+
+    public int getServiceTypeInt() {
+        return serviceTypeInt;
+    }
+
+    public void setServiceTypeInt(int serviceTypeInt) {
+        this.serviceTypeInt = serviceTypeInt;
+    }
+
+    public String getCollectionTime() {
+        return collectionTime;
+    }
+
+    public void setCollectionTime(String collectionTime) {
+        this.collectionTime = collectionTime;
+    }
+
+    public String getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(String returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
+    }
+
+    public void onServiceTypeChange() {
+        System.out.println("Service type changed: " + serviceTypeInt);
+    }
+
+    public String getPackageDuration() {
+        return packageDuration;
+    }
+
+    public void setPackageDuration(String packageDuration) {
+        this.packageDuration = packageDuration;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+
     }
 }

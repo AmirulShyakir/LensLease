@@ -52,5 +52,12 @@ public interface BookingSessionBeanLocal {
     public void submitBookingRequest(Booking booking, long serviceId, long userId) throws ServiceNotFoundException, UserNotFoundException, BookingNotFoundException, BookingNotSubmittedException, UserIsBannedException;
 
     public void setBookingAsCancelled(Booking booking);
+
+    public void setBookingAsToRate(Booking booking);
+
+    public void setBookingAsRejected(Booking booking);
+
+    public void setBookingAsConfirmed(Booking booking);
+
     
 }

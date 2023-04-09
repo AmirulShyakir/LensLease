@@ -5,15 +5,17 @@
  */
 package ejb.session.stateless;
 
+import entity.Portfolio;
 import entity.PortfolioClient;
-import entity.PortfolioPost;
 import entity.PortfolioSkill;
 import entity.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.IncompleteFieldsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -29,82 +31,88 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     @PersistenceContext(unitName = "LensLease-ejbPU")
     private EntityManager em;
 
-    public void persist(Object object) {
-        em.persist(object);
-    }
-    
     @Override
-    public void createPortfolio(User user){
-        PortfolioClient portfolioClient = new PortfolioClient();
-        em.persist(portfolioClient);
-        portfolioClient.getUsers().add(user);
-        PortfolioSkill portfolioSkill = new PortfolioSkill();
-        em.persist(portfolioSkill);
-        portfolioSkill.getUsers().add(user);
-        PortfolioPost portfolioPost = new PortfolioPost();
-        em.persist(portfolioPost);
-        portfolioPost.setUser(user);
-        
+    public Portfolio findPortfolioByUserId(Long userId) throws UserNotFoundException {
+        try {
+            User u = userSessionBean.findUserByUserId(userId);
+            return u.getPortfolio();
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void updateDescription(Portfolio portfolio, String s) {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+        p.setDescription(s);
+        System.out.println(p.getDescription());
+    }
+
+    @Override
+    public Portfolio createClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+        if (client.getClientName() != null && client.getClientLink() != null) {
+            em.persist(client);
+            client.setPortfolio(p);
+            p.getPortfolioClients().add(client);
+            em.flush();
+            return p;
+        } else {
+            throw new IncompleteFieldsException("Please complete all fields to create client");
+        }
+    }
+
+    @Override
+    public void removeClient(PortfolioClient client) {
+        Portfolio portfolio = client.getPortfolio();
+        portfolio.getPortfolioClients().remove(client);
+        em.remove(client);
+    }
+
+    @Override
+    public Portfolio updateSkills(Portfolio portfolio, List<String> skillString) {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+
+        if (skillString.isEmpty()) {
+            p.setPortfolioSkills(new ArrayList<>());
+        }
+
+        //Remove duplicates
+        List<PortfolioSkill> current = p.getPortfolioSkills();
+
+        if (current.isEmpty()) {
+            for (String s : skillString) {
+                PortfolioSkill skill = new PortfolioSkill(s);
+                em.persist(skill);
+                skill.setPortfolio(p);
+                p.getPortfolioSkills().add(skill);
+            }
+            return p;
+        }
+
+        for (String s : skillString) {
+            for (PortfolioSkill k : current) {
+                if (!k.getSkillName().equals(s)) {
+                    PortfolioSkill skill = new PortfolioSkill(s);
+                    em.persist(skill);
+                    skill.setPortfolio(p);
+                    p.getPortfolioSkills().add(skill);
+                }
+            }
+        }
+
         em.flush();
+        return p;
     }
-    
+
     @Override
-    public List<PortfolioClient> findPortfolioClientsByUserId(Long userId) throws UserNotFoundException{
-        User user = userSessionBean.findUserByUserId(userId);
-        return user.getPortfolioClients();
+    public List<String> getPhotos(Portfolio portfolio) {
+        return portfolio.getImagesUrl();
     }
-    
+
     @Override
-    public List<PortfolioSkill> findPortfolioSkillsByUserId(Long userId) throws UserNotFoundException{
-        User user = userSessionBean.findUserByUserId(userId);
-        return user.getPortfolioSkills();
+    public void addPhoto(Portfolio portfolio, String photoURL) {
+        portfolio.getImagesUrl().add(photoURL);
     }
-    
-    @Override
-    public List<PortfolioPost> findPortfolioPostsByUserId(Long userId) throws UserNotFoundException{
-        User user = userSessionBean.findUserByUserId(userId);
-        return user.getPortfolioPosts();
-    }
-    
-    @Override
-    public void uploadPortfolioPost(PortfolioPost portfolioPost, User user){
-        em.persist(portfolioPost);
-        user.getPortfolioPosts().add(portfolioPost);
-        portfolioPost.setUser(user);
-        em.flush();
-    }
-    
-    @Override
-    public void hidePortfolioPost(Long postId){
-        PortfolioPost post = em.find(PortfolioPost.class, postId);
-        post.setIsDisplayed(false);
-    }
-    
-    @Override
-    public void addPortfolioClient(PortfolioClient portfolioClient, User user){
-        em.persist(portfolioClient);
-        user.getPortfolioClients().add(portfolioClient);
-        portfolioClient.getUsers().set(0, user);
-        em.flush();
-    }
-    
-    @Override
-    public void hidePortfolioClient(Long portfolioClientId){
-        PortfolioClient portfolioClient = em.find(PortfolioClient.class, portfolioClientId);
-        portfolioClient.setIsDisplayed(false);
-    }
-    
-    @Override
-    public void addPortfolioSkill(PortfolioSkill portfolioSkill, User user){
-        em.persist(portfolioSkill);
-        user.getPortfolioSkills().add(portfolioSkill);
-        portfolioSkill.getUsers().set(0, user);
-        em.flush();
-    }
-    
-    @Override
-    public void hidePortfolioSkill(Long portfolioSkillId){
-        PortfolioSkill skill = em.find(PortfolioSkill.class, portfolioSkillId);
-        skill.setIsDisplayed(false);
-    }
+
 }

@@ -6,34 +6,39 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
- * @author Amirul
+ * @author leeannong
  */
 @Entity
-public class PortfolioPost implements Serializable {
+public class Portfolio implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long portfolioPostId;
+    private Long portfolioId;
     private String title;
     private String description;
     private String thumbnailUrl;
     private List<String> imagesUrl;
-    private Boolean isDisplayed;
-    
-    @ManyToOne
-    private User user;
 
-    public PortfolioPost() {
-        isDisplayed = true;
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioSkill> portfolioSkills;
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioClient> portfolioClients;
+
+    public Portfolio() {
+        this.imagesUrl = new ArrayList<>();
+        this.portfolioSkills = new ArrayList<>();
+        this.portfolioClients = new ArrayList<>();
     }
     
     /**
@@ -93,29 +98,29 @@ public class PortfolioPost implements Serializable {
     }
 
 
-    public Long getPortfolioPostId() {
-        return portfolioPostId;
+    public Long getPortfolioId() {
+        return portfolioId;
     }
 
-    public void setPortfolioPostId(Long portfolioPostId) {
-        this.portfolioPostId = portfolioPostId;
+    public void setPortfolioId(Long portfolioId) {
+        this.portfolioId = portfolioId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (portfolioPostId != null ? portfolioPostId.hashCode() : 0);
+        hash += (portfolioId != null ? portfolioId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the portfolioPostId fields are not set
-        if (!(object instanceof PortfolioPost)) {
+        // TODO: Warning - this method won't work in the case the portfolioId fields are not set
+        if (!(object instanceof Portfolio)) {
             return false;
         }
-        PortfolioPost other = (PortfolioPost) object;
-        if ((this.portfolioPostId == null && other.portfolioPostId != null) || (this.portfolioPostId != null && !this.portfolioPostId.equals(other.portfolioPostId))) {
+        Portfolio other = (Portfolio) object;
+        if ((this.portfolioId == null && other.portfolioId != null) || (this.portfolioId != null && !this.portfolioId.equals(other.portfolioId))) {
             return false;
         }
         return true;
@@ -123,29 +128,23 @@ public class PortfolioPost implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PortfolioPost[ id=" + portfolioPostId + " ]";
+        return "entity.PortfolioPost[ id=" + portfolioId + " ]";
     }
 
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
+    public List<PortfolioSkill> getPortfolioSkills() {
+        return portfolioSkills;
     }
 
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    public Boolean isDisplayed() {
-        return isDisplayed;
+    public void setPortfolioSkills(List<PortfolioSkill> portfolioSkills) {
+        this.portfolioSkills = portfolioSkills;
     }
 
-    public void setIsDisplayed(Boolean isDisplayed) {
-        this.isDisplayed = isDisplayed;
+    public List<PortfolioClient> getPortfolioClients() {
+        return portfolioClients;
+    }
+
+    public void setPortfolioClients(List<PortfolioClient> portfolioClients) {
+        this.portfolioClients = portfolioClients;
     }
     
 }

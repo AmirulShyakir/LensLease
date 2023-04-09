@@ -6,13 +6,11 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -25,14 +23,11 @@ public class PortfolioSkill implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioSkillId;
     private String skillName;
-    private Boolean isDisplayed;
     
-    @ManyToMany(mappedBy = "portfolioSkills")
-    private List<User> users;
+    @ManyToOne
+    private Portfolio portfolio;
 
     public PortfolioSkill() {
-        isDisplayed = true;
-        this.users = new ArrayList<User>();
     }
 
     public PortfolioSkill(String skillName) {
@@ -86,26 +81,12 @@ public class PortfolioSkill implements Serializable {
         return "entity.PortfolioSkill[ id=" + getPortfolioSkillId() + " ]";
     }
 
-    /**
-     * @return the users
-     */
-    public List<User> getUsers() {
-        return users;
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
-    /**
-     * @param users the users to set
-     */
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-    
-    public Boolean isDisplayed() {
-        return isDisplayed;
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 
-    public void setIsDisplayed(Boolean isDisplayed) {
-        this.isDisplayed = isDisplayed;
-    }
-    
 }
