@@ -6,6 +6,7 @@
 package managedBean;
 
 import ejb.session.stateless.ForumSessionBeanLocal;
+import entity.ForumReply;
 import entity.ForumTopic;
 import entity.ForumTopicTagEnum;
 import entity.User;
@@ -39,6 +40,7 @@ public class ForumManagedBean implements Serializable{
     private User poster;
     private List<ForumTopicTagEnum> tags;
     private Date dateCreated;
+    private List<ForumReply> replies;
     
     private ForumTopic selectedForumTopic;
     private List<ForumTopic> listOfForumTopics;
@@ -70,6 +72,7 @@ public class ForumManagedBean implements Serializable{
             poster = this.selectedForumTopic.getPoster();
             tags = this.selectedForumTopic.getTags();
             dateCreated = this.selectedForumTopic.getDateCreated();
+            replies = this.selectedForumTopic.getReplies();
             System.out.println("Going to Forum topic page with selected topic: " + topicName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
@@ -228,6 +231,20 @@ public class ForumManagedBean implements Serializable{
      */
     public void setSearchType(String searchType) {
         this.searchType = searchType;
+    }
+
+    /**
+     * @return the replies
+     */
+    public List<ForumReply> getReplies() {
+        return replies;
+    }
+
+    /**
+     * @param replies the replies to set
+     */
+    public void setReplies(List<ForumReply> replies) {
+        this.replies = replies;
     }
     
 }
