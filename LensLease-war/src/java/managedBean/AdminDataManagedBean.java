@@ -12,6 +12,7 @@ import entity.User;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -47,13 +48,23 @@ public class AdminDataManagedBean implements Serializable{
     private Date banRequestDate;
     private Service banService;
     private User banUser;
+    
     private List<BanRequest> listOfBanRequests;
+    private List<BanRequest> listOfPastBanRequests;
     private BanRequest selectedBanRequest;
+       private TimeZone timeZone;
     
     @PostConstruct
     public void init() {
             listOfBanRequests = adminSessionBeanLocal.getAllBanRequests();
+            setListOfPastBanRequests(adminSessionBeanLocal.getPastBanRequests());
+
        
+    }
+    
+    public TimeZone getTimeZome() {
+        timeZone = TimeZone.getDefault();
+        return timeZone;
     }
 
     public void handleSearch() {
@@ -66,8 +77,8 @@ public class AdminDataManagedBean implements Serializable{
             this.selectedBanRequest = adminSessionBeanLocal.findBanRequestById(banRequestId);
             banDescription = this.selectedBanRequest.getDescription();
             banRequestDate = this.selectedBanRequest.getRequestDate();
-            banService = this.selectedBanRequest.getService();
-//            provider = this.selectedBanRequest.getProvider();
+            banService = this.selectedBanRequest.getServiceToBan();
+            banUser = this.selectedBanRequest.getUserToBan();
 //            System.out.println("Going to Individual service page with selected service: " + serviceName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Ban Request"));
@@ -78,8 +89,22 @@ public class AdminDataManagedBean implements Serializable{
         try {
             adminSessionBeanLocal.acceptBanRequest(selectedBanRequest.getBanRequestId());
         } catch (UserNotFoundException | ServiceNotFoundException ex) {
-            Logger.getLogger(AdminDataManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, message);
         }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ban Request Accepted", "Successfully attended to");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void rejectBanRequest() {
+        try {
+            adminSessionBeanLocal.rejectBanRequest(selectedBanRequest.getBanRequestId());
+        } catch (UserNotFoundException | ServiceNotFoundException ex) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ban Request Accepted", "Successfully attended to");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     public Long getBanRequestId() {
@@ -138,5 +163,14 @@ public class AdminDataManagedBean implements Serializable{
     public void setBanUser(User banUser) {
         this.banUser = banUser;
     }
+
+    public List<BanRequest> getListOfPastBanRequests() {
+        return listOfPastBanRequests;
+    }
+
+    public void setListOfPastBanRequests(List<BanRequest> listOfPastBanRequests) {
+        this.listOfPastBanRequests = listOfPastBanRequests;
+    }
+
     
 }

@@ -38,6 +38,20 @@
                 </h:form>
             </div>
         </div>
+
+        <div>
+            <h:form>
+                <p:menubar>
+                    <p:menuitem value="Home" icon="pi pi-fw pi-home" url="landingPage.xhtml" style="padding-right: 2rem"/>
+                    <p:menuitem value="My Account" icon="pi pi-fw pi-user" url="myServices.xhtml" style="padding-right: 2rem"/>
+                    <f:facet name="options">
+                        <p:commandButton value="Logout" action="#{authenticationManagedBean.logout}" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" style="background-color: lightgrey; border-color: lightgrey"/>
+                    </f:facet>
+                </p:menubar>
+            </h:form>
+        </div>
+        <div class="m-4">
+
         <div class="contentbody grid" style="border-radius: 9px; padding: 0px 0px; padding-top:100px;">
             <ui:insert name="content">Content</ui:insert>  
         </div>

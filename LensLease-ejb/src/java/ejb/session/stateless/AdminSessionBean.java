@@ -22,6 +22,7 @@ import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
+import util.exception.ReportNotMadeException;
 import util.exception.ServiceNotFoundException;
 import util.exception.UserNotFoundException;
 
@@ -102,7 +103,14 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
     @Override
     public List<BanRequest> getAllBanRequests() {
-        Query query = em.createQuery("SELECT b FROM BanRequest b");
+        Query query = em.createQuery("SELECT b FROM BanRequest b WHERE b.isAttendedTo = false");
+        return query.getResultList();
+    }
+   
+    
+    @Override
+    public List<BanRequest> getPastBanRequests() {
+        Query query = em.createQuery("SELECT b FROM BanRequest b WHERE b.isAttendedTo = true");
         return query.getResultList();
     }
     
@@ -124,17 +132,41 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     @Override
     public void acceptBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException{
         BanRequest banRequest= findBanRequestById(banRequestId);
-        Service service = banRequest.getService();
+        Service service = banRequest.getServiceToBan();
         User user;
         if (service == null) {
-            user = banRequest.getUser();
+            user = banRequest.getUserToBan();
             User userToBan = userSessionBeanLocal.findUserByUserId(user.getUserId());
             userToBan.setIsBanned(true);
         } else {
             Service serviceToBan = serviceSessionBeanLocal.findServiceByServiceId(service.getServiceId());
             serviceToBan.setIsBanned(true);
         }  
-        em.remove(banRequest);
+        banRequest.setIsAttendedTo(true);
+        banRequest.setIsRejected(false);
     }
+    
+    @Override
+    public void rejectBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException {
+        BanRequest banRequest = findBanRequestById(banRequestId);
 
+        banRequest.setIsAttendedTo(true);
+        banRequest.setIsRejected(true);
+    }
+    
+    @Override
+    public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException {
+        try {
+            User complainant = userSessionBeanLocal.findUserByUserId(complainantId);
+            Service service = serviceSessionBeanLocal.findServiceByServiceId(serviceId);
+            createNewBanRequest(banRequest);
+            banRequest.setServiceToBan(service);
+            service.getBanRequests().add(banRequest);
+            banRequest.setComplainant(complainant);
+        } catch (Exception e) {
+            throw new ReportNotMadeException("Report not made as " + e.getMessage());
+        }
+       
+        
+    }
 }

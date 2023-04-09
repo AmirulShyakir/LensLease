@@ -40,10 +40,11 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy = "userToBan")
+    private List<BanRequest> banRequests;
     @OneToOne
     private Portfolio portfolio;
-    @OneToMany(mappedBy = "user")
-    private List<BanRequest> banRequests;
+    
 
 
     public User() {

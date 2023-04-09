@@ -48,7 +48,7 @@ public class Service implements Serializable {
     
     @ManyToOne
     private User provider;
-    @OneToMany(mappedBy = "service")
+    @OneToMany(mappedBy = "serviceToBan")
     private List<BanRequest> banRequests;
     @OneToMany(mappedBy = "service")
     private List<Booking> bookings;

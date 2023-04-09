@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.AdminNotFoundException;
 import util.exception.InvalidLoginException;
+import util.exception.ReportNotMadeException;
 import util.exception.ServiceNotFoundException;
 import util.exception.UserNotFoundException;
 
@@ -38,5 +39,12 @@ public interface AdminSessionBeanLocal {
     public BanRequest findBanRequestById(Long banRequestId);
 
     public void acceptBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
+
+    
+
+    public void rejectBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
+
+    public List<BanRequest> getPastBanRequests();
+    public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException;
     
 }

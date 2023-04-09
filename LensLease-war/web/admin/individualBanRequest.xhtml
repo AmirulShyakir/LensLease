@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./../adminDefault.xhtml">
+
+    <ui:define name="title">
+        Ban Request Details | LensLease Admin
+    </ui:define>
+
+    <ui:define name="content">
+        <f:metadata>
+            <!-- to get the cId and bind it to a cId in managed bean -->
+            <f:viewParam name="banRequestId" value="#{adminDataManagedBean.banRequestId}" />
+            <!-- load the selected customer -->
+            <f:event type="preRenderView" listener="#{adminDataManagedBean.loadSelectedBanRequest}"/>
+        </f:metadata>
+        <h:form>
+            <p:growl id="message" showDetail="true"/>
+            <p:commandButton icon="pi pi-arrow-left" value="Back" styleClass="ui-button-flat ml-3" action="/admin/homePage.xhtml?faces-redirect=true" />
+            <div class="grid px-8" style="min-height: 60VH">
+                
+                <div class="col-12 lg:col-8 px-8 ">
+                    <div class="font-medium text-3xl text-900 mb-3"><h2 class='mt-0'>Ban Request Details</h2></div>
+                    <div class="text-500 mb-5"> Ban Request Details for Request ID #{adminDataManagedBean.selectedBanRequest.banRequestId} :</div>
+                    <ul class="list-none p-0 m-0">
+                       
+                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium">
+                                <h5 class="my-0">
+                                    <h:outputText value="Service Id: " rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                                    <h:outputText value="User Id: " rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                                </h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 ">
+                                <h5 class="my-0">
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.serviceId}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.userId}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                                </h5>
+                            </div>
+                        </li>
+                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium">
+                                <h5 class="my-0">
+                                    <h:outputText value="Service Name: " rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                                    <h:outputText value="Username: " rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                                </h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 ml-4">
+                                <h5 class="my-0">
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.serviceName}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.username}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                                </h5>
+                            </div>
+                        </li>
+                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-8 md:w-2 font-medium"><h5 class="my-0">Number of Previous Bans:</h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 ml-4">
+                                <h5 class="my-0">
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.banRequests.size()}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.banRequests.size()}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
+                                </h5>
+                            </div>                        
+                        </li>
+                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium"><h5 class="my-0">Complaint Reason:</h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                                <h5 class="my-0">
+                                    #{adminDataManagedBean.selectedBanRequest.description}
+                                </h5>
+                            </div>                        
+                        </li>
+                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium"><h5 class="my-0">Complaint By:</h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1  ml-4">
+                                <h5 class="my-0">
+                                    #{adminDataManagedBean.selectedBanRequest.complainer.username}
+                                </h5>
+                            </div>                        
+                        </li>
+                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium"><h5 class="my-0">Request Date: </h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1  ml-4">
+                                <h5 class="my-0">
+                                    <h:outputText value="#{adminDataManagedBean.selectedBanRequest.requestDate}">
+                                        <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="#{adminDataManagedBean.timeZome}"/>
+                                    </h:outputText>
+                                </h5></div>
+                        </li>
+                        
+                        
+<!--                        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium"><h5 class="my-0">
+                                    <h:outputText value="Service Id: " rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/></h5></div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                                <h5 class="my-0">#{adminDataManagedBean.selectedBanRequest.userToBan.username}</h5>
+                            </div>
+                        </li>
+                        <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+                            <div class="text-500 w-6 md:w-2 font-medium">Plot</div>
+                            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
+                                A group of professional bank robbers start to feel the heat from police
+                                when they unknowingly leave a clue at their latest heist.</div>
+                            <div class="w-6 md:w-2 flex justify-content-end">
+                                <button label="Edit" icon="pi pi-pencil" class="p-button-text"></button>
+                            </div>
+                        </li>-->
+                    </ul>
+                    <br></br><br></br>
+                    <p:commandButton value="Accept Ban Request" icon="pi pi-check" actionListener="#{adminDataManagedBean.acceptBanRequest}" action="/admin/homePage.xhtml?faces-redirect=true"  update="message" class="mr-3" rendered="#{!adminDataManagedBean.selectedBanRequest.isAttendedTo}"> 
+                        <p:confirm header="Confirmation" message="Are you sure you want to accept this ban request?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Reject Ban Request" icon="pi pi-times" actionListener="#{adminDataManagedBean.rejectBanRequest}" action="/admin/homePage.xhtml?faces-redirect=true"  rendered="#{!adminDataManagedBean.selectedBanRequest.isAttendedTo}">
+                        <p:confirm header="Confirmation" message="Are you sure you want to reject this ban request?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+                    </p:confirmDialog>
+                </div>
+
+                <div class="col-12 lg:col-4" >
+                    <div class="p-3" >
+                        <h:panelGroup rendered="#{adminDataManagedBean.selectedBanRequest.booking != null}">
+                            <div class="border-1 p-4">
+                            <h2>Booking Details</h2>
+                            <h5>
+                                <h:outputText value="Booking Id: " />
+                                <h:outputText value="#{adminDataManagedBean.selectedBanRequest.booking.bookingId}"/>
+                            </h5>
+                            <h5>
+                                <h:outputText value="Customer Username: "/>
+                                <h:outputText value="#{adminDataManagedBean.selectedBanRequest.booking.customer.username}"/>
+                            </h5>
+                            <h5>
+                                <h:outputText value="Booking Status: "/>
+                                <h:outputText value="#{adminDataManagedBean.selectedBanRequest.booking.bookingStatus.toString()}"/>
+                            </h5>
+                            <h5>
+                                <h:outputText value="Booking Date: "/>
+                                <h:outputText value="#{adminDataManagedBean.selectedBanRequest.booking.formattedDate}"/>
+                            </h5><h5>
+                                <h:outputText value="Specifications: "/>
+                                <h:outputText value="#{adminDataManagedBean.selectedBanRequest.booking.projectSpecifications}"/>
+                            </h5>
+                            
+                            </div>
+                        </h:panelGroup>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
