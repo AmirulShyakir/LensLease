@@ -36,14 +36,16 @@
         </div>
 
         <h:form>
-            <div style="height:450px; box-shadow: -4px -4px 15px rgba(0, 0, 0, 0.25), 4px 4px 15px rgba(0, 0, 0, 0.25); ">
-                <div style=" height: 100%; background-image: url(resources/images/landingPagePicture.png);background-repeat: no-repeat;display: flex; align-items: center; justify-content: center; align-content: center;background-size: cover;">
-                    <div class="flex align-items-center flex-column" style="width:50%;">
-                        <h1 class="m-0 mt-5 text-white">LensLease
+            <div style="height:440px; box-shadow: -4px -4px 15px rgba(0, 0, 0, 0.25), 4px 4px 15px rgba(0, 0, 0, 0.25); ">
+                <div style=" height: 100%; background-image: url(resources/images/landingPagePicture.png); background-repeat: no-repeat; display: flex; 
+                            align-items: center; justify-content: center; align-content: center; background-size: cover;">
+                    <div class="flex align-items-center flex-column" style="width:60%;">
+                        <h1 class="m-0 mt-7 text-white">LensLease
                             <hr style="color: white"/>
                         </h1>
                         <p class="text-white" style="text-align: center">We connect service providers with those in need of their services such as photography and videography services, as well as equipment rental. Sign up today to start borrowing or lending services with ease.</p>
-                        <p:commandButton value="Sign up now" style="margin-top: 20px" action="signup.xhtml?faces-redirect=true" class="rounded-button"/>
+                        <p:commandButton value="Sign up now" style="margin-top: 20px; background: #568DF5; padding: 3px 20px" 
+                                         action="signup.xhtml?faces-redirect=true" class="rounded-button"/>
                     </div>
                 </div>
             </div>
@@ -53,15 +55,13 @@
                 <p:growl id="growl" showDetail="true" />
                 <p:messages />
                 <!--style="text-align: center; padding:7px;margin-bottom: 20px;"-->
-                <p:outputPanel  class="flex flex-column align-items-center" style="margin-top: 0px">
-                    <p:graphicImage url="/logoDark.png" style="height:60px;" />
+                <p:outputPanel  class="flex flex-column align-items-center mt-6">
                     <span class="ui-input-icon-left ">
                         <i class="pi pi-search ml-2"/>
                         <p:inputText  value="#{serviceManagedBean.searchString}" style="width: 450px; border-radius: 20px;">
                             <p:ajax event="keyup" update="form" listener="#{serviceManagedBean.handleSearch}" />  
                         </p:inputText>
                     </span>
-
                 </p:outputPanel>
                 <!--paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"-->
                 <h2>Equipment Rental</h2>
