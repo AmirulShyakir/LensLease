@@ -48,4 +48,9 @@ public interface ServiceSessionBeanLocal {
 
     public void createNewService(Service service);
     
+    public List<Service> getActiveServicesByUser(Long userId) throws UserNotFoundException;
+    
+    public List<Service> getDelistedServicesByUser(Long userId) throws UserNotFoundException;
+    
+    public List<Service> filterActiveServices(List<Service> services);
 }
