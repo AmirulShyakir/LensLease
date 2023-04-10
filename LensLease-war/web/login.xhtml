@@ -39,17 +39,11 @@
                                         required="true" requiredMessage="Password is required"/><br/>
                             <p:message for="password"/>
                             <p:commandButton type="submit" value="Login" action="#{authenticationManagedBean.login}" 
-                                             style="background: #568DF5; margin-top: 40px"
+                                             style="background: #568DF5; border-color: #568DF5; margin-top: 40px"
                                              styleClass="ui-button-raised" ajax="false"/>
                             <p:messages id="messages" showDetail="true" closable="true">
                                 <p:autoUpdate/>
                             </p:messages>
-
-                            <!-- Error msg
-                            <div class="col-12 md:col-4" style="margin-top: 2vh">
-                                <p:staticMessage severity="error" summary="ERROR" detail="Invalid Username or Password" style="width: 100%" />
-                            </div>
-                            -->
                         </h:form>
                     </div>
                 </div>

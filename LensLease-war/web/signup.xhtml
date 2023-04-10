@@ -28,25 +28,50 @@
                             <p:button value="Sign up" id="signup_button_right"/>
                         </div>
                     </div> 
-                    <div class="ui-fluid mt-8">
+                    <div class="mt-8">
                         <h:form>
-                            <h:panelGrid columns="2" cellpadding="7">
-                                <h:outputLabel value="Name" /> <p:inputText id="name" value="#{authenticationManagedBean.name}" required="true"/>
-                                <h:outputLabel value="Email" /> <p:inputText id="email" value="#{authenticationManagedBean.email}" required="true"/>
-                                <h:outputLabel value="Contact Number" /> <p:inputText id="contact" value="#{authenticationManagedBean.contact}" required="true"/>
-                                <h:outputLabel value="Username" /><p:inputText id="username" value="#{authenticationManagedBean.username}" required="true"/>
-                                <h:outputLabel value="Password" /><p:password redisplay="true" value="#{authenticationManagedBean.password}" required="true" requiredMessage="Password is required"/><br/>
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <h:panelGroup>
+                                    <h:outputLabel value="Name"/>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="name" value="#{authenticationManagedBean.name}" required="true" requiredMessage="Contact number is required"/>
+                                    <p:message for="name" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Email" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="email" value="#{authenticationManagedBean.email}" required="true" requiredMessage="Contact number is required"/>
+                                    <p:message for="email" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Contact Number" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="contact" value="#{authenticationManagedBean.contact}" required="true" requiredMessage="Contact number is required"/>
+                                    <p:message for="contact" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Username" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="username" value="#{authenticationManagedBean.username}" required="true" requiredMessage="Username is required"/>
+                                    <p:message for="username" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Password" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:password id="password" redisplay="true" value="#{authenticationManagedBean.password}" required="true" requiredMessage="Password is required"/>
+                                    <p:message for="password" />
+                                </h:panelGroup>
                             </h:panelGrid>
-                            <br/>
-                            <p:commandButton type="submit" value="Sign up" style="padding-left: 12px; padding-right: 12px"
+                            <p:commandButton type="submit" value="Sign up" 
+                                             style="padding-left: 12px; padding-right: 12px; width: 100%;
+                                                    background-color: #568DF5; border-color:#568DF5; margin-top: 40px"
                                              action="#{authenticationManagedBean.signup}"
                                              ajax="false"/>
-
-                            <!-- Error msg
-                            <div class="col-12 md:col-4" style="margin-top: 2vh">
-                                <p:staticMessage severity="error" summary="ERROR" detail="Invalid Username or Password" style="width: 100%" />
-                            </div>
-                            -->
                         </h:form>
                     </div>
                 </div>

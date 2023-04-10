@@ -162,7 +162,10 @@ public class ServiceManagedBean implements Serializable {
     }
 
     public void createService() {
+        FacesContext context = FacesContext.getCurrentInstance();
         serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime, packageDuration, imageURL);
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully created service "));
+            context.getExternalContext().getFlash().setKeepMessages(true);
     }
 
     public void editService() throws ServiceNotFoundException {
