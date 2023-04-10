@@ -30,8 +30,8 @@ To either host online or expose web services and use that to deploy on localhost
 - [x] Cancel booking as user (only for PENDING AND CONFIRMED) //Amirul
 - [x] Cards for services in myServices.xhtml //Jun Wei 
 - [x] addNewService page or modal //Jun Wei / Leeann
-- [ ] addNewService should have some basic input validation so user cannot create an empty service
-- [ ] addPortfolio should have some basic input validation so user cannot create an invalid portfolio link 
+- [x] addNewService should have some basic input validation so user cannot create an empty service
+- [] addPortfolio should have some basic input validation so user cannot create an invalid portfolio link //Jun Wei
 
 ### Forum 
 - [ ] Add forum topics // Dekai
@@ -41,4 +41,4 @@ To either host online or expose web services and use that to deploy on localhost
 ### Account 
 - [x] Portfolio //Leeann
 - [x] Edit Account //Junwei
-- [ ] signUp should have some basic input validation so user cannot create an empty service
+- [x] signUp should have some basic input validation so user cannot create an empty service// Jun Wei
