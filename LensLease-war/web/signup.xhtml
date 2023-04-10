@@ -15,16 +15,20 @@
     <h:body >
         <div id="container">
             <div id="login">
-                <div id="login-left" >
-                    <p:graphicImage name="images/logo.png" style="width: 70%; max-width: 313px; min-width: 200px"/>
-                    <p style="color: white">LensLease is perfect for anyone who needs photography or videography services, whether it's for a special occasion, a business project, or personal use. With a wide variety of services and equipment available, you're sure to find exactly what you need on LensLease.</p>
+                <div id="login-left">
+                    <div>
+                        <p:graphicImage name="images/logo.png" style="width: 70%; max-width: 313px; min-width: 200px"/>
+                        <p style="color: white">LensLease is perfect for anyone who needs photography or videography services, whether it's for a special occasion, a business project, or personal use. With a wide variety of services and equipment available, you're sure to find exactly what you need on LensLease.</p>
+                    </div>
                 </div>
                 <div id="login-right" >
-                    <div style="height: 80px;">
-                        <p:button value="Log in" href="login.xhtml" id="signup_button_left"/>
-                        <p:button value="Sign up" id="signup_button_right"/>
-                    </div>
-                    <div class="ui-fluid">
+                    <div>
+                        <div id="login-buttons">
+                            <p:button value="Log in" href="login.xhtml" id="signup_button_left"/>
+                            <p:button value="Sign up" id="signup_button_right"/>
+                        </div>
+                    </div> 
+                    <div class="ui-fluid mt-8">
                         <h:form>
                             <h:panelGrid columns="2" cellpadding="7">
                                 <h:outputLabel value="Name" /> <p:inputText id="name" value="#{authenticationManagedBean.name}" required="true"/>

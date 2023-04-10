@@ -12,34 +12,40 @@
         
     </h:head>
     <h:body style="background-color: whitesmoke; border: 0; margin: 0">
-        <div style="text-align: left; background: black; color: white; font-size: 30px; ">            
-            <p:graphicImage url="/logo.png" style="height:60px; margin-top: 10px; margin-left:10px"/>
+        <div class="header grid">
+            <div class="col-3">
+                <p:graphicImage url="/logo.png" style="height: 45px; margin: 15px 0px 5px 10px;"  />
+            </div>
+            <div class="nav-big col-9">
+                <h:form>
+                    <p:button value="Home" icon="pi pi-fw pi-home" href="defaultLandingPage.xhtml" style="background: #0E0E0E; color: white; padding: 5px; border: #0E0E0E; border-radius: 0; margin-right: 10px" />
+                    <p:button value="Forum" icon="pi pi-fw pi-comments" href="defaultLandingPage.xhtml" style="background: #0E0E0E; color: white; padding: 5px; border: #0E0E0E; border-radius: 0; margin-right: 10px" />
+                    <p:commandButton value="Login | Sign Up" action="login.xhtml?faces-redirect=true" icon="pi pi-fw pi-user" style="background: #568DF5; color: white; padding-left: 5px; border: #0E0E0E; margin-right: 10px"/>
+                </h:form>
+            </div>
+            <div class="nav-small col-9">
+                <h:form>
+                    <p:menuButton icon="pi pi-bars" styleClass="ui-button-flat" style="padding-right:10px;">
+                        <p:menuitem value="Home" action="defaultLandingPage.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Forum" action="defaultLandingPage.xhtml" icon="pi pi-comments" />                      
+                        <p:divider />
+                        <p:menuitem value="Login | Sign Up" action="login.xhtml?faces-redirect=true" icon="pi pi-fw pi-user" />
+                    </p:menuButton>
+                </h:form>
+            </div>
         </div>
-        <div>
-            <h:form>
-                <p:growl id="messages"/>
-                <p:menubar>
-                    <p:menuitem value="Home" icon="pi pi-fw pi-home" url="defaultLandingPage.xhtml" style="padding-right: 2rem"/>
-                    <p:menuitem value="Forum" icon="pi pi-fw pi-comments" url="forum.xhtml" style="padding-right: 2rem"/>
-                    <f:facet name="options">
-                        <p:commandButton value="Login | Sign Up" action="login.xhtml?faces-redirect=true" icon="pi pi-fw pi-user" styleClass="ui-button-info" style="background-color: lightgrey; border-color: lightgrey"/>
-                    </f:facet>
-                </p:menubar>
-            </h:form>
-        </div>
-        <h:form>
-            <div style="height:400px; box-shadow: -4px -4px 15px rgba(0, 0, 0, 0.25), 4px 4px 15px rgba(0, 0, 0, 0.25); ">
 
+        <h:form>
+            <div style="height:450px; box-shadow: -4px -4px 15px rgba(0, 0, 0, 0.25), 4px 4px 15px rgba(0, 0, 0, 0.25); ">
                 <div style=" height: 100%; background-image: url(resources/images/landingPagePicture.png);background-repeat: no-repeat;display: flex; align-items: center; justify-content: center; align-content: center;background-size: cover;">
                     <div class="flex align-items-center flex-column" style="width:50%;">
-                        <h1 class="m-0 text-white">LensLease
+                        <h1 class="m-0 mt-5 text-white">LensLease
                             <hr style="color: white"/>
                         </h1>
                         <p class="text-white" style="text-align: center">We connect service providers with those in need of their services such as photography and videography services, as well as equipment rental. Sign up today to start borrowing or lending services with ease.</p>
                         <p:commandButton value="Sign up now" style="margin-top: 20px" action="signup.xhtml?faces-redirect=true" class="rounded-button"/>
                     </div>
                 </div>
-
             </div>
         </h:form>
         <h:form id="form" >
