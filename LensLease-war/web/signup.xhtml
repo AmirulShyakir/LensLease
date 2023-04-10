@@ -24,17 +24,47 @@
                         <p:button value="Log in" href="login.xhtml" id="signup_button_left"/>
                         <p:button value="Sign up" id="signup_button_right"/>
                     </div>
-                    <div class="ui-fluid">
+                    <div style="align-items: center;">
                         <h:form>
                             <h:panelGrid columns="2" cellpadding="7">
-                                <h:outputLabel value="Name" /> <p:inputText id="name" value="#{authenticationManagedBean.name}" required="true"/>
-                                <h:outputLabel value="Email" /> <p:inputText id="email" value="#{authenticationManagedBean.email}" required="true"/>
-                                <h:outputLabel value="Contact Number" /> <p:inputText id="contact" value="#{authenticationManagedBean.contact}" required="true"/>
-                                <h:outputLabel value="Username" /><p:inputText id="username" value="#{authenticationManagedBean.username}" required="true"/>
-                                <h:outputLabel value="Password" /><p:password redisplay="true" value="#{authenticationManagedBean.password}" required="true" requiredMessage="Password is required"/><br/>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Name"/>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="name" value="#{authenticationManagedBean.name}" required="true" requiredMessage="Contact number is required"/>
+                                    <p:message for="name" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Email" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="email" value="#{authenticationManagedBean.email}" required="true" requiredMessage="Contact number is required"/>
+                                    <p:message for="email" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Contact Number" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="contact" value="#{authenticationManagedBean.contact}" required="true" requiredMessage="Contact number is required"/>
+                                    <p:message for="contact" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Username" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:inputText id="username" value="#{authenticationManagedBean.username}" required="true" requiredMessage="Username is required"/>
+                                    <p:message for="username" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:outputLabel value="Password" />
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:password id="password" redisplay="true" value="#{authenticationManagedBean.password}" required="true" requiredMessage="Password is required"/>
+                                    <p:message for="password" />
+                                </h:panelGroup><br/>
                             </h:panelGrid>
                             <br/>
-                            <p:commandButton type="submit" value="Sign up" style="padding-left: 12px; padding-right: 12px"
+                            <p:commandButton type="submit" value="Sign up" style="padding-left: 12px; padding-right: 12px; width: 55%; background-color: #568DF5; border-color:#568DF5;"
                                              action="#{authenticationManagedBean.signup}"
                                              ajax="false"/>
 
