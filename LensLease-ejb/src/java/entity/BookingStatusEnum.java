@@ -10,5 +10,36 @@ package entity;
  * @author Amirul
  */
 public enum BookingStatusEnum {
-    PENDING, CONFIRMED, COMPLETED, CANCELLED, REJECTED, TORATE
+    PENDING{
+         @Override
+        public String toString() {
+            return "Pending";
+        }
+    }, CONFIRMED{
+         @Override
+        public String toString() {
+            return "Confirmed";
+        }
+    }, COMPLETED{
+         @Override
+        public String toString() {
+            return "Completed";
+        }
+    }, CANCELLED{
+         @Override
+            public String toString() {
+                return "Cancelled";
+            }
+    }, REJECTED{
+         @Override
+            public String toString() {
+                return "Rejected";
+            }
+    }, TORATE {
+         @Override
+        public String toString() {
+            return "To Rate";
+        }
+    }
+            
 }

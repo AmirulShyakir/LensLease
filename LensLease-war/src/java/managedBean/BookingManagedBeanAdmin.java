@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -48,6 +49,7 @@ public class BookingManagedBeanAdmin implements Serializable {
     private List<Booking> listOfBookings;
     private Booking selectedBooking;
     private String searchString;
+    private TimeZone timeZone;
     
     /**
      * Creates a new instance of BookingManagedBean
@@ -65,6 +67,11 @@ public class BookingManagedBeanAdmin implements Serializable {
         }
 
         
+    }
+    
+    public TimeZone getTimeZome() {
+        timeZone = TimeZone.getDefault();
+        return timeZone;
     }
     
     public void handleSearch() {

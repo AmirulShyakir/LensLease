@@ -42,11 +42,17 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime) {
+    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime,String packageDuration, String imageURL) {
         User user = em.find(User.class, userId);
         Service service = new Service();
         service.setServiceName(name);
+        service.getServicePhotos().set(0,imageURL);
         service.setServiceType(ServiceTypeEnum.values()[serviceType]);
+        service.setPackageDurationHours(packageDuration);
+        if(service.getServiceType() == ServiceTypeEnum.EQUIPMENT_RENTAL){
+            service.setIsRental(true);
+            service.setPackageDurationHours("Full Day Rental");
+        }
         service.setServiceCost(cost);
         service.setServiceDescription(description);
         service.setEarliestCollectionTime(collectionTime);
@@ -68,6 +74,10 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         
         oldService.setServiceName(service.getServiceName());
         oldService.setServiceType(service.getServiceType());
+        oldService.setPackageDurationHours(service.getPackageDurationHours());
+        oldService.setEarliestCollectionTime(service.getEarliestCollectionTime());
+        oldService.setLatestReturnTime(service.getLatestReturnTime());
+        oldService.setServiceDescription(service.getServiceDescription());
         oldService.setServiceCost(service.getServiceCost());
         oldService.setServicePhotos(service.getServicePhotos());
         oldService.setIsBanned(service.isBanned());
@@ -108,8 +118,9 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     
     @Override
     public List<Service> getServicesByType(ServiceTypeEnum serviceType) {
-        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType");
+        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType AND s.isBanned = false ");
         query.setParameter("serviceType", serviceType);
+//        query.setParameter("bool", false);
 
         return query.getResultList();
         
@@ -156,7 +167,7 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     public List<Service> searchServicesWithType(String name, ServiceTypeEnum type) {
         Query q;
         if (name != null) {
-            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND "
+            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND s.isBanned = false AND "
                     + "LOWER(s.serviceName) LIKE :name");
             q.setParameter("type", type);
             q.setParameter("name", "%" + name.toLowerCase() + "%");

@@ -21,7 +21,7 @@
             </div>
             <div class="nav-big col-9">
                 <h:form>
-                    <p:growl id="messages"/>
+                    
                     <p:button value="Home" icon="pi pi-fw pi-home" href="landingPage.xhtml" style="background: #0E0E0E; color: white; padding: 5px; border: #0E0E0E; border-radius: 0; margin-right: 10px" />
                     <p:button value="Forum" icon="pi pi-fw pi-comments" href="landingPage.xhtml" style="background: #0E0E0E; color: white; padding: 5px; border: #0E0E0E; border-radius: 0; margin-right: 10px" />
                     <p:button value="Account" icon="pi pi-fw pi-user" href="myServices.xhtml" style="background: #0E0E0E; color: white; padding: 5px; border: #0E0E0E; border-radius: 0; margin-right: 10px" />
@@ -30,7 +30,7 @@
             </div>
             <div class="nav-small col-9">
                 <h:form>
-                    <p:growl id="messages"/>
+             
                     <p:menuButton icon="pi pi-bars" styleClass="ui-button-flat" style="padding-right:10px;">
                         <p:menuitem value="Home" action="landingPage.xhtml" icon="pi pi-home" />
                         <p:menuitem value="Forum" action="landingPage.xhtml" icon="pi pi-comments" />
@@ -41,6 +41,7 @@
                 </h:form>
             </div>
         </div>
+
         <div class="contentbody grid" style="border-radius: 9px; padding: 0px 0px; padding-top:100px;">
             <ui:insert name="content">Content</ui:insert>  
         </div>

@@ -71,6 +71,15 @@ public class UserSessionBean implements UserSessionBeanLocal {
     }
 
     @Override
+    public List<User> searchUsersByUsername(String username){
+        Query query = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) LIKE :username");
+        query.setParameter("username", "%" + username.toLowerCase() + "%");
+//        query.setParameter("bool", false);
+
+        return query.getResultList();
+    }
+    
+    @Override
     public User userLogin(String username, String password) throws UserNotFoundException, InvalidLoginException {
         List<User> users = getAllUsers();
         if (users.isEmpty()) {

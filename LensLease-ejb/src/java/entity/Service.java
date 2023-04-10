@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,7 +48,7 @@ public class Service implements Serializable {
     
     @ManyToOne
     private User provider;
-    @OneToMany(mappedBy = "service")
+    @OneToMany(mappedBy = "serviceToBan")
     private List<BanRequest> banRequests;
     @OneToMany(mappedBy = "service")
     private List<Booking> bookings;
@@ -55,6 +56,8 @@ public class Service implements Serializable {
     private Schedule schedule;
 
     public Service() {
+        this.servicePhotos = new ArrayList<>();
+        this.servicePhotos.add("https://t3.ftcdn.net/jpg/03/49/45/70/360_F_349457062_jmlEMWCo4lxlxGp3NVayQ9N0aiL2o6nO.jpg");
     }
 
     public Service(String serviceName, ServiceTypeEnum serviceType, double serviceCost, List<String> servicePhotos, boolean isBanned, User provider) {

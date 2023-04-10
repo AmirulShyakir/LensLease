@@ -5,7 +5,7 @@
  */
 package managedBean;
 
-import ejb.session.stateless.BanRequestSessionBeanLocal;
+import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
@@ -39,7 +39,7 @@ import util.exception.ServiceNotFoundException;
 public class BookingManagedBean implements Serializable {
 
     @EJB
-    private BanRequestSessionBeanLocal banRequestSessionBean;
+    private AdminSessionBeanLocal adminSessionBean;
 
     @EJB
     private ReviewSessionBeanLocal reviewSessionBean;
@@ -100,17 +100,37 @@ public class BookingManagedBean implements Serializable {
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review" + e.getMessage()));
         }
     }
-    public void createBanRequest() {
+    public String createBookingBanRequestAsUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             BanRequest report = new BanRequest();
             report.setRequestDate(new Date());
-            report.setDescription(reviewDescription);
-            report.setService(selectedBooking.getService());
-            banRequestSessionBean.submitNewBanRequest(report, selectedBooking.getService().getServiceId());
+            report.setDescription(reportDescription);
+            adminSessionBean.submitNewBookingBanRequestAsUser(report, selectedBookingId);
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Report submmited successfully"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "myBookings.xhtml?faces-redirect=true";
         } catch (ServiceNotFoundException | BanRequestAlreadyExistException e) {
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit report" + e.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "myBookings.xhtml?faces-redirect=true";
+        }
+    }
+    
+    public String createBookingBanRequestAsProvider() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            BanRequest report = new BanRequest();
+            report.setRequestDate(new Date());
+            report.setDescription(reportDescription);
+            adminSessionBean.submitNewBookingBanRequestAsProvider(report, selectedBookingId);
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Report submmited successfully"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "myServices.xhtml?faces-redirect=true";
+        } catch (ServiceNotFoundException | BanRequestAlreadyExistException e) {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit report" + e.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "myServices.xhtml?faces-redirect=true";
         }
     }
 
@@ -143,7 +163,15 @@ public class BookingManagedBean implements Serializable {
     public void loadUpcomingBookings(){
         this.upcomingBookings = bookingSessionBean.getConfirmedBookingsAsRequester(user);
     }
-    
+
+    public String setBookingAsCancelled(Booking booking){
+        bookingSessionBean.setBookingAsCancelled(booking);
+        System.out.println("Booking has been cancelled " + booking.getBookingStatus());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Confirmed", "You have cancelled booking");
+        FacesContext.getCurrentInstance().addMessage(null, message);    
+        return "myBookings.xhtml?faces-redirect=true&includeViewParams=true";
+    }
+
     public String setBookingAsToRate(Booking booking){
         bookingSessionBean.setBookingAsToRate(booking);
         System.out.println("Booking has been completed " + booking.getBookingStatus());
@@ -308,5 +336,5 @@ public class BookingManagedBean implements Serializable {
     public void setReportDescription(String reportDescription) {
         this.reportDescription = reportDescription;
     }
-    
+
 }
