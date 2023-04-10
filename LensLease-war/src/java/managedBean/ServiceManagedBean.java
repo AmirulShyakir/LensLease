@@ -75,6 +75,8 @@ public class ServiceManagedBean implements Serializable {
     private List<Review> reviewsForSelectedService;
     private List<Service> listOfServices;
     private List<Service> servicesProvided;
+    private List<Service> activeServicesProvided;
+    private List<Service> delistedServicesProvided;
     private List<Service> listOfEquipmentRental;
     private List<Service> listOfEditingServices;
     private List<Service> listOfPhotographyServices;
@@ -90,10 +92,13 @@ public class ServiceManagedBean implements Serializable {
         if (getSearchString() == null || getSearchString().equals("")) {
             listOfServices = serviceSessionBeanLocal.getAllServices();
             setListOfEquipmentRental(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.EQUIPMENT_RENTAL));
+            listOfEquipmentRental = serviceSessionBeanLocal.filterActiveServices(listOfEquipmentRental);
             setListOfEditingServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTO_EDITING));
             listOfEditingServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEO_EDITING));
+            listOfEditingServices = serviceSessionBeanLocal.filterActiveServices(listOfEditingServices);
             setListOfPhotographyServices(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.PHOTOGRAPHY));
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.VIDEOGRAPHY));
+            listOfPhotographyServices = serviceSessionBeanLocal.filterActiveServices(listOfPhotographyServices);
         } else {
             listOfServices = serviceSessionBeanLocal.searchServices(searchString);
             listOfEditingServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTO_EDITING);
@@ -101,6 +106,9 @@ public class ServiceManagedBean implements Serializable {
             listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEOGRAPHY));
             listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.EQUIPMENT_RENTAL);
+            listOfEquipmentRental = serviceSessionBeanLocal.filterActiveServices(listOfEquipmentRental);
+            listOfEditingServices = serviceSessionBeanLocal.filterActiveServices(listOfEditingServices);
+            listOfPhotographyServices = serviceSessionBeanLocal.filterActiveServices(listOfPhotographyServices);
         }
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -152,12 +160,21 @@ public class ServiceManagedBean implements Serializable {
         }
     }
 
-    public void loadProviderServices() {
+    public void loadActiveServices() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(providerId);
+            this.activeServicesProvided = serviceSessionBeanLocal.getActiveServicesByUser(user.getUserId());
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Services"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load active services"));
+        }
+    }
+    
+    public void loadDelistedServices(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            this.delistedServicesProvided = serviceSessionBeanLocal.getDelistedServicesByUser(user.getUserId());
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load active services"));
         }
     }
 
@@ -165,11 +182,14 @@ public class ServiceManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         serviceSessionBeanLocal.createNewServiceProvided(user.getUserId(), serviceName, serviceTypeInt, serviceCost, serviceDescription, collectionTime, returnTime, packageDuration, imageURL);
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully created service "));
-            context.getExternalContext().getFlash().setKeepMessages(true);
+        context.getExternalContext().getFlash().setKeepMessages(true);
     }
 
     public void editService() throws ServiceNotFoundException {
+        FacesContext context = FacesContext.getCurrentInstance();
         serviceSessionBeanLocal.editService(selectedService);
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully edited service "));
+        context.getExternalContext().getFlash().setKeepMessages(true);
     }
 
     public String submitReportService() {
@@ -186,6 +206,30 @@ public class ServiceManagedBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "landingPage.xhtml?faces-redirect=true";
+        }
+    }
+
+    public void delistService(Long serviceId) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            serviceSessionBeanLocal.delistService(serviceId);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully delisted service "));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+        } catch(Exception ex){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+        }
+    }
+    
+    public void relistService(Long serviceId) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            serviceSessionBeanLocal.relistService(serviceId);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully relisted service "));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+        } catch(Exception ex){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, " ", ex.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
         }
     }
 
@@ -428,4 +472,21 @@ public class ServiceManagedBean implements Serializable {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
+
+    public List<Service> getActiveServicesProvided() {
+        return activeServicesProvided;
+    }
+
+    public void setActiveServicesProvided(List<Service> activeServicesProvided) {
+        this.activeServicesProvided = activeServicesProvided;
+    }
+
+    public List<Service> getDelistedServicesProvided() {
+        return delistedServicesProvided;
+    }
+
+    public void setDelistedServicesProvided(List<Service> delistedServicesProvided) {
+        this.delistedServicesProvided = delistedServicesProvided;
+    }
+    
 }
