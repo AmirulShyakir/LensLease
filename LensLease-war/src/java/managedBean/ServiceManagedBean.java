@@ -5,7 +5,6 @@
  */
 package managedBean;
 
-
 import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
@@ -56,7 +55,6 @@ public class ServiceManagedBean implements Serializable {
     private ServiceSessionBeanLocal serviceSessionBeanLocal;
     @EJB
     private UserSessionBeanLocal userSessionBean;
-    
 
     private User user;
     private String serviceName;
@@ -79,17 +77,16 @@ public class ServiceManagedBean implements Serializable {
     private List<Service> servicesProvided;
     private List<Service> listOfEquipmentRental;
     private List<Service> listOfEditingServices;
-    private List<Service> listOfPhotographyServices;   
+    private List<Service> listOfPhotographyServices;
     private String reportDescription;
-    private Long serviceId; 
-
+    private Long serviceId;
 
     private String searchString;
     private String searchType = "";
 
     @PostConstruct
     public void init() {
-         listOfServices = serviceSessionBeanLocal.getAllServices();
+        listOfServices = serviceSessionBeanLocal.getAllServices();
         if (getSearchString() == null || getSearchString().equals("")) {
             listOfServices = serviceSessionBeanLocal.getAllServices();
             setListOfEquipmentRental(serviceSessionBeanLocal.getServicesByType(ServiceTypeEnum.EQUIPMENT_RENTAL));
@@ -160,6 +157,8 @@ public class ServiceManagedBean implements Serializable {
         try {
             this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(providerId);
         } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Services"));
+        }
     }
 
     public void createService() {
@@ -169,14 +168,14 @@ public class ServiceManagedBean implements Serializable {
     public void editService() throws ServiceNotFoundException {
         serviceSessionBeanLocal.editService(selectedService);
     }
-    
+
     public String submitReportService() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             BanRequest banRequest = new BanRequest();
             banRequest.setRequestDate(new Date());
             banRequest.setDescription(reportDescription);
-            adminSessionBean.submitReportService(banRequest,serviceId, user.getUserId());
+            adminSessionBean.submitReportService(banRequest, serviceId, user.getUserId());
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "Successfully reported service "));
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "landingPage.xhtml?faces-redirect=true";
@@ -329,7 +328,6 @@ public class ServiceManagedBean implements Serializable {
         this.listOfPhotographyServices = listOfPhotographyServices;
     }
 
-
     /**
      * @return the reportDescription
      */
@@ -407,7 +405,7 @@ public class ServiceManagedBean implements Serializable {
             return 0;
         }
     }
-        
+
     public void onServiceTypeChange() {
         System.out.println("Service type changed: " + serviceTypeInt);
     }
