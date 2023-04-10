@@ -334,20 +334,26 @@ public class ServiceManagedBean implements Serializable {
     }
 
     public int calculateStarRating(Long sId) {
-        Service service = serviceSessionBeanLocal.findServiceByServiceId(sId);
-        List<Booking> bookings = service.getBookings();
-        List<Review> reviews = new ArrayList<Review>();
-        for (Booking b : bookings) {
-            if (b.getReview() != null) {
-                reviews.add(b.getReview());
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Service service = serviceSessionBeanLocal.findServiceByServiceId(sId);
+            List<Booking> bookings = service.getBookings();
+            List<Review> reviews = new ArrayList<Review>();
+            for (Booking b : bookings) {
+                if (b.getReview() != null) {
+                    reviews.add(b.getReview());
+                }
             }
+            double rating = 0;
+            int count = 1;
+            for (Review r : reviews) {
+                rating = (rating + r.getStarRating()) / count;
+                count++;
+            }
+            return (int) Math.round(rating);
+        } catch (Exception ex) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+            return 0;
         }
-        double rating = 0;
-        int count = 1;
-        for (Review r : reviews) {
-            rating = (rating + r.getStarRating()) / count;
-            count++;
-        }
-        return (int) Math.round(rating);
     }
 }
