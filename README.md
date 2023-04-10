@@ -31,6 +31,8 @@ To either host online or expose web services and use that to deploy on localhost
 - [x] Cards for services in myServices.xhtml //Jun Wei 
 - [x] addNewService page or modal //Jun Wei / Leeann
 - [ ] search function in myServices.xhtml and myBookings.xhtml... can scrap? //Leeann
+- [ ] addNewService should have some basic input validation so user cannot create an empty service
+- [ ] addPortfolio should have some basic input validation so user cannot create an invalid portfolio link 
 
 ### Forum 
 - [ ] Add forum topics // Dekai
@@ -40,3 +42,4 @@ To either host online or expose web services and use that to deploy on localhost
 ### Account 
 - [ ] Portfolio //Leeann
 - [x] Edit Account //Junwei
+- [ ] signUp should have some basic input validation so user cannot create an empty service
