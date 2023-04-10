@@ -30,7 +30,6 @@ To either host online or expose web services and use that to deploy on localhost
 - [x] Cancel booking as user (only for PENDING AND CONFIRMED) //Amirul
 - [x] Cards for services in myServices.xhtml //Jun Wei 
 - [x] addNewService page or modal //Jun Wei / Leeann
-- [ ] search function in myServices.xhtml and myBookings.xhtml... can scrap? //Leeann
 - [ ] addNewService should have some basic input validation so user cannot create an empty service
 - [ ] addPortfolio should have some basic input validation so user cannot create an invalid portfolio link 
 
@@ -40,6 +39,6 @@ To either host online or expose web services and use that to deploy on localhost
 - [ ] Add link to Forumpage in defaultLandingPage.xhtml //Dekai
 
 ### Account 
-- [ ] Portfolio //Leeann
+- [x] Portfolio //Leeann
 - [x] Edit Account //Junwei
 - [ ] signUp should have some basic input validation so user cannot create an empty service
