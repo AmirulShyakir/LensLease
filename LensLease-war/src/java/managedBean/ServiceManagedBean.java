@@ -5,6 +5,7 @@
  */
 package managedBean;
 
+
 import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.BookingSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
@@ -19,6 +20,7 @@ import entity.User;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +65,7 @@ public class ServiceManagedBean implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private User provider;
+    private Long providerId;
     private int serviceTypeInt;
     private String serviceDescription;
     private String collectionTime;
@@ -76,8 +79,7 @@ public class ServiceManagedBean implements Serializable {
     private List<Service> servicesProvided;
     private List<Service> listOfEquipmentRental;
     private List<Service> listOfEditingServices;
-    private List<Service> listOfPhotographyServices;
-   
+    private List<Service> listOfPhotographyServices;   
     private String reportDescription;
     private Long serviceId; 
 
@@ -101,7 +103,7 @@ public class ServiceManagedBean implements Serializable {
             listOfEditingServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEO_EDITING));
             listOfPhotographyServices = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.PHOTOGRAPHY);
             listOfPhotographyServices.addAll(serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.VIDEOGRAPHY));
-            listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString,ServiceTypeEnum.EQUIPMENT_RENTAL);
+            listOfEquipmentRental = serviceSessionBeanLocal.searchServicesWithType(searchString, ServiceTypeEnum.EQUIPMENT_RENTAL);
         }
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -128,6 +130,7 @@ public class ServiceManagedBean implements Serializable {
             serviceCost = this.selectedService.getServiceCost();
             servicePhotos = this.selectedService.getServicePhotos();
             provider = this.selectedService.getProvider();
+            providerId = provider.getUserId();
             List<Booking> bookings = selectedService.getBookings();
             List<Review> reviews = new ArrayList<Review>();
             for (Booking b : bookings) {
@@ -136,6 +139,7 @@ public class ServiceManagedBean implements Serializable {
                 }
             }
             setReviewsForSelectedService(reviews);
+
             System.out.println("Going to Individual service page with selected service: " + serviceName);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
@@ -149,6 +153,13 @@ public class ServiceManagedBean implements Serializable {
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
+    }
+
+    public void loadProviderServices() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            this.servicesProvided = serviceSessionBeanLocal.getServicesByUser(providerId);
+        } catch (Exception e) {
     }
 
     public void createService() {
@@ -365,6 +376,38 @@ public class ServiceManagedBean implements Serializable {
         this.serviceDescription = serviceDescription;
     }
 
+    public Long getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
+    }
+
+    public int calculateStarRating(Long sId) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Service service = serviceSessionBeanLocal.findServiceByServiceId(sId);
+            List<Booking> bookings = service.getBookings();
+            List<Review> reviews = new ArrayList<Review>();
+            for (Booking b : bookings) {
+                if (b.getReview() != null) {
+                    reviews.add(b.getReview());
+                }
+            }
+            double rating = 0;
+            int count = 1;
+            for (Review r : reviews) {
+                rating = (rating + r.getStarRating()) / count;
+                count++;
+            }
+            return (int) Math.round(rating);
+        } catch (Exception ex) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
+            return 0;
+        }
+    }
+        
     public void onServiceTypeChange() {
         System.out.println("Service type changed: " + serviceTypeInt);
     }
@@ -383,6 +426,5 @@ public class ServiceManagedBean implements Serializable {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
-
     }
 }

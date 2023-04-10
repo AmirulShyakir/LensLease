@@ -15,6 +15,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import util.exception.ImageDuplicateException;
 import util.exception.IncompleteFieldsException;
 import util.exception.UserNotFoundException;
 
@@ -45,7 +47,6 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     public void updateDescription(Portfolio portfolio, String s) {
         Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
         p.setDescription(s);
-        System.out.println(p.getDescription());
     }
 
     @Override
@@ -63,25 +64,48 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     }
 
     @Override
-    public void removeClient(PortfolioClient client) {
-        Portfolio portfolio = client.getPortfolio();
-        portfolio.getPortfolioClients().remove(client);
-        em.remove(client);
+    public Portfolio updateClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+        PortfolioClient c = em.find(PortfolioClient.class, client.getPortfolioClientId());
+        if (client.getClientName() != null && client.getClientLink() != null) {
+            c.setClientName(client.getClientName());
+            c.setClientLink(client.getClientLink());
+            em.flush();
+            return p;
+        } else {
+            throw new IncompleteFieldsException("Please complete all fields to update client");
+        }
     }
 
     @Override
-    public Portfolio updateSkills(Portfolio portfolio, List<String> skillString) {
+    public Portfolio removeClient(PortfolioClient client) {
+        PortfolioClient c = em.find(PortfolioClient.class, client.getPortfolioClientId());
+        Portfolio portfolio = c.getPortfolio();
+        portfolio.getPortfolioClients().remove(c);
+        c.setPortfolio(null);
+        em.remove(c);
+        return portfolio;
+    }
+
+    @Override
+    public Portfolio updateSkills(Portfolio portfolio, List<String> input) {
         Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
 
-        if (skillString.isEmpty()) {
+        if (input.isEmpty()) {
             p.setPortfolioSkills(new ArrayList<>());
+            return p;
+        }
+        int originalSize = p.getPortfolioSkills().size();
+        for (int x = 0; x < originalSize; x++) {
+            PortfolioSkill skill = em.find(PortfolioSkill.class, p.getPortfolioSkills().get(originalSize - 1 - x).getPortfolioSkillId());
+            p.getPortfolioSkills().remove(skill);
+            skill.setPortfolio(null);
+            em.remove(skill);
+            em.flush();
         }
 
-        //Remove duplicates
-        List<PortfolioSkill> current = p.getPortfolioSkills();
-
-        if (current.isEmpty()) {
-            for (String s : skillString) {
+        if (p.getPortfolioSkills().isEmpty()) {
+            for (String s : input) {
                 PortfolioSkill skill = new PortfolioSkill(s);
                 em.persist(skill);
                 skill.setPortfolio(p);
@@ -90,29 +114,20 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
             return p;
         }
 
-        for (String s : skillString) {
-            for (PortfolioSkill k : current) {
-                if (!k.getSkillName().equals(s)) {
-                    PortfolioSkill skill = new PortfolioSkill(s);
-                    em.persist(skill);
-                    skill.setPortfolio(p);
-                    p.getPortfolioSkills().add(skill);
-                }
-            }
-        }
-
         em.flush();
         return p;
     }
 
     @Override
-    public List<String> getPhotos(Portfolio portfolio) {
-        return portfolio.getImagesUrl();
-    }
-
-    @Override
-    public void addPhoto(Portfolio portfolio, String photoURL) {
-        portfolio.getImagesUrl().add(photoURL);
+    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException {
+        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+        
+        if (!p.getImagesUrl().contains(photoURL)) {
+            p.getImagesUrl().add(photoURL);
+        } else {
+            throw new ImageDuplicateException("Duplicate image " + photoURL + " not uploaded");
+        }
+        return p;
     }
 
 }

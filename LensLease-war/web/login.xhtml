@@ -26,10 +26,10 @@
                     </div>
                     <div class="ui-fluid">
                         <h:form>
-                            <h4>Username</h4>
+                            <h4 class="mt-2">Username</h4>
                             <p:inputText id="username" value="#{authenticationManagedBean.username}" required="true" requiredMessage="Username is required"/><br/>
                             <p:message for="username"/>
-                            <h4>Password</h4>
+                            <h4 class="mt-0">Password</h4>
                             <p:password id="password" value="#{authenticationManagedBean.password}" redisplay="true"
                                         required="true" requiredMessage="Password is required"/><br/>
                             <p:message for="password"/>

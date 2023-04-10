@@ -112,8 +112,4 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         }
         return reviews;
     }
-
-    public void persist1(Object object) {
-        em.persist(object);
-    }
 }

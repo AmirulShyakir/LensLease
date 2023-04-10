@@ -34,6 +34,10 @@
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>native</param-value>
+    </context-param>
     <welcome-file-list>
         <welcome-file>defaultLandingPage.xhtml</welcome-file>
     </welcome-file-list>

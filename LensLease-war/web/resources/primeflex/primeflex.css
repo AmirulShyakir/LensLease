@@ -4,6 +4,10 @@
     font-family: "Poppins", sans-serif, "Gill Sans",  sans-serif, Arial, "Arial CE";
 }
 
+body {
+    background-color: #F5F5F7;
+}
+
 p {
     font-size: 14px;
     font-weight: 400;
@@ -39,6 +43,7 @@ h5 {
     font-weight: 400;
     color: #BEBEBE;
 }
+
 .customFooter th{
     background-color: #ffffff;
     background-image: none;
@@ -83,10 +88,30 @@ h5 {
     text-align: right;
 }
 
+
 @media screen and (min-width: 1001px) {
     .nav-small {
         display: none !important;
     }
+
+    .portfolio-left {
+        float: left;
+        margin: 40px 3vw;
+        padding: 50px 3vw;
+        background: white;
+        border-radius: 9px;
+        width: 60vw;
+    }
+
+    .portfolio-right {
+        float: right;
+        margin: 40px 0;
+        padding: 50px 2vw;
+        background: white;
+        border-radius: 9px;
+        width: 30vw;
+    }
+
 }
 
 @media screen and (max-width: 1000px) {
@@ -97,6 +122,24 @@ h5 {
     .nav-small {
         margin-top: 14px;
         text-align: right;
+    }
+
+    .portfolio-left {
+        float: top;
+        margin: 50px 5vw;
+        padding: 50px 10%;
+        background: white;
+        border-radius: 9px;
+        width: 90vw;
+    }
+
+    .portfolio-right {
+        float: bottom;
+        margin: 50px 5vw;
+        padding: 50px 2vw;
+        background: white;
+        border-radius: 9px;
+        width: 90vw;
     }
 }
 
