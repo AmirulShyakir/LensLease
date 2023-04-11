@@ -26,14 +26,14 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "forumManagedBean")
 @ViewScoped
-public class ForumManagedBean implements Serializable{
-    
+public class ForumManagedBean implements Serializable {
+
     public ForumManagedBean() {
     }
 
     @EJB
     private ForumSessionBeanLocal forumSessionBean;
-    
+
     private Long forumTopicId;
     private String topicName;
     private String description;
@@ -41,20 +41,26 @@ public class ForumManagedBean implements Serializable{
     private List<ForumTopicTagEnum> tags;
     private Date dateCreated;
     private List<ForumReply> replies;
-    
+
     private ForumTopic selectedForumTopic;
     private List<ForumTopic> listOfForumTopics;
 
     private String searchString;
     private String searchType = "";
 
+    private ForumTopicTagEnum topicFilter;
+    private String selectedTopics;
+
     @PostConstruct
     public void init() {
-
-        if (getSearchString() == null || getSearchString().equals("")) {
+        if ((getSearchString() == null || getSearchString().equals("")) && getTopicFilter() == ForumTopicTagEnum.ALL) {
             setListOfForumTopics(forumSessionBean.getAllForumTopics());
+        } else if ((getSearchString() == null || getSearchString().equals("")) && getTopicFilter() != ForumTopicTagEnum.ALL) {
+            listOfForumTopics = forumSessionBean.searchForumTopicsByTags(topicFilter);
+        } else if (getSearchString() != null && getTopicFilter() == ForumTopicTagEnum.ALL) {
+            listOfForumTopics = forumSessionBean.searchForumTopicsByName(searchString);
         } else {
-            listOfForumTopics = forumSessionBean.searchForumTopics(searchString);
+            listOfForumTopics = forumSessionBean.searchForumTopicsByNameAndTags(searchString, topicFilter);
         }
     }
 
@@ -62,6 +68,9 @@ public class ForumManagedBean implements Serializable{
         init();
     }
 
+    public void getAllForumTopics() {
+        listOfForumTopics = forumSessionBean.getAllForumTopics();
+    }
 
     public void loadSelectedService() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -246,5 +255,52 @@ public class ForumManagedBean implements Serializable{
     public void setReplies(List<ForumReply> replies) {
         this.replies = replies;
     }
-    
+
+    /**
+     * @return the topicFilter
+     */
+    public ForumTopicTagEnum getTopicFilter() {
+        return topicFilter;
+    }
+
+    /**
+     * @param topicFilter the topicFilter to set
+     */
+    public void setTopicFilter(String topicFilter) {
+        System.out.println(topicFilter);
+        if (topicFilter.equals("PHOTOGRAPHY")) {
+            this.topicFilter = ForumTopicTagEnum.PHOTOGRAPHY;
+        } else if (topicFilter.equals("VIDEOGRAPHY")) {
+            this.topicFilter = ForumTopicTagEnum.VIDEOGRAPHY;
+        } else if (topicFilter.equals("EQUIPMENT")) {
+            this.topicFilter = ForumTopicTagEnum.EQUIPMENT;
+        } else if (topicFilter.equals("PHOTOEDITING")) {
+            this.topicFilter = ForumTopicTagEnum.PHOTOEDITING;
+        } else if (topicFilter.equals("VIDEOEDITING")) {
+            this.topicFilter = ForumTopicTagEnum.VIDEOEDITING;
+        } else if (topicFilter.equals("TIPSANDADVICE")) {
+            this.topicFilter = ForumTopicTagEnum.TIPSANDADVICE;
+        } else {
+            this.topicFilter = ForumTopicTagEnum.ALL;
+        }
+        
+        System.out.println(this.topicFilter);
+        System.out.println(forumSessionBean.searchForumTopicsByTags(this.topicFilter));
+
+    }
+
+    /**
+     * @return the selectedTopics
+     */
+    public String getSelectedTopics() {
+        return selectedTopics;
+    }
+
+    /**
+     * @param selectedTopics the selectedTopics to set
+     */
+    public void setSelectedTopics(String selectedTopics) {
+        this.selectedTopics = selectedTopics;
+    }
+
 }

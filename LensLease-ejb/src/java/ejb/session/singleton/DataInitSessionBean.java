@@ -19,6 +19,7 @@ import entity.User;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -98,17 +99,24 @@ public class DataInitSessionBean {
             }
         }
         Calendar calendar = Calendar.getInstance();
-            Date thisInstance = calendar.getTime();
+        Date thisInstance = calendar.getTime();
         if (em.find(ForumTopic.class, 1l) == null) {
             ArrayList<ForumTopicTagEnum> topics = new ArrayList<ForumTopicTagEnum>();
-            
+
             topics.add(ForumTopicTagEnum.EQUIPMENT);
             topics.add(ForumTopicTagEnum.PHOTOGRAPHY);
+            topics.add(ForumTopicTagEnum.TIPSANDADVICE);
+
+            ArrayList<ForumTopicTagEnum> topics1 = new ArrayList<ForumTopicTagEnum>();
+            topics1.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            topics1.add(ForumTopicTagEnum.VIDEOEDITING);
+            topics1.add(ForumTopicTagEnum.TIPSANDADVICE);
+
             try {
                 ForumTopic forumTopic1 = new ForumTopic("Test Topic", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(1)), topics, thisInstance);
-                topics.add(ForumTopicTagEnum.TIPSANDADVICE);
+
                 ForumTopic forumTopic2 = new ForumTopic("Test Topic 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ", userSessionBean.findUserByUserId(new Long(2)),
-                        topics, thisInstance);
+                        topics1, thisInstance);
                 forumSessionBean.createNewForumTopic(forumTopic1);
                 forumSessionBean.createNewForumTopic(forumTopic2);
             } catch (UserNotFoundException ex) {
@@ -123,9 +131,23 @@ public class DataInitSessionBean {
                 forumSessionBean.createNewForumReply(forumReply2);
             } catch (UserNotFoundException | ForumTopicNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            
+            }
         }
+
+        System.out.println("****");
+        List<ForumTopic> forumTopics = forumSessionBean.getAllForumTopics();
+        for (ForumTopic f:forumTopics) {
+            List<ForumTopicTagEnum> tags = f.getTags();
+            System.out.println(f.getTopicName());
+            for (ForumTopicTagEnum tag:tags) {
+                System.out.println(tag);
+            }
+        }
+        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.EQUIPMENT));
+        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.ALL));
+        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.TIPSANDADVICE));
+        System.out.println("****");
+
     }
 
     public void persist(Object object) {

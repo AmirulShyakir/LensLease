@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.ForumReply;
 import entity.ForumTopic;
+import entity.ForumTopicTagEnum;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.ForumTopicNotFoundException;
@@ -26,6 +27,10 @@ public interface ForumSessionBeanLocal {
 
     public List<ForumTopic> getAllForumTopics();
 
-    public List<ForumTopic> searchForumTopics(String name);
+    public List<ForumTopic> searchForumTopicsByTags(ForumTopicTagEnum selectedTags);
+
+    public List<ForumTopic> searchForumTopicsByName(String name);
+
+    public List<ForumTopic> searchForumTopicsByNameAndTags(String name, ForumTopicTagEnum selectedTag);
     
 }

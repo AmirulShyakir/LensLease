@@ -7,11 +7,13 @@ package ejb.session.stateless;
 
 import entity.ForumReply;
 import entity.ForumTopic;
+import entity.ForumTopicTagEnum;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import util.exception.ForumTopicNotFoundException;
 
 /**
@@ -35,14 +37,14 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
         em.persist(forumTopic);
         em.flush();
     }
-    
+
     @Override
     public ForumTopic findForumTopicById(Long forumTopicId) throws ForumTopicNotFoundException {
         Query query = em.createQuery("SELECT f FROM ForumTopic f WHERE f.forumTopicId = :inForumTopicId");
         query.setParameter("inForumTopicId", forumTopicId);
         query.setMaxResults(1);
         try {
-            ForumTopic booking = (ForumTopic)query.getSingleResult();
+            ForumTopic booking = (ForumTopic) query.getSingleResult();
             return booking;
         } catch (Exception e) {
             throw new ForumTopicNotFoundException("Booking not found with id " + forumTopicId);
@@ -54,20 +56,45 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
         em.persist(forumReply);
         em.flush();
     }
-    
-    
+
     @Override
     public List<ForumTopic> getAllForumTopics() {
         Query query = em.createQuery("SELECT f FROM ForumTopic f");
         return query.getResultList();
     }
-    
-    public List<ForumTopic> searchForumTopics(String name) {
+
+    @Override
+    public List<ForumTopic> searchForumTopicsByName(String name) {
         Query q;
         if (name != null) {
             q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
                     + "LOWER(f.topicName) LIKE :name");
             q.setParameter("name", "%" + name.toLowerCase() + "%");
+        } else {
+            q = em.createQuery("SELECT f FROM ForumTopic f");
+        }
+
+        return q.getResultList();
+    }
+
+    @Override
+    public List<ForumTopic> searchForumTopicsByTags(ForumTopicTagEnum selectedTag) {
+        Query q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
+                    + ":selectedTag IN (f.tags)");
+        q.setParameter("selectedTag", selectedTag);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public List<ForumTopic> searchForumTopicsByNameAndTags(String name, ForumTopicTagEnum selectedTag) {
+        Query q;
+        if (name != null) {
+            q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
+                    + "LOWER(f.topicName) LIKE :name AND "
+                    + ":selectedTag IN (f.tags)");
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+            q.setParameter("selectedTag", selectedTag);
         } else {
             q = em.createQuery("SELECT f FROM ForumTopic f");
         }
