@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,7 +35,7 @@ public class ForumTopic implements Serializable {
     @ManyToOne
     private User poster;
     
-    private List<ForumTopicTagEnum> tags;
+    private Set<ForumTopicTagEnum> tags;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateCreated;
     
@@ -45,7 +46,7 @@ public class ForumTopic implements Serializable {
     public ForumTopic() {
     }
 
-    public ForumTopic(String topicName, String description, User poster, List<ForumTopicTagEnum> tags, Date dateCreated) {
+    public ForumTopic(String topicName, String description, User poster, Set<ForumTopicTagEnum> tags, Date dateCreated) {
         this.topicName = topicName;
         this.description = description;
         this.poster = poster;
@@ -131,14 +132,14 @@ public class ForumTopic implements Serializable {
     /**
      * @return the tags
      */
-    public List<ForumTopicTagEnum> getTags() {
+    public Set<ForumTopicTagEnum> getTags() {
         return tags;
     }
 
     /**
      * @param tags the tags to set
      */
-    public void setTags(List<ForumTopicTagEnum> tags) {
+    public void setTags(Set<ForumTopicTagEnum> tags) {
         this.tags = tags;
     }
 

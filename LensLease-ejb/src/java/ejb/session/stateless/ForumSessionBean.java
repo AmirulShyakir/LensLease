@@ -79,9 +79,9 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
 
     @Override
     public List<ForumTopic> searchForumTopicsByTags(ForumTopicTagEnum selectedTag) {
-        Query q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
-                    + ":selectedTag IN (f.tags)");
-        q.setParameter("selectedTag", selectedTag);
+        TypedQuery<ForumTopic> q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
+                    + ":selectedTag IN (f.tags)", ForumTopic.class);
+        q.setParameter("selectedTag", ForumTopicTagEnum.PHOTOGRAPHY);
 
         return q.getResultList();
     }

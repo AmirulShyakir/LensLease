@@ -13,6 +13,7 @@ import entity.User;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -38,7 +39,7 @@ public class ForumManagedBean implements Serializable {
     private String topicName;
     private String description;
     private User poster;
-    private List<ForumTopicTagEnum> tags;
+    private Set<ForumTopicTagEnum> tags;
     private Date dateCreated;
     private List<ForumReply> replies;
 
@@ -161,14 +162,14 @@ public class ForumManagedBean implements Serializable {
     /**
      * @return the tags
      */
-    public List<ForumTopicTagEnum> getTags() {
+    public Set<ForumTopicTagEnum> getTags() {
         return tags;
     }
 
     /**
      * @param tags the tags to set
      */
-    public void setTags(List<ForumTopicTagEnum> tags) {
+    public void setTags(Set<ForumTopicTagEnum> tags) {
         this.tags = tags;
     }
 

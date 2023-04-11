@@ -19,7 +19,9 @@ import entity.User;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -101,13 +103,13 @@ public class DataInitSessionBean {
         Calendar calendar = Calendar.getInstance();
         Date thisInstance = calendar.getTime();
         if (em.find(ForumTopic.class, 1l) == null) {
-            ArrayList<ForumTopicTagEnum> topics = new ArrayList<ForumTopicTagEnum>();
+            Set<ForumTopicTagEnum> topics = new HashSet<ForumTopicTagEnum>();
 
             topics.add(ForumTopicTagEnum.EQUIPMENT);
             topics.add(ForumTopicTagEnum.PHOTOGRAPHY);
             topics.add(ForumTopicTagEnum.TIPSANDADVICE);
 
-            ArrayList<ForumTopicTagEnum> topics1 = new ArrayList<ForumTopicTagEnum>();
+            Set<ForumTopicTagEnum> topics1 = new HashSet<ForumTopicTagEnum>();
             topics1.add(ForumTopicTagEnum.VIDEOGRAPHY);
             topics1.add(ForumTopicTagEnum.VIDEOEDITING);
             topics1.add(ForumTopicTagEnum.TIPSANDADVICE);
@@ -137,7 +139,7 @@ public class DataInitSessionBean {
         System.out.println("****");
         List<ForumTopic> forumTopics = forumSessionBean.getAllForumTopics();
         for (ForumTopic f:forumTopics) {
-            List<ForumTopicTagEnum> tags = f.getTags();
+            Set<ForumTopicTagEnum> tags = f.getTags();
             System.out.println(f.getTopicName());
             for (ForumTopicTagEnum tag:tags) {
                 System.out.println(tag);
