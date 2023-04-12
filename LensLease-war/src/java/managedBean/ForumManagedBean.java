@@ -49,7 +49,7 @@ public class ForumManagedBean implements Serializable {
     private String searchString;
     private String searchType = "";
 
-    private ForumTopicTagEnum topicFilter;
+    private ForumTopicTagEnum topicFilter = ForumTopicTagEnum.ALL;
     private String selectedTopics;
 
     @PostConstruct

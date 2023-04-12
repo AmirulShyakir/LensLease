@@ -113,14 +113,30 @@ public class DataInitSessionBean {
             topics1.add(ForumTopicTagEnum.VIDEOGRAPHY);
             topics1.add(ForumTopicTagEnum.VIDEOEDITING);
             topics1.add(ForumTopicTagEnum.TIPSANDADVICE);
+            
+            Set<ForumTopicTagEnum> topics2 = new HashSet<ForumTopicTagEnum>();
+            topics2.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            topics2.add(ForumTopicTagEnum.PHOTOEDITING);
+            
+            Set<ForumTopicTagEnum> topics3 = new HashSet<ForumTopicTagEnum>();
+            topics3.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            topics3.add(ForumTopicTagEnum.PHOTOEDITING);
+            topics3.add(ForumTopicTagEnum.PHOTOGRAPHY);
 
             try {
                 ForumTopic forumTopic1 = new ForumTopic("Test Topic", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(1)), topics, thisInstance);
 
                 ForumTopic forumTopic2 = new ForumTopic("Test Topic 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ", userSessionBean.findUserByUserId(new Long(2)),
                         topics1, thisInstance);
+                
+                ForumTopic forumTopic3 = new ForumTopic("Test Topic 3", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(2)), topics2, thisInstance);
+                
+                ForumTopic forumTopic4 = new ForumTopic("Test Topic 4", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(3)), topics3, thisInstance);
+
                 forumSessionBean.createNewForumTopic(forumTopic1);
                 forumSessionBean.createNewForumTopic(forumTopic2);
+                forumSessionBean.createNewForumTopic(forumTopic3);
+                forumSessionBean.createNewForumTopic(forumTopic4);
             } catch (UserNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -147,8 +163,10 @@ public class DataInitSessionBean {
         }
         System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.EQUIPMENT));
         System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.ALL));
-        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.TIPSANDADVICE));
+        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.VIDEOGRAPHY));
         System.out.println("****");
+       
+
 
     }
 

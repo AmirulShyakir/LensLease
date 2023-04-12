@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.ForumReply;
 import entity.ForumTopic;
 import entity.ForumTopicTagEnum;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -79,11 +80,18 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
 
     @Override
     public List<ForumTopic> searchForumTopicsByTags(ForumTopicTagEnum selectedTag) {
-        TypedQuery<ForumTopic> q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
-                    + ":selectedTag IN (f.tags)", ForumTopic.class);
-        q.setParameter("selectedTag", ForumTopicTagEnum.PHOTOGRAPHY);
-
-        return q.getResultList();
+        List<ForumTopic> res = new ArrayList<ForumTopic>();
+        List<ForumTopic> allForumTopics = getAllForumTopics();
+        if (selectedTag.equals(ForumTopicTagEnum.ALL)) {
+            return allForumTopics;
+        } else {
+            for (ForumTopic f : allForumTopics) {
+                if (f.getTags().contains(selectedTag)) {
+                    res.add(f);
+                }
+            }
+        }
+        return res;
     }
 
     @Override
@@ -91,14 +99,24 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
         Query q;
         if (name != null) {
             q = em.createQuery("SELECT f FROM ForumTopic f WHERE "
-                    + "LOWER(f.topicName) LIKE :name AND "
-                    + ":selectedTag IN (f.tags)");
+                    + "LOWER(f.topicName) LIKE :name");
             q.setParameter("name", "%" + name.toLowerCase() + "%");
-            q.setParameter("selectedTag", selectedTag);
         } else {
             q = em.createQuery("SELECT f FROM ForumTopic f");
         }
 
-        return q.getResultList();
+        List<ForumTopic> filtered = q.getResultList();
+        List<ForumTopic> res = new ArrayList<ForumTopic>();
+        if (selectedTag.equals(ForumTopicTagEnum.ALL)) {
+            return filtered;
+        } else {
+            for (ForumTopic f : filtered) {
+                if (f.getTags().contains(selectedTag)) {
+                    res.add(f);
+                }
+            }
+        }
+        return res;
+
     }
 }
