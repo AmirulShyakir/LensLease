@@ -18,7 +18,8 @@
 .product-grid-item .ui-rating{margin:0 0 0.5rem 0}
 .product-grid-item-content{text-align:left}
 .product-price{font-size:1.3rem;font-weight:400} 
-@media screen and (max-width: 576px) .product-list-item{-ms-flex-direction:column;flex-direction:column;-ms-flex-align:center;align-items:center}.product
+@media screen and (max-width: 576px) 
+.product-list-item{-ms-flex-direction:column;flex-direction:column;-ms-flex-align:center;align-items:center}.product
 .product-list-item img{width:75%;margin:2rem 0}.product .product-list-item
 .product-list-detail{text-align:center}
 .product-list-item .product-price{align-self:center}

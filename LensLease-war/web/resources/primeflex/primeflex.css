@@ -21006,7 +21006,6 @@ h5 {
 }
 
 .forum-topics .ui-button.ui-state-default {
-    background-color: black;
     color: white;
     margin: 0px 14px;
     font-size: 14px;
@@ -21019,4 +21018,14 @@ h5 {
 
 .forum-topics .ui-button.ui-state-default::last-child {
     margin: 0px 0px 0px 14px;
+}
+
+.ui-chip.topic-tag {
+        background: var(--primary-color);
+        color: var(--primary-color-text);
+        padding: 2px 14px;
+    }
+
+.selected .ui-button.ui-state-default {
+    background-color: red; 
 }
