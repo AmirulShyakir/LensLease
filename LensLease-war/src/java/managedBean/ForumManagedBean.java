@@ -148,20 +148,17 @@ public class ForumManagedBean implements Serializable {
         this.replies.add(forumReply);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reply Added"));
         PrimeFaces.current().executeScript("PF('manageReplyDialog').hide()");
-        PrimeFaces.current().ajax().update("form:messages", "form:form");
     }
 
-    public String saveTopic() {
+    public void saveTopic() {
         System.out.println(selectedForumTopic.getTopicName());
         selectedForumTopic.setPoster(poster);
         selectedForumTopic.setDateCreated(new Date());
         selectedForumTopic.setTagsFromStringToEnums();
         forumSessionBean.createNewForumTopic(selectedForumTopic);
         this.listOfForumTopics.add(selectedForumTopic);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Added"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("New Forum Topic Added"));
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-        return "/secret/forum.xhtml";
     }
 
     public boolean isTopicTagIsAll() {
