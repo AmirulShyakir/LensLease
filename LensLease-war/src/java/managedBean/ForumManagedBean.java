@@ -6,20 +6,27 @@
 package managedBean;
 
 import ejb.session.stateless.ForumSessionBeanLocal;
+import ejb.session.stateless.UserSessionBeanLocal;
 import entity.ForumReply;
 import entity.ForumTopic;
 import entity.ForumTopicTagEnum;
 import entity.User;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.el.ELContext;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
+import util.exception.UserNotFoundException;
 
 /**
  *
@@ -34,6 +41,9 @@ public class ForumManagedBean implements Serializable {
 
     @EJB
     private ForumSessionBeanLocal forumSessionBean;
+
+    @EJB
+    private UserSessionBeanLocal userSessionBean;
 
     private Long forumTopicId;
     private String topicName;
@@ -52,8 +62,29 @@ public class ForumManagedBean implements Serializable {
     private ForumTopicTagEnum topicFilter = ForumTopicTagEnum.ALL;
     private String selectedTopics;
 
+    private boolean topicTagIsAll = true;
+    private boolean topicTagIsPhotography = false;
+    private boolean topicTagIsVideography = false;
+    private boolean topicTagIsEquipment = false;
+    private boolean topicTagIsPhotoediting = false;
+    private boolean topicTagIsVideoediting = false;
+    private boolean topicTagIsTipsAndAdvice = false;
+    
+    List<String> selectedTags = new ArrayList<String>();
+
     @PostConstruct
     public void init() {
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "authenticationManagedBean");
+
+        long userId = authenticationManagedBean.getUserId();
+        try {
+            setPoster(userSessionBean.findUserByUserId(userId));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(ForumManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         if ((getSearchString() == null || getSearchString().equals("")) && getTopicFilter() == ForumTopicTagEnum.ALL) {
             setListOfForumTopics(forumSessionBean.getAllForumTopics());
         } else if ((getSearchString() == null || getSearchString().equals("")) && getTopicFilter() != ForumTopicTagEnum.ALL) {
@@ -67,6 +98,11 @@ public class ForumManagedBean implements Serializable {
 
     public void handleSearch() {
         init();
+    }
+    
+    public ForumTopicTagEnum[] getAllAvailableTags() {
+        System.out.println(ForumTopicTagEnum.values());
+        return ForumTopicTagEnum.values();
     }
 
     public void getAllForumTopics() {
@@ -87,6 +123,120 @@ public class ForumManagedBean implements Serializable {
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
+        /**
+         * @return the topicTagIsAll
+         */
+    }
+
+    public void openNew() {
+        this.selectedForumTopic = new ForumTopic();
+    }
+
+    public void saveTopic() {
+        System.out.println(selectedForumTopic.getTopicName());
+        selectedForumTopic.setPoster(poster);
+        selectedForumTopic.setDateCreated(new Date());
+        selectedForumTopic.setTagsFromStringToEnums();
+        forumSessionBean.createNewForumTopic(selectedForumTopic);
+        this.listOfForumTopics.add(selectedForumTopic);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Added"));
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    public boolean isTopicTagIsAll() {
+        return topicTagIsAll;
+    }
+
+    /**
+     * @param topicTagIsAll the topicTagIsAll to set
+     */
+    public void setTopicTagIsAll(boolean topicTagIsAll) {
+        this.topicTagIsAll = topicTagIsAll;
+    }
+
+    /**
+     * @return the topicTagIsPhotography
+     */
+    public boolean isTopicTagIsPhotography() {
+        return topicTagIsPhotography;
+    }
+
+    /**
+     * @param topicTagIsPhotography the topicTagIsPhotography to set
+     */
+    public void setTopicTagIsPhotography(boolean topicTagIsPhotography) {
+        this.topicTagIsPhotography = topicTagIsPhotography;
+    }
+
+    /**
+     * @return the topicTagIsVideography
+     */
+    public boolean isTopicTagIsVideography() {
+        return topicTagIsVideography;
+    }
+
+    /**
+     * @param topicTagIsVideography the topicTagIsVideography to set
+     */
+    public void setTopicTagIsVideography(boolean topicTagIsVideography) {
+        this.topicTagIsVideography = topicTagIsVideography;
+    }
+
+    /**
+     * @return the topicTagIsEquipment
+     */
+    public boolean isTopicTagIsEquipment() {
+        return topicTagIsEquipment;
+    }
+
+    /**
+     * @param topicTagIsEquipment the topicTagIsEquipment to set
+     */
+    public void setTopicTagIsEquipment(boolean topicTagIsEquipment) {
+        this.topicTagIsEquipment = topicTagIsEquipment;
+    }
+
+    /**
+     * @return the topicTagIsPhotoediting
+     */
+    public boolean isTopicTagIsPhotoediting() {
+        return topicTagIsPhotoediting;
+    }
+
+    /**
+     * @param topicTagIsPhotoediting the topicTagIsPhotoediting to set
+     */
+    public void setTopicTagIsPhotoediting(boolean topicTagIsPhotoediting) {
+        this.topicTagIsPhotoediting = topicTagIsPhotoediting;
+    }
+
+    /**
+     * @return the topicTagIsVideoediting
+     */
+    public boolean isTopicTagIsVideoediting() {
+        return topicTagIsVideoediting;
+    }
+
+    /**
+     * @param topicTagIsVideoediting the topicTagIsVideoediting to set
+     */
+    public void setTopicTagIsVideoediting(boolean topicTagIsVideoediting) {
+        this.topicTagIsVideoediting = topicTagIsVideoediting;
+    }
+
+    /**
+     * @return the topicTagIsTipsAndAdvice
+     */
+    public boolean isTopicTagIsTipsAndAdvice() {
+        return topicTagIsTipsAndAdvice;
+    }
+
+    /**
+     * @param topicTagIsTipsAndAdvice the topicTagIsTipsAndAdvice to set
+     */
+    public void setTopicTagIsTipsAndAdvice(boolean topicTagIsTipsAndAdvice) {
+        this.topicTagIsTipsAndAdvice = topicTagIsTipsAndAdvice;
     }
 
     /**
@@ -264,27 +414,45 @@ public class ForumManagedBean implements Serializable {
         return topicFilter;
     }
 
+    private void resetFilters() {
+        setTopicTagIsAll(false);
+        setTopicTagIsPhotography(false);
+        setTopicTagIsVideography(false);
+        setTopicTagIsEquipment(false);
+        setTopicTagIsPhotoediting(false);
+        setTopicTagIsVideoediting(false);
+        setTopicTagIsTipsAndAdvice(false);
+    }
+
     /**
      * @param topicFilter the topicFilter to set
      */
     public void setTopicFilter(String topicFilter) {
         System.out.println(topicFilter);
+        resetFilters();
         if (topicFilter.equals("PHOTOGRAPHY")) {
             this.topicFilter = ForumTopicTagEnum.PHOTOGRAPHY;
+            setTopicTagIsPhotography(true);
         } else if (topicFilter.equals("VIDEOGRAPHY")) {
             this.topicFilter = ForumTopicTagEnum.VIDEOGRAPHY;
+            setTopicTagIsVideography(true);
         } else if (topicFilter.equals("EQUIPMENT")) {
             this.topicFilter = ForumTopicTagEnum.EQUIPMENT;
+            setTopicTagIsEquipment(true);
         } else if (topicFilter.equals("PHOTOEDITING")) {
             this.topicFilter = ForumTopicTagEnum.PHOTOEDITING;
+            setTopicTagIsPhotoediting(true);
         } else if (topicFilter.equals("VIDEOEDITING")) {
             this.topicFilter = ForumTopicTagEnum.VIDEOEDITING;
+            setTopicTagIsVideoediting(true);
         } else if (topicFilter.equals("TIPSANDADVICE")) {
             this.topicFilter = ForumTopicTagEnum.TIPSANDADVICE;
+            setTopicTagIsTipsAndAdvice(true);
         } else {
             this.topicFilter = ForumTopicTagEnum.ALL;
+            this.setTopicTagIsAll(true);
         }
-        
+
         System.out.println(this.topicFilter);
         System.out.println(forumSessionBean.searchForumTopicsByTags(this.topicFilter));
 
@@ -302,6 +470,10 @@ public class ForumManagedBean implements Serializable {
      */
     public void setSelectedTopics(String selectedTopics) {
         this.selectedTopics = selectedTopics;
+    }
+    
+    public void resetSelectedTags() {
+        this.selectedTags = new ArrayList<String>();
     }
 
 }

@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.ElementCollection;
@@ -43,6 +44,8 @@ public class ForumTopic implements Serializable {
     @OneToMany(mappedBy = "forumTopic")
     private List<ForumReply> replies;
 
+    private List<String> selectedTags;
+    
     public ForumTopic() {
     }
 
@@ -52,6 +55,7 @@ public class ForumTopic implements Serializable {
         this.poster = poster;
         this.tags = tags;
         this.dateCreated = dateCreated;
+        this.selectedTags = null;
     }
     
     /**
@@ -169,6 +173,44 @@ public class ForumTopic implements Serializable {
      */
     public void setPoster(User poster) {
         this.poster = poster;
+    }
+    
+    public int getReplyCount() {
+        return getReplies().size();
+    }
+
+    /**
+     * @return the selectedTags
+     */
+    public List<String> getSelectedTags() {
+        return selectedTags;
+    }
+
+    /**
+     * @param selectedTags the selectedTags to set
+     */
+    public void setSelectedTags(List<String> selectedTags) {
+        this.selectedTags = selectedTags;
+    }
+    
+    public void setTagsFromStringToEnums() {
+        Set<ForumTopicTagEnum> tags = new HashSet<ForumTopicTagEnum>();
+        for (String tag:selectedTags) {
+            if (tag.equals("PHOTOGRAPHY")) {
+                tags.add(ForumTopicTagEnum.PHOTOGRAPHY);
+            } else if (tag.equals("VIDEOGRAPHY")) {
+                tags.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            } else if (tag.equals("EQUIPMENT")) {
+                tags.add(ForumTopicTagEnum.EQUIPMENT);
+            } else if (tag.equals("PHOTOEDITING")) {
+                tags.add(ForumTopicTagEnum.PHOTOEDITING);
+            } else if (tag.equals("VIDEOEDITING")) {
+                tags.add(ForumTopicTagEnum.VIDEOEDITING);
+            } else if (tag.equals("TIPSANDADVICE")) {
+                tags.add(ForumTopicTagEnum.TIPSANDADVICE);
+            }
+        } 
+        this.tags = tags;
     }
     
 }

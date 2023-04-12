@@ -152,20 +152,7 @@ public class DataInitSessionBean {
             }
         }
 
-        System.out.println("****");
-        List<ForumTopic> forumTopics = forumSessionBean.getAllForumTopics();
-        for (ForumTopic f:forumTopics) {
-            Set<ForumTopicTagEnum> tags = f.getTags();
-            System.out.println(f.getTopicName());
-            for (ForumTopicTagEnum tag:tags) {
-                System.out.println(tag);
-            }
-        }
-        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.EQUIPMENT));
-        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.ALL));
-        System.out.println(forumSessionBean.searchForumTopicsByTags(ForumTopicTagEnum.VIDEOGRAPHY));
-        System.out.println("****");
-       
+   
 
 
     }
