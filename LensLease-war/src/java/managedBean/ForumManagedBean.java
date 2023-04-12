@@ -38,6 +38,7 @@ public class ForumManagedBean implements Serializable {
 
     public ForumManagedBean() {
     }
+    
 
     @EJB
     private ForumSessionBeanLocal forumSessionBean;
@@ -70,7 +71,9 @@ public class ForumManagedBean implements Serializable {
     private boolean topicTagIsVideoediting = false;
     private boolean topicTagIsTipsAndAdvice = false;
     
-    List<String> selectedTags = new ArrayList<String>();
+    private List<String> selectedTags = new ArrayList<String>();
+    
+    private ForumReply forumReply;
 
     @PostConstruct
     public void init() {
@@ -131,8 +134,24 @@ public class ForumManagedBean implements Serializable {
     public void openNew() {
         this.selectedForumTopic = new ForumTopic();
     }
+    
+    public void openNewReply() {
+        this.setForumReply(new ForumReply());
+    }
+    
+    public void saveReply() {
+        forumReply.setForumTopic(selectedForumTopic);
+        forumReply.setReplier(poster);
+        forumReply.setReplyTime(new Date());
+        selectedForumTopic.getReplies().add(forumReply);
+        forumSessionBean.createNewForumReply(forumReply);
+        this.replies.add(forumReply);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reply Added"));
+        PrimeFaces.current().executeScript("PF('manageReplyDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:form");
+    }
 
-    public void saveTopic() {
+    public String saveTopic() {
         System.out.println(selectedForumTopic.getTopicName());
         selectedForumTopic.setPoster(poster);
         selectedForumTopic.setDateCreated(new Date());
@@ -142,6 +161,7 @@ public class ForumManagedBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Added"));
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        return "/secret/forum.xhtml";
     }
 
     public boolean isTopicTagIsAll() {
@@ -452,10 +472,9 @@ public class ForumManagedBean implements Serializable {
             this.topicFilter = ForumTopicTagEnum.ALL;
             this.setTopicTagIsAll(true);
         }
-
+        
         System.out.println(this.topicFilter);
-        System.out.println(forumSessionBean.searchForumTopicsByTags(this.topicFilter));
-
+        this.listOfForumTopics = forumSessionBean.searchForumTopicsByTags(this.topicFilter);
     }
 
     /**
@@ -473,7 +492,35 @@ public class ForumManagedBean implements Serializable {
     }
     
     public void resetSelectedTags() {
-        this.selectedTags = new ArrayList<String>();
+        this.setSelectedTags(new ArrayList<String>());
+    }
+
+    /**
+     * @return the selectedTags
+     */
+    public List<String> getSelectedTags() {
+        return selectedTags;
+    }
+
+    /**
+     * @param selectedTags the selectedTags to set
+     */
+    public void setSelectedTags(List<String> selectedTags) {
+        this.selectedTags = selectedTags;
+    }
+
+    /**
+     * @return the forumReply
+     */
+    public ForumReply getForumReply() {
+        return forumReply;
+    }
+
+    /**
+     * @param forumReply the forumReply to set
+     */
+    public void setForumReply(ForumReply forumReply) {
+        this.forumReply = forumReply;
     }
 
 }
