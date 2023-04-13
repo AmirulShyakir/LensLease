@@ -32,6 +32,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     public void createNewUser(User user) {
         Portfolio p = new Portfolio();
         p.setDescription("Hi there, welcome to my portfolio!");
+        user.setName(user.getName().toLowerCase().trim());
         user.setPortfolio(p);
         em.persist(user);
         em.persist(p);
@@ -60,7 +61,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     @Override
     public User findUserByUsername(String username) throws UserNotFoundException {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :inUsername");
-        query.setParameter("inUsername", username);
+        query.setParameter("inUsername", username.toLowerCase().trim());
         query.setMaxResults(1);
         try {
             User user = (User) query.getSingleResult();
@@ -86,7 +87,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException("No Admin found in database");
         } else {
             for (User u : users) {
-                if (u.getUsername().equals(username)) {
+                if (u.getUsername().equals(username.toLowerCase().trim())) {
                     if (u.getPassword().equals(password)) {
                         return u;
                     } else {
@@ -104,12 +105,13 @@ public class UserSessionBean implements UserSessionBeanLocal {
         emailQuery.setParameter("email", user.getEmail());
 
         Query usernameQuery = em.createQuery("SELECT u FROM User u WHERE u.username = :username");
-        usernameQuery.setParameter("username", user.getUsername());
+        usernameQuery.setParameter("username", user.getUsername().toLowerCase().trim());
 
         if (emailQuery.getResultList().isEmpty() && usernameQuery.getResultList().isEmpty()) {
             Portfolio p = new Portfolio();
             p.setDescription("Hi there, welcome to my portfolio!");
             user.setPortfolio(p);
+            user.setName(user.getName().toLowerCase().trim());
             em.persist(user);
             em.persist(p);
             em.flush();
@@ -135,7 +137,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
     public void updateDetails(Long userId, String name, String username, String email, String contactNumber, String photoURL){
         User user = em.find(User.class, userId);
         user.setName(name);
-        user.setUsername(username);
+        user.setUsername(username.toLowerCase().trim());
         user.setEmail(email);
         user.setContactNumber(contactNumber);
         user.setPhotoUrl(photoURL);

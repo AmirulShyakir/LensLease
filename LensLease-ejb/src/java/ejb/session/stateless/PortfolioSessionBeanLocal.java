@@ -34,6 +34,6 @@ public interface PortfolioSessionBeanLocal {
     public Portfolio updateSkills(Portfolio portfolio, List<String> skills);
     
     //Gallery
-    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException;
+//    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException;
     
 }
