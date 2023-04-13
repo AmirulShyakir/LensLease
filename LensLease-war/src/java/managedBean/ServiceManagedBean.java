@@ -82,6 +82,7 @@ public class ServiceManagedBean implements Serializable {
     private List<Service> listOfPhotographyServices;
     private String reportDescription;
     private Long serviceId;
+    private Long providerSId;
 
     private String searchString;
     private String searchType = "";
@@ -166,6 +167,15 @@ public class ServiceManagedBean implements Serializable {
             this.activeServicesProvided = serviceSessionBeanLocal.getActiveServicesByUser(user.getUserId());
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load active services"));
+        }
+    }
+    
+    public void loadProviderServices() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            setActiveServicesProvided(serviceSessionBeanLocal.getActiveServicesByUser(providerSId));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to load Service"));
         }
     }
     
@@ -487,6 +497,14 @@ public class ServiceManagedBean implements Serializable {
 
     public void setDelistedServicesProvided(List<Service> delistedServicesProvided) {
         this.delistedServicesProvided = delistedServicesProvided;
+    }
+
+    public Long getProviderSId() {
+        return providerSId;
+    }
+
+    public void setProviderSId(Long providerSId) {
+        this.providerSId = providerSId;
     }
     
 }
