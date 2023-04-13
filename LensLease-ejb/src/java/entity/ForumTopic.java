@@ -37,7 +37,7 @@ public class ForumTopic implements Serializable {
     private User poster;
     
     private Set<ForumTopicTagEnum> tags;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateCreated;
     
     
