@@ -54,6 +54,7 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
         Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
         if (client.getClientName() != null && client.getClientLink() != null) {
             em.persist(client);
+            client.setClientLink(checkLink(client));
             client.setPortfolio(p);
             p.getPortfolioClients().add(client);
             em.flush();
@@ -69,12 +70,21 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
         PortfolioClient c = em.find(PortfolioClient.class, client.getPortfolioClientId());
         if (client.getClientName() != null && client.getClientLink() != null) {
             c.setClientName(client.getClientName());
-            c.setClientLink(client.getClientLink());
+            c.setClientLink(checkLink(client));
             em.flush();
             return p;
         } else {
             throw new IncompleteFieldsException("Please complete all fields to update client");
         }
+    }
+    
+    //Check if link has https://
+    private String checkLink(PortfolioClient client) {
+        String link = client.getClientLink();
+        if (!link.contains("https://") || !link.contains("http://")) {
+            link = "https://" + link.trim();
+        }
+        return link;
     }
 
     @Override
@@ -118,16 +128,16 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
         return p;
     }
 
-    @Override
-    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException {
-        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
-        
-        if (!p.getImagesUrl().contains(photoURL)) {
-            p.getImagesUrl().add(photoURL);
-        } else {
-            throw new ImageDuplicateException("Duplicate image " + photoURL + " not uploaded");
-        }
-        return p;
-    }
+//    @Override
+//    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException {
+//        Portfolio p = em.find(Portfolio.class, portfolio.getPortfolioId());
+//        
+//        if (!p.getImagesUrl().contains(photoURL)) {
+//            p.getImagesUrl().add(photoURL);
+//        } else {
+//            throw new ImageDuplicateException("Duplicate image " + photoURL + " not uploaded");
+//        }
+//        return p;
+//    }
 
 }
