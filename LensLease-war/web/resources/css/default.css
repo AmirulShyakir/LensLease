@@ -9,9 +9,10 @@
     position: absolute;
     width: 80%;
     height: 80%;
+    min-height: 600px;
     box-shadow: -4px -4px 15px rgba(0, 0, 0, 0.25), 4px 4px 15px rgba(0, 0, 0, 0.25);
     margin-top: 8vh;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #login-left {
@@ -33,7 +34,7 @@
     height: 100%;
     width: 50%;
     padding: 5%;
-    padding-top: 8%;
+    padding-top: 10%;
     background: #FEFEFE;
 }
 
@@ -42,7 +43,7 @@
     width: 80%;
     height: 100px;
     margin-bottom: 50px;
-    align-self: center; 
+    align-self: center;
 }
 
 #login_button_left {
