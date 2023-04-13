@@ -26,6 +26,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
+import util.exception.ForumTopicNotFoundException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -73,8 +74,8 @@ public class ForumManagedBean implements Serializable {
     
     private List<String> selectedTags = new ArrayList<String>();
     
-    private ForumReply forumReply;
-
+    private String forumReplyMessage;
+    
     @PostConstruct
     public void init() {
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -135,17 +136,27 @@ public class ForumManagedBean implements Serializable {
         this.selectedForumTopic = new ForumTopic();
     }
     
-    public void openNewReply() {
-        this.setForumReply(new ForumReply());
-    }
-    
     public void saveReply() {
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "authenticationManagedBean");
+        long userId = authenticationManagedBean.getUserId();
+        ForumReply forumReply = new ForumReply();
         forumReply.setForumTopic(selectedForumTopic);
-        forumReply.setReplier(poster);
-        forumReply.setReplyTime(new Date());
-        selectedForumTopic.getReplies().add(forumReply);
+        try {
+            forumReply.setReplier(userSessionBean.findUserByUserId(userId));
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(ForumManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        forumReply.setReplyTime(new Date());     
+        forumReply.setMessage(this.getForumReplyMessage());
         forumSessionBean.createNewForumReply(forumReply);
-        this.replies.add(forumReply);
+        forumSessionBean.linkForumWithReply(this.selectedForumTopic.getForumTopicId(), forumReply.getForumReplyId());
+        
+        for (ForumReply f:this.replies) {
+            System.out.println(f.getMessage());
+        }
+        System.out.println("***");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reply Added"));
         PrimeFaces.current().executeScript("PF('manageReplyDialog').hide()");
     }
@@ -507,17 +518,18 @@ public class ForumManagedBean implements Serializable {
     }
 
     /**
-     * @return the forumReply
+     * @return the forumReplyMessage
      */
-    public ForumReply getForumReply() {
-        return forumReply;
+    public String getForumReplyMessage() {
+        return forumReplyMessage;
     }
 
     /**
-     * @param forumReply the forumReply to set
+     * @param forumReplyMessage the forumReplyMessage to set
      */
-    public void setForumReply(ForumReply forumReply) {
-        this.forumReply = forumReply;
+    public void setForumReplyMessage(String forumReplyMessage) {
+        this.forumReplyMessage = forumReplyMessage;
     }
+
 
 }

@@ -32,5 +32,9 @@ public interface ForumSessionBeanLocal {
     public List<ForumTopic> searchForumTopicsByName(String name);
 
     public List<ForumTopic> searchForumTopicsByNameAndTags(String name, ForumTopicTagEnum selectedTag);
+
+    public void createNewForumReply(ForumTopic forumTopic, ForumReply forumReply);
+
+    public void linkForumWithReply(long forumTopicId, long replyId);
     
 }

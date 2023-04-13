@@ -57,6 +57,23 @@ public class ForumSessionBean implements ForumSessionBeanLocal {
         em.persist(forumReply);
         em.flush();
     }
+    
+    @Override
+    public void createNewForumReply(ForumTopic forumTopic, ForumReply forumReply) {
+        forumTopic.getReplies().add(forumReply);
+        em.persist(forumReply);
+        em.flush();
+    }
+    
+    @Override
+    public void linkForumWithReply(long forumTopicId, long replyId) {
+        ForumTopic topic = em.find(ForumTopic.class, forumTopicId);
+        ForumReply reply = em.find(ForumReply.class, replyId);
+        topic.getReplies().size();
+        topic.getReplies().add(reply);
+        reply.setForumTopic(topic);
+        em.flush();
+    }
 
     @Override
     public List<ForumTopic> getAllForumTopics() {
