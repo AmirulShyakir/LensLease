@@ -306,7 +306,7 @@ public class DataInitSessionBean {
                 review4.setReviewDate(new Date());
                 reviewSessionBean.createNewReview(review4);
                 booking4.setBookingStatus(BookingStatusEnum.COMPLETED);
-                review4.setBooking(booking3);
+                review4.setBooking(booking4);
 
                 Booking booking5 = bookingSessionBean.findBookingByBookingId(new Long(5));
                 Review review5 = new Review();
