@@ -21139,6 +21139,7 @@ h5 {
     margin:  14px 14px 0px 0px;
     font-size: 14px;
     border-radius: 0.5rem !important;
+    border-width: 0px;
 }
 
 .ui-chip.topic-tag {
