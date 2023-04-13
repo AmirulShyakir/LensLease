@@ -158,7 +158,6 @@ public class ForumManagedBean implements Serializable {
         }
         System.out.println("***");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reply Added"));
-        PrimeFaces.current().executeScript("PF('manageReplyDialog').hide()");
     }
 
     public void saveTopic() {
