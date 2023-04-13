@@ -21095,3 +21095,28 @@ h5 {
 .animation-fill-both {
     animation-fill-mode: both !important;
 }
+
+.forum-topics .ui-button.ui-state-default {
+    color: white;
+    margin: 0px 14px;
+    font-size: 14px;
+    border-radius: 0.5rem !important;
+}
+
+.forum-topics .ui-button.ui-state-default:first-child {
+    margin: 0px 14px 0px 0px;
+}
+
+.forum-topics .ui-button.ui-state-default::last-child {
+    margin: 0px 0px 0px 14px;
+}
+
+.ui-chip.topic-tag {
+        background: var(--primary-color);
+        color: var(--primary-color-text);
+        padding: 2px 14px;
+    }
+
+.selected .ui-button.ui-state-default {
+    background-color: red; 
+}

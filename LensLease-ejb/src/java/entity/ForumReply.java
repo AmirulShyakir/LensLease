@@ -23,16 +23,23 @@ import javax.persistence.Temporal;
 public class ForumReply implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long forumReplyId;
     private String message;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date replyTime;
-    @OneToOne
-    private User user;
+    @ManyToOne
+    private User replier;
     
     @ManyToOne
     private ForumTopic forumTopic;
+
+    public ForumReply(String message, Date replyTime, User user, ForumTopic forumTopic) {
+        this.message = message;
+        this.replyTime = replyTime;
+        this.replier = user;
+        this.forumTopic = forumTopic;
+    }
 
     public ForumReply() {
     }
@@ -99,20 +106,6 @@ public class ForumReply implements Serializable {
     }
 
     /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    /**
      * @return the forumTopic
      */
     public ForumTopic getForumTopic() {
@@ -124,6 +117,20 @@ public class ForumReply implements Serializable {
      */
     public void setForumTopic(ForumTopic forumTopic) {
         this.forumTopic = forumTopic;
+    }
+
+    /**
+     * @return the replier
+     */
+    public User getReplier() {
+        return replier;
+    }
+
+    /**
+     * @param replier the replier to set
+     */
+    public void setReplier(User replier) {
+        this.replier = replier;
     }
     
 }

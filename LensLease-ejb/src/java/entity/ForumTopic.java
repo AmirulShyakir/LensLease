@@ -6,12 +6,20 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -25,12 +33,29 @@ public class ForumTopic implements Serializable {
     private Long forumTopicId;
     private String topicName;
     private String description;
-    private String thumbnailUrl;
+    @ManyToOne
+    private User poster;
+    
+    private Set<ForumTopicTagEnum> tags;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    
     
     @OneToMany(mappedBy = "forumTopic")
     private List<ForumReply> replies;
 
+    private List<String> selectedTags;
+    
     public ForumTopic() {
+    }
+
+    public ForumTopic(String topicName, String description, User poster, Set<ForumTopicTagEnum> tags, Date dateCreated) {
+        this.topicName = topicName;
+        this.description = description;
+        this.poster = poster;
+        this.tags = tags;
+        this.dateCreated = dateCreated;
+        this.selectedTags = null;
     }
     
     /**
@@ -59,20 +84,6 @@ public class ForumTopic implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * @return the thumbnailUrl
-     */
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    /**
-     * @param thumbnailUrl the thumbnailUrl to set
-     */
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
     }
 
     public Long getForumTopicId() {
@@ -120,6 +131,86 @@ public class ForumTopic implements Serializable {
      */
     public void setReplies(List<ForumReply> replies) {
         this.replies = replies;
+    }
+
+    /**
+     * @return the tags
+     */
+    public Set<ForumTopicTagEnum> getTags() {
+        return tags;
+    }
+
+    /**
+     * @param tags the tags to set
+     */
+    public void setTags(Set<ForumTopicTagEnum> tags) {
+        this.tags = tags;
+    }
+
+    /**
+     * @return the dateCreated
+     */
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    /**
+     * @param dateCreated the dateCreated to set
+     */
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    /**
+     * @return the poster
+     */
+    public User getPoster() {
+        return poster;
+    }
+
+    /**
+     * @param poster the poster to set
+     */
+    public void setPoster(User poster) {
+        this.poster = poster;
+    }
+    
+    public int getReplyCount() {
+        return getReplies().size();
+    }
+
+    /**
+     * @return the selectedTags
+     */
+    public List<String> getSelectedTags() {
+        return selectedTags;
+    }
+
+    /**
+     * @param selectedTags the selectedTags to set
+     */
+    public void setSelectedTags(List<String> selectedTags) {
+        this.selectedTags = selectedTags;
+    }
+    
+    public void setTagsFromStringToEnums() {
+        Set<ForumTopicTagEnum> tags = new HashSet<ForumTopicTagEnum>();
+        for (String tag:selectedTags) {
+            if (tag.equals("PHOTOGRAPHY")) {
+                tags.add(ForumTopicTagEnum.PHOTOGRAPHY);
+            } else if (tag.equals("VIDEOGRAPHY")) {
+                tags.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            } else if (tag.equals("EQUIPMENT")) {
+                tags.add(ForumTopicTagEnum.EQUIPMENT);
+            } else if (tag.equals("PHOTOEDITING")) {
+                tags.add(ForumTopicTagEnum.PHOTOEDITING);
+            } else if (tag.equals("VIDEOEDITING")) {
+                tags.add(ForumTopicTagEnum.VIDEOEDITING);
+            } else if (tag.equals("TIPSANDADVICE")) {
+                tags.add(ForumTopicTagEnum.TIPSANDADVICE);
+            }
+        } 
+        this.tags = tags;
     }
     
 }

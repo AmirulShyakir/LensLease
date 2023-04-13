@@ -12,6 +12,9 @@ import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.ServiceSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
+import entity.ForumReply;
+import entity.ForumTopic;
+import entity.ForumTopicTagEnum;
 import entity.BanRequest;
 import entity.Booking;
 import entity.BookingStatusEnum;
@@ -20,7 +23,10 @@ import entity.Service;
 import entity.ServiceTypeEnum;
 import entity.User;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -30,6 +36,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.ForumTopicNotFoundException;
 import util.exception.BookingNotFoundException;
 import util.exception.ServiceNotFoundException;
 import util.exception.UserNotFoundException;
@@ -42,6 +49,12 @@ import util.exception.UserNotFoundException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private ForumSessionBeanLocal forumSessionBean;
+
+    @EJB
+    private ServiceSessionBeanLocal serviceSessionBean;
 
     @EJB
     private ReviewSessionBeanLocal reviewSessionBean;
@@ -79,7 +92,7 @@ public class DataInitSessionBean {
             junwei.setPhotoUrl("https://i.pravatar.cc/300?img=12");
             User leeann = new User("Leeann", "leeann@gmail.com", "83685686", "Leeann", "password");
             leeann.setPhotoUrl("https://i.pravatar.cc/300?img=31");
-                    
+
             userSessionBean.createNewUser(amirul);
             userSessionBean.createNewUser(adriel);
             userSessionBean.createNewUser(jonathan);
@@ -185,9 +198,9 @@ public class DataInitSessionBean {
             } catch (UserNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
-        
-        if(em.find(Booking.class, 1l) == null) {
+        }
+
+        if (em.find(Booking.class, 1l) == null) {
             try {
                 Booking booking1 = new Booking();
                 booking1.setDate(new Date());
@@ -197,7 +210,7 @@ public class DataInitSessionBean {
                 booking1.setBookingStatus(BookingStatusEnum.PENDING);
                 booking1.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking1.setCustomer(userSessionBean.findUserByUserId(new Long(2)));
-                
+
                 Booking booking2 = new Booking();
                 booking2.setDate(new Date());
                 booking2.setStartTime("10am");
@@ -206,7 +219,7 @@ public class DataInitSessionBean {
                 booking2.setBookingStatus(BookingStatusEnum.PENDING);
                 booking2.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(12)));
                 booking2.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
-                
+
                 Booking booking3 = new Booking();
                 booking3.setDate(new Date());
                 booking3.setStartTime("5pm");
@@ -215,7 +228,7 @@ public class DataInitSessionBean {
                 booking3.setBookingStatus(BookingStatusEnum.PENDING);
                 booking3.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(13)));
                 booking3.setCustomer(userSessionBean.findUserByUserId(new Long(4)));
-                
+
                 Booking booking4 = new Booking();
                 booking4.setDate(new Date());
                 booking4.setStartTime("11pm");
@@ -224,7 +237,7 @@ public class DataInitSessionBean {
                 booking4.setBookingStatus(BookingStatusEnum.PENDING);
                 booking4.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(4)));
                 booking4.setCustomer(userSessionBean.findUserByUserId(new Long(5)));
-                
+
                 Booking booking5 = new Booking();
                 booking5.setDate(new Date());
                 booking5.setStartTime("3pm");
@@ -233,7 +246,7 @@ public class DataInitSessionBean {
                 booking5.setBookingStatus(BookingStatusEnum.PENDING);
                 booking5.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking5.setCustomer(userSessionBean.findUserByUserId(new Long(3)));
-                
+
                 Booking booking6 = new Booking();
                 booking6.setDate(new Date());
                 booking6.setStartTime("12pm");
@@ -242,7 +255,7 @@ public class DataInitSessionBean {
                 booking6.setBookingStatus(BookingStatusEnum.TORATE);
                 booking6.setService(serviceSessionBeanLocal.findServiceByServiceId(new Long(11)));
                 booking6.setCustomer(userSessionBean.findUserByUserId(new Long(1)));
-                
+
                 bookingSessionBean.createNewBooking(booking1);
                 bookingSessionBean.createNewBooking(booking2);
                 bookingSessionBean.createNewBooking(booking3);
@@ -253,8 +266,8 @@ public class DataInitSessionBean {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        if(em.find(Review.class, 1l) == null) {
+
+        if (em.find(Review.class, 1l) == null) {
             try {
                 Booking booking1 = bookingSessionBean.findBookingByBookingId(new Long(1));
                 Review review1 = new Review();
@@ -265,7 +278,7 @@ public class DataInitSessionBean {
                 booking1.setReview(review1);
                 review1.setBooking(booking1);
                 booking1.setBookingStatus(BookingStatusEnum.COMPLETED);
-                
+
                 Booking booking2 = bookingSessionBean.findBookingByBookingId(new Long(2));
                 Review review2 = new Review();
                 review2.setStarRating(5);
@@ -275,7 +288,7 @@ public class DataInitSessionBean {
                 booking2.setReview(review2);
                 booking2.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review2.setBooking(booking2);
-                
+
                 Booking booking3 = bookingSessionBean.findBookingByBookingId(new Long(3));
                 Review review3 = new Review();
                 review3.setStarRating(4);
@@ -285,7 +298,7 @@ public class DataInitSessionBean {
                 booking3.setReview(review3);
                 booking3.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review3.setBooking(booking3);
-                
+
                 Booking booking4 = bookingSessionBean.findBookingByBookingId(new Long(4));
                 Review review4 = new Review();
                 review4.setStarRating(5);
@@ -294,7 +307,7 @@ public class DataInitSessionBean {
                 reviewSessionBean.createNewReview(review4);
                 booking4.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review4.setBooking(booking3);
-                
+
                 Booking booking5 = bookingSessionBean.findBookingByBookingId(new Long(5));
                 Review review5 = new Review();
                 review5.setStarRating(5);
@@ -304,25 +317,76 @@ public class DataInitSessionBean {
                 booking5.setReview(review5);
                 booking5.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review5.setBooking(booking5);
-                
+
             } catch (BookingNotFoundException ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
         if (em.find(BanRequest.class, 1l) == null) {
-         
+
             try {
                 ArrayList<String> photos = new ArrayList();
                 photos.add("/studio-image.jpg");
-                adminSessionBean.createNewBanRequest(new BanRequest("This service is horrigible!", new Date(),false,userSessionBean.findUserByUserId(new Long(2)), serviceSessionBeanLocal.findServiceByServiceId(new Long(1)), null,null));
-                adminSessionBean.createNewBanRequest(new BanRequest("This user is horrigible!", new Date(),false,userSessionBean.findUserByUserId(new Long(2)), null, userSessionBean.findUserByUserId(new Long(1)),null));
-                adminSessionBean.createNewBanRequest(new BanRequest("This booking is horrigible!", new Date(), false,userSessionBean.findUserByUserId(new Long(2)),serviceSessionBeanLocal.findServiceByServiceId(new Long(2)), null, bookingSessionBean.findBookingByBookingId(new Long(1))));
+                adminSessionBean.createNewBanRequest(new BanRequest("This service is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), serviceSessionBeanLocal.findServiceByServiceId(new Long(1)), null, null));
+                adminSessionBean.createNewBanRequest(new BanRequest("This user is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), null, userSessionBean.findUserByUserId(new Long(1)), null));
+                adminSessionBean.createNewBanRequest(new BanRequest("This booking is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), serviceSessionBeanLocal.findServiceByServiceId(new Long(2)), null, bookingSessionBean.findBookingByBookingId(new Long(1))));
             } catch (Exception ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
         }
+        Calendar calendar = Calendar.getInstance();
+        Date thisInstance = calendar.getTime();
+        if (em.find(ForumTopic.class, 1l) == null) {
+            Set<ForumTopicTagEnum> topics = new HashSet<ForumTopicTagEnum>();
+
+            topics.add(ForumTopicTagEnum.EQUIPMENT);
+            topics.add(ForumTopicTagEnum.PHOTOGRAPHY);
+            topics.add(ForumTopicTagEnum.TIPSANDADVICE);
+
+            Set<ForumTopicTagEnum> topics1 = new HashSet<ForumTopicTagEnum>();
+            topics1.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            topics1.add(ForumTopicTagEnum.VIDEOEDITING);
+            topics1.add(ForumTopicTagEnum.TIPSANDADVICE);
+
+            Set<ForumTopicTagEnum> topics2 = new HashSet<ForumTopicTagEnum>();
+            topics2.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            topics2.add(ForumTopicTagEnum.PHOTOEDITING);
+
+            Set<ForumTopicTagEnum> topics3 = new HashSet<ForumTopicTagEnum>();
+            topics3.add(ForumTopicTagEnum.VIDEOGRAPHY);
+            topics3.add(ForumTopicTagEnum.PHOTOEDITING);
+            topics3.add(ForumTopicTagEnum.PHOTOGRAPHY);
+
+            try {
+                ForumTopic forumTopic1 = new ForumTopic("Test Topic", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(1)), topics, thisInstance);
+
+                ForumTopic forumTopic2 = new ForumTopic("Test Topic 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ", userSessionBean.findUserByUserId(new Long(2)),
+                        topics1, thisInstance);
+
+                ForumTopic forumTopic3 = new ForumTopic("Test Topic 3", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(2)), topics2, thisInstance);
+
+                ForumTopic forumTopic4 = new ForumTopic("Test Topic 4", "Bing Bong Bing Bong Bing Bong ", userSessionBean.findUserByUserId(new Long(3)), topics3, thisInstance);
+
+                forumSessionBean.createNewForumTopic(forumTopic1);
+                forumSessionBean.createNewForumTopic(forumTopic2);
+                forumSessionBean.createNewForumTopic(forumTopic3);
+                forumSessionBean.createNewForumTopic(forumTopic4);
+            } catch (UserNotFoundException ex) {
+                Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (em.find(ForumReply.class, 1l) == null) {
+            try {
+                ForumReply forumReply1 = new ForumReply("Reply1 Reply1 Reply1", thisInstance, userSessionBean.findUserByUserId(new Long(1)), forumSessionBean.findForumTopicById(new Long(1)));
+                ForumReply forumReply2 = new ForumReply("Reply2 Reply2 Reply2", thisInstance, userSessionBean.findUserByUserId(new Long(2)), forumSessionBean.findForumTopicById(new Long(1)));
+                forumSessionBean.createNewForumReply(forumReply1);
+                forumSessionBean.createNewForumReply(forumReply2);
+            } catch (UserNotFoundException | ForumTopicNotFoundException ex) {
+                Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     public void persist(Object object) {

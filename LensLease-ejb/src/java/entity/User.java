@@ -38,6 +38,10 @@ public class User implements Serializable {
     private List<Service> services;
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
+    @OneToMany(mappedBy = "poster")
+    private List<ForumTopic> forumTopics;
+    @OneToMany(mappedBy = "replier")
+    private List<ForumReply> forumReplys;
 
     @OneToMany(mappedBy = "userToBan")
     private List<BanRequest> banRequests;
