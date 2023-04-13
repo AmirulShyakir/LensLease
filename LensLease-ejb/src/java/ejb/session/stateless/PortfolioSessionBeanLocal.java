@@ -5,12 +5,12 @@
  */
 package ejb.session.stateless;
 
+import entity.Portfolio;
 import entity.PortfolioClient;
-import entity.PortfolioPost;
-import entity.PortfolioSkill;
-import entity.User;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.ImageDuplicateException;
+import util.exception.IncompleteFieldsException;
 import util.exception.UserNotFoundException;
 
 /**
@@ -19,25 +19,21 @@ import util.exception.UserNotFoundException;
  */
 @Local
 public interface PortfolioSessionBeanLocal {
-
-    public void createPortfolio(User user);
-
-    public List<PortfolioClient> findPortfolioClientsByUserId(Long userId) throws UserNotFoundException;
-
-    public List<PortfolioSkill> findPortfolioSkillsByUserId(Long userId) throws UserNotFoundException;
-
-    public List<PortfolioPost> findPortfolioPostsByUserId(Long userId) throws UserNotFoundException;
-
-    public void uploadPortfolioPost(PortfolioPost portfolioPost, User user);
-
-    public void hidePortfolioPost(Long postId);
-
-    public void addPortfolioClient(PortfolioClient portfolioClient, User user);
-
-    public void hidePortfolioClient(Long portfolioClientId);
-
-    public void addPortfolioSkill(PortfolioSkill portfolioSkill, User user);
-
-    public void hidePortfolioSkill(Long portfolioSkillId);
+   
+    public Portfolio findPortfolioByUserId(Long userId) throws UserNotFoundException;
+    
+    //Description
+    public void updateDescription(Portfolio portfolio, String s);
+    
+    //Client
+    public Portfolio createClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException;
+    public Portfolio updateClient(Portfolio portfolio, PortfolioClient client) throws IncompleteFieldsException;
+    public Portfolio removeClient(PortfolioClient client);
+    
+    //Skills
+    public Portfolio updateSkills(Portfolio portfolio, List<String> skills);
+    
+    //Gallery
+    public Portfolio addPhoto(Portfolio portfolio, String photoURL) throws ImageDuplicateException;
     
 }

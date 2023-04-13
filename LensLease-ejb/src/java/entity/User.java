@@ -6,13 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -32,14 +33,6 @@ public class User implements Serializable {
     private String photoUrl;
     private boolean isBanned;
     
-    //portfolio
-    @ManyToMany
-    private List<PortfolioSkill> portfolioSkills;
-    @ManyToMany
-    private List<PortfolioClient> portfolioClients;
-    @OneToMany(mappedBy = "user")
-    private List<PortfolioPost> portfolioPosts;
-    
     //service & bookings
     @OneToMany(mappedBy = "provider")
     private List<Service> services;
@@ -49,6 +42,13 @@ public class User implements Serializable {
     private List<ForumTopic> forumTopics;
     @OneToMany(mappedBy = "replier")
     private List<ForumReply> forumReplys;
+
+    @OneToMany(mappedBy = "userToBan")
+    private List<BanRequest> banRequests;
+    @OneToOne
+    private Portfolio portfolio;
+    
+
 
     public User() {
         this.setIsBanned(false);
@@ -63,47 +63,44 @@ public class User implements Serializable {
         this.setIsBanned(false);
     }
     
+    public double getRating() {
+        double numRatings = 0;
+        double totalRatingScore = 0;
+        
+        if (services.isEmpty()) {
+            return -1;
+        } else {
+            for (Service s : services) {
+                if (!s.getBookings().isEmpty()) {
+                    List<Booking> bookings = s.getBookings();
+                    for (Booking b : bookings) {
+                        if (b.getReview() != null) {
+                            numRatings++;
+                            totalRatingScore += b.getReview().getStarRating();
+                        }
+                    }
+                }
+            }
+        }
+        if (numRatings == 0) {
+            return -1;
+        } else {
+             return totalRatingScore / numRatings;
+        }
+    }
     
-    /**
-     * @return the portfolioSkills
-     */
-    public List<PortfolioSkill> getPortfolioSkills() {
-        return portfolioSkills;
+    public int getStarRating() {
+        return (int) Math.round(getRating());
     }
-
-    /**
-     * @param portfolioSkills the portfolioSkills to set
-     */
-    public void setPortfolioSkills(List<PortfolioSkill> portfolioSkills) {
-        this.portfolioSkills = portfolioSkills;
-    }
-
-    /**
-     * @return the portfolioClients
-     */
-    public List<PortfolioClient> getPortfolioClients() {
-        return portfolioClients;
-    }
-
-    /**
-     * @param portfolioClients the portfolioClients to set
-     */
-    public void setPortfolioClients(List<PortfolioClient> portfolioClients) {
-        this.portfolioClients = portfolioClients;
-    }
-
-    /**
-     * @return the portfolioPosts
-     */
-    public List<PortfolioPost> getPortfolioPosts() {
-        return portfolioPosts;
-    }
-
-    /**
-     * @param portfolioPosts the portfolioPosts to set
-     */
-    public void setPortfolioPosts(List<PortfolioPost> portfolioPosts) {
-        this.portfolioPosts = portfolioPosts;
+    
+    public String getFormattedRating() {
+        DecimalFormat df = new DecimalFormat("#.0");
+        double rating = getRating();
+        if (rating == -1) {
+            return "No Ratings Yet";
+        } 
+        String formatted = df.format(rating);
+        return formatted;
     }
 
     /**
@@ -265,6 +262,23 @@ public class User implements Serializable {
      */
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
+    }
+
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+    
+    public List<BanRequest> getBanRequests() {
+        return banRequests;
+    }
+
+    public void setBanRequests(List<BanRequest> banRequests) {
+        this.banRequests = banRequests;
     }
     
 }

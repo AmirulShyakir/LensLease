@@ -6,13 +6,11 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -25,15 +23,12 @@ public class PortfolioClient implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioClientId;
     private String clientName;
-    private String clientPhotoUrl;
-    private Boolean isDisplayed;
+    private String clientLink;
 
-    @ManyToMany(mappedBy = "portfolioClients")
-    private List<User> users;
+    @ManyToOne
+    private Portfolio portfolio;
 
     public PortfolioClient() {
-        isDisplayed = true;
-        this.users = new ArrayList<User>();
     }
     
     /**
@@ -48,20 +43,6 @@ public class PortfolioClient implements Serializable {
      */
     public void setClientName(String clientName) {
         this.clientName = clientName;
-    }
-
-    /**
-     * @return the clientPhotoUrl
-     */
-    public String getClientPhotoUrl() {
-        return clientPhotoUrl;
-    }
-
-    /**
-     * @param clientPhotoUrl the clientPhotoUrl to set
-     */
-    public void setClientPhotoUrl(String clientPhotoUrl) {
-        this.clientPhotoUrl = clientPhotoUrl;
     }
 
     public Long getPortfolioClientId() {
@@ -97,26 +78,20 @@ public class PortfolioClient implements Serializable {
         return "entity.PortfolioClient[ id=" + portfolioClientId + " ]";
     }
 
-    /**
-     * @return the users
-     */
-    public List<User> getUsers() {
-        return users;
+    public String getClientLink() {
+        return clientLink;
     }
 
-    /**
-     * @param users the users to set
-     */
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-    
-    public Boolean isDisplayed() {
-        return isDisplayed;
+    public void setClientLink(String clientLink) {
+        this.clientLink = clientLink;
     }
 
-    public void setIsDisplayed(Boolean isDisplayed) {
-        this.isDisplayed = isDisplayed;
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
-    
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
 }

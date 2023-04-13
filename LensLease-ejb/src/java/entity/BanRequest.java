@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -27,13 +28,31 @@ public class BanRequest implements Serializable {
     private String description;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date requestDate;
+    private boolean isAttendedTo;
+    private boolean isRejected;
+    @ManyToOne
+    private User complainer;
     
     @ManyToOne
-    private Service service;
+    private Service serviceToBan;
+    @ManyToOne
+    private User userToBan;
+    @ManyToOne
+    private Booking booking;
 
     public BanRequest() {
     }
 
+    public BanRequest(String description, Date requestDate, Boolean isAttendedTo, User complainer, Service service, User user,  Booking booking) {
+        this.description = description;
+        this.requestDate = requestDate;
+        this.isAttendedTo = isAttendedTo;
+        this.complainer = complainer;
+        this.serviceToBan = service;
+        this.userToBan = user;
+        this.booking = booking;
+    }
+    
     public Long getBanRequestId() {
         return banRequestId;
     }
@@ -95,18 +114,57 @@ public class BanRequest implements Serializable {
         this.requestDate = requestDate;
     }
 
-    /**
-     * @return the service
-     */
-    public Service getService() {
-        return service;
+    public boolean isIsAttendedTo() {
+        return isAttendedTo;
+    }
+
+    public void setIsAttendedTo(boolean isAttendedTo) {
+        this.isAttendedTo = isAttendedTo;
+    }
+
+    public User getComplainer() {
+        return complainer;
+    }
+
+    public void setComplainer(User complainer) {
+        this.complainer = complainer;
     }
 
     /**
-     * @param service the service to set
+     * @return the service
      */
-    public void setService(Service service) {
-        this.service = service;
+    public Service getServiceToBan() {
+        return serviceToBan;
     }
-    
+
+    /**
+     * @param serviceToBan the service to set
+     */
+    public void setServiceToBan(Service serviceToBan) {
+        this.serviceToBan = serviceToBan;
+    }
+
+    public User getUserToBan() {
+        return userToBan;
+    }
+
+    public void setUserToBan(User userToBan) {
+        this.userToBan = userToBan;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
+    public boolean isIsRejected() {
+        return isRejected;
+    }
+
+    public void setIsRejected(boolean isRejected) {
+        this.isRejected = isRejected;
+    }
 }

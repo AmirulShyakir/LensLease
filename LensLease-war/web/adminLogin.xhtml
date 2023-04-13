@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Admin Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="css/default.css"/>
+        <h:outputStylesheet name="primeflex/primeflex.css"/>
+    </h:head>
+    <h:body >
+        <div id="container">
+            <div id="login">
+                <div id="login-left" >
+                    <p:graphicImage name="images/logo.png" style="width: 70%; max-width: 313px; min-width: 200px"/>
+                    <p style="color: white; margin-left: 20px"> Welcome Back, Admin!</p>
+                </div>
+                <div id="login-right" >
+                   
+                    <div class="ui-fluid">
+                        <h:form>
+                            <h4>Admin Username</h4>
+                            <p:inputText id="username" value="#{authenticationManagedBean.adminUsername}" required="true" requiredMessage="Username is required"/><br/>
+                            <p:message for="username"/>
+                            <h4>Password</h4>
+                            <p:password id="password" value="#{authenticationManagedBean.adminPassword}" redisplay="true"
+                                        required="true" requiredMessage="Password is required"/><br/>
+                            <p:message for="password"/>
+                            <p:commandButton type="submit" value="Login" action="#{authenticationManagedBean.adminLogin}" styleClass="ui-button-raised" ajax="false"/>
+                            <p:messages id="messages" showDetail="true" closable="true">
+                                <p:autoUpdate/>
+                            </p:messages>
+
+                            <!-- Error msg
+                            <div class="col-12 md:col-4" style="margin-top: 2vh">
+                                <p:staticMessage severity="error" summary="ERROR" detail="Invalid Username or Password" style="width: 100%" />
+                            </div>
+                            -->
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

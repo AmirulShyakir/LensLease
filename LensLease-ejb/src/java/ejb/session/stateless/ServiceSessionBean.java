@@ -6,10 +6,19 @@
 package ejb.session.stateless;
 
 import entity.BanRequest;
+import entity.Booking;
 import entity.Schedule;
 import entity.Service;
+import entity.ServiceTypeEnum;
 import entity.User;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,11 +33,36 @@ import util.exception.UserNotFoundException;
 @Stateless
 public class ServiceSessionBean implements ServiceSessionBeanLocal {
 
+    @EJB
+    private BookingSessionBeanLocal bookingSessionBean;
+
     @PersistenceContext(unitName = "LensLease-ejbPU")
     private EntityManager em;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @Override
+    public void createNewServiceProvided(Long userId, String name, int serviceType, double cost, String description, String collectionTime, String returnTime, String packageDuration, String imageURL) {
+        User user = em.find(User.class, userId);
+        Service service = new Service();
+        service.setServiceName(name);
+        service.getServicePhotos().set(0, imageURL);
+        service.setServiceType(ServiceTypeEnum.values()[serviceType]);
+        service.setPackageDurationHours(packageDuration);
+        if (service.getServiceType() == ServiceTypeEnum.EQUIPMENT_RENTAL) {
+            service.setIsRental(true);
+            service.setPackageDurationHours("Full Day Rental");
+        }
+        service.setServiceCost(cost);
+        service.setServiceDescription(description);
+        service.setEarliestCollectionTime(collectionTime);
+        service.setLatestReturnTime(returnTime);
+        user.getServices().add(service);
+        service.setProvider(user);
+        em.persist(service);
+        em.flush();
+    }
+
     @Override
     public void createNewService(Service service) {
         em.persist(service);
@@ -41,6 +75,10 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
 
         oldService.setServiceName(service.getServiceName());
         oldService.setServiceType(service.getServiceType());
+        oldService.setPackageDurationHours(service.getPackageDurationHours());
+        oldService.setEarliestCollectionTime(service.getEarliestCollectionTime());
+        oldService.setLatestReturnTime(service.getLatestReturnTime());
+        oldService.setServiceDescription(service.getServiceDescription());
         oldService.setServiceCost(service.getServiceCost());
         oldService.setServicePhotos(service.getServicePhotos());
         oldService.setIsBanned(service.isBanned());
@@ -80,6 +118,16 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
     }
 
     @Override
+    public List<Service> getServicesByType(ServiceTypeEnum serviceType) {
+        Query query = em.createQuery("SELECT s FROM Service s WHERE s.serviceType = :serviceType AND s.isBanned = false ");
+        query.setParameter("serviceType", serviceType);
+//        query.setParameter("bool", false);
+
+        return query.getResultList();
+
+    }
+
+    @Override
     public List<Service> getServicesByUser(Long userId) throws UserNotFoundException {
         User user = em.find(User.class, userId);
         if (user != null) {
@@ -87,6 +135,51 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         } else {
             throw new UserNotFoundException("No such user!");
         }
+    }
+
+    @Override
+    public List<Service> getActiveServicesByUser(Long userId) throws UserNotFoundException {
+        User user = em.find(User.class, userId);
+        List<Service> active = new ArrayList<>();
+        if (user != null) {
+            List<Service> all = user.getServices();
+            for (Service s : all) {
+                if (!s.isDelisted()) {
+                    active.add(s);
+                }
+            }
+            return active;
+        } else {
+            throw new UserNotFoundException("No such user!");
+        }
+    }
+
+    @Override
+    public List<Service> getDelistedServicesByUser(Long userId) throws UserNotFoundException {
+        User user = em.find(User.class, userId);
+        List<Service> active = new ArrayList<>();
+        if (user != null) {
+            List<Service> all = user.getServices();
+            for (Service s : all) {
+                if (s.isDelisted()) {
+                    active.add(s);
+                }
+            }
+            return active;
+        } else {
+            throw new UserNotFoundException("No such user!");
+        }
+    }
+
+    @Override
+    public List<Service> filterActiveServices(List<Service> services) {
+        List<Service> active = new ArrayList<>();
+        for (Service s : services) {
+            if (!s.isDelisted()) {
+                active.add(s);
+            }
+        }
+        return active;
     }
 
     @Override
@@ -114,5 +207,21 @@ public class ServiceSessionBean implements ServiceSessionBeanLocal {
         }
 
         return q.getResultList();
-    } //end searchBooks
+    }
+
+    @Override
+    public List<Service> searchServicesWithType(String name, ServiceTypeEnum type) {
+        Query q;
+        if (name != null) {
+            q = em.createQuery("SELECT s FROM Service s WHERE s.serviceType =:type AND s.isBanned = false AND "
+                    + "LOWER(s.serviceName) LIKE :name");
+            q.setParameter("type", type);
+            q.setParameter("name", "%" + name.toLowerCase() + "%");
+        } else {
+            q = em.createQuery("SELECT s FROM Service s WHERE service.serviceType =:type");
+            q.setParameter("type", type);
+        }
+
+        return q.getResultList();
+    }
 }

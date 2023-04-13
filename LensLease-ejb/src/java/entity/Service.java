@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,21 +32,23 @@ public class Service implements Serializable {
     private List<String> servicePhotos;
     private boolean isBanned;
     private String serviceDescription;
+    
+    //to display different stuff on checkout page
     private boolean isRental;
+    private boolean isEditing;
     
     //for rental
     private String earliestCollectionTime;
     private String latestReturnTime;
-    //for videography, photography services
+    //for videography, photography services and editing (rendered as estimated completion window
     private String packageDurationHours;
-    //for editing need figure out
 
     private boolean isDelisted;
 
     
     @ManyToOne
     private User provider;
-    @OneToMany(mappedBy = "service")
+    @OneToMany(mappedBy = "serviceToBan")
     private List<BanRequest> banRequests;
     @OneToMany(mappedBy = "service")
     private List<Booking> bookings;
@@ -53,6 +56,8 @@ public class Service implements Serializable {
     private Schedule schedule;
 
     public Service() {
+        this.servicePhotos = new ArrayList<>();
+        this.servicePhotos.add("https://t3.ftcdn.net/jpg/03/49/45/70/360_F_349457062_jmlEMWCo4lxlxGp3NVayQ9N0aiL2o6nO.jpg");
     }
 
     public Service(String serviceName, ServiceTypeEnum serviceType, double serviceCost, List<String> servicePhotos, boolean isBanned, User provider) {
@@ -62,6 +67,16 @@ public class Service implements Serializable {
         this.servicePhotos = servicePhotos;
         this.isBanned = isBanned;
         this.provider = provider;
+        
+        if (serviceType == serviceType.EQUIPMENT_RENTAL) {
+            this.isRental = true;
+            this.packageDurationHours = "Full Day Rental";
+        } else {
+            this.isRental = false;
+            if (serviceType == serviceType.PHOTO_EDITING ||serviceType == serviceType.VIDEO_EDITING) {
+                this.isEditing = true;
+            }
+        }
     }
     
     
@@ -74,8 +89,12 @@ public class Service implements Serializable {
         
         if (serviceType == serviceType.EQUIPMENT_RENTAL) {
             this.isRental = true;
+            this.packageDurationHours = "Full Day Rental";
         } else {
             this.isRental = false;
+            if (serviceType == serviceType.PHOTO_EDITING ||serviceType == serviceType.VIDEO_EDITING) {
+                this.isEditing = true;
+            }
         }
     }
     
@@ -315,6 +334,20 @@ public class Service implements Serializable {
 
     public void setIsDelisted(boolean isDelisted) {
         this.isDelisted = isDelisted;
+    }
+
+    /**
+     * @return the isEditing
+     */
+    public boolean isEditing() {
+        return isEditing;
+    }
+
+    /**
+     * @param isEditing the isEditing to set
+     */
+    public void setIsEditing(boolean isEditing) {
+        this.isEditing = isEditing;
     }
     
 }

@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -22,12 +24,6 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Booking implements Serializable {
-    /**
-     * @param bookingStatus the bookingStatus to set
-     */
-    public void setBookingStatus(BookingStatusEnum bookingStatus) {
-        this.bookingStatus = bookingStatus;
-    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,20 +32,29 @@ public class Booking implements Serializable {
     private Date date;
     private String startTime; //refers to start time for services, collection time for rentals
     private String preferredLocation;
+    private String projectSpecifications;
     private String comments;
     private BookingStatusEnum bookingStatus;
-    
+
     @ManyToOne
     private Service service;
     @ManyToOne
     private User customer;
-   
+    @OneToMany(mappedBy = "booking")
+    private List<BanRequest> banRequests;
     @OneToOne
     private Review review;
 
     public Booking() {
     }
-    
+
+    public Booking(Date date, String startTime, String preferredLocation, String projectSpecifications, BookingStatusEnum bookingStatus) {
+        this.date = date;
+        this.startTime = startTime;
+        this.preferredLocation = preferredLocation;
+        this.bookingStatus = bookingStatus;
+    }
+
     public Long getBookingId() {
         return bookingId;
     }
@@ -93,8 +98,8 @@ public class Booking implements Serializable {
     /**
      * @param startDateTime the startDateTime to set
      */
-    public void setStartDateTime(String startDateTime) {
-        this.startTime = startDateTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     /**
@@ -138,7 +143,7 @@ public class Booking implements Serializable {
     public void setReview(Review review) {
         this.review = review;
     }
-    
+
     /**
      * @return the comments
      */
@@ -187,4 +192,38 @@ public class Booking implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    /**
+     * @return the projectSpecifications
+     */
+    public String getProjectSpecifications() {
+        return projectSpecifications;
+    }
+
+    /**
+     * @param projectSpecifications the projectSpecifications to set
+     */
+    public void setProjectSpecifications(String projectSpecifications) {
+        this.projectSpecifications = projectSpecifications;
+    }
+
+    public String getFormattedDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(date);
+    }
+    /**
+     * @param bookingStatus the bookingStatus to set
+     */
+    public void setBookingStatus(BookingStatusEnum bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public List<BanRequest> getBanRequests() {
+        return banRequests;
+    }
+
+    public void setBanRequests(List<BanRequest> banRequests) {
+        this.banRequests = banRequests;
+    }
+    
 }
