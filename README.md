@@ -34,9 +34,9 @@ To either host online or expose web services and use that to deploy on localhost
 - [] addPortfolio should have some basic input validation so user cannot create an invalid portfolio link //Jun Wei
 
 ### Forum 
-- [ ] Add forum topics // Dekai
-- [ ] Add forum reply // Dekai
-- [ ] Add link to Forumpage in defaultLandingPage.xhtml //Dekai
+- [x] Add forum topics // Dekai
+- [x] Add forum reply // Dekai
+- [x] Add link to Forumpage in defaultLandingPage.xhtml //Dekai
 
 ### Account 
 - [x] Portfolio //Leeann
