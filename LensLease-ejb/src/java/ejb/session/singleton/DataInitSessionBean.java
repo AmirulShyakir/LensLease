@@ -305,6 +305,7 @@ public class DataInitSessionBean {
                 review4.setDescription("It was nice working with you. Thank you");
                 review4.setReviewDate(new Date());
                 reviewSessionBean.createNewReview(review4);
+                booking4.setReview(review4);
                 booking4.setBookingStatus(BookingStatusEnum.COMPLETED);
                 review4.setBooking(booking4);
 
