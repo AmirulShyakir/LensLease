@@ -43,6 +43,7 @@ public class AuthenticationManagedBean implements Serializable {
     private String email;
     private String contact;
     private List<Review> reviews;
+    private User user;
 
     public AuthenticationManagedBean() {
     }
@@ -51,6 +52,7 @@ public class AuthenticationManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             User u = userSessionBean.userLogin(getUsername(), getPassword());
+            setUser(u);
             setUserId(u.getUserId());
             return "/secret/landingPage.xhtml?faces-redirect=true";
         } catch (UserNotFoundException | InvalidLoginException ex) {
@@ -71,15 +73,18 @@ public class AuthenticationManagedBean implements Serializable {
             u.setContactNumber(contact);
             u.setUsername(username);
             u.setPassword(password);
+            u.setPhotoUrl("https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg");
             Long id = userSessionBean.userSignup(u);
             setUserId(id);
-            System.out.println("signup");
+            setUser(u);
+            //System.out.println("signup");
             return "/secret/landingPage.xhtml?faces-redirect=true";
         } catch (UserAlreadyExistsException ex) {
             setUsername(null);
             setPassword(null);
             setUserId(-1);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
             return "/signup.xhtml";
         }
     }
@@ -224,6 +229,14 @@ public class AuthenticationManagedBean implements Serializable {
      */
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

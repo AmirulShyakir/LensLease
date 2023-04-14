@@ -330,8 +330,7 @@ public class DataInitSessionBean {
                 ArrayList<String> photos = new ArrayList();
                 photos.add("/studio-image.jpg");
                 adminSessionBean.createNewBanRequest(new BanRequest("This service is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), serviceSessionBeanLocal.findServiceByServiceId(new Long(1)), null, null));
-                adminSessionBean.createNewBanRequest(new BanRequest("This user is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), null, userSessionBean.findUserByUserId(new Long(1)), null));
-                adminSessionBean.createNewBanRequest(new BanRequest("This booking is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), serviceSessionBeanLocal.findServiceByServiceId(new Long(2)), null, bookingSessionBean.findBookingByBookingId(new Long(1))));
+                adminSessionBean.createNewBanRequest(new BanRequest("This user is horrigible!", new Date(), false, userSessionBean.findUserByUserId(new Long(2)), null, userSessionBean.findUserByUserId(new Long(1)), bookingSessionBean.findBookingByBookingId(new Long(1))));
             } catch (Exception ex) {
                 Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
