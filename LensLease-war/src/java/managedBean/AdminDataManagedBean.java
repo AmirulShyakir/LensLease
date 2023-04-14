@@ -95,6 +95,27 @@ public class AdminDataManagedBean implements Serializable{
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ban Request Accepted", "Successfully attended to");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+     public void unbanUser() {
+        try {
+            adminSessionBeanLocal.unbanUser(selectedBanRequest.getUserToBan().getUserId());
+        } catch (UserNotFoundException ex) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ban Request Accepted", "Successfully attended to");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+     
+     public void unbanService() {
+        try {
+            adminSessionBeanLocal.unbanService(selectedBanRequest.getServiceToBan().getServiceId());
+        } catch (ServiceNotFoundException ex) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ban Request Accepted", "Successfully attended to");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     
     public void rejectBanRequest() {
         try {

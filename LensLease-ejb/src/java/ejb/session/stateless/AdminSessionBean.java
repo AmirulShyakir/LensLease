@@ -155,6 +155,19 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         banRequest.setIsAttendedTo(true);
         banRequest.setIsRejected(true);
     }
+    
+    
+     public void unbanUser(Long userId) throws UserNotFoundException {
+        User user = userSessionBeanLocal.findUserByUserId(userId);
+        user.setIsBanned(false);
+        
+    }
+     
+     public void unbanService(Long serviceId) throws ServiceNotFoundException {
+        Service service = serviceSessionBeanLocal.findServiceByServiceId(serviceId);
+        service.setIsBanned(false);
+        
+    }
 
     @Override
     public void submitReportService(BanRequest banRequest, long serviceId, long complainantId) throws ReportNotMadeException, BanRequestAlreadyExistException {
