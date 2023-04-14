@@ -41,8 +41,10 @@ public interface AdminSessionBeanLocal {
 
     public void acceptBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
 
-    
-
+    public void unbanUser(Long userId) throws UserNotFoundException;
+            
+    public void unbanService(Long serviceId) throws ServiceNotFoundException;
+            
     public void rejectBanRequest(Long banRequestId) throws UserNotFoundException, ServiceNotFoundException;
 
     public List<BanRequest> getPastBanRequests();

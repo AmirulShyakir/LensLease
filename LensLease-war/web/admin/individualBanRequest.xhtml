@@ -98,6 +98,13 @@
                     <p:commandButton value="Reject Ban Request" icon="pi pi-times" actionListener="#{adminDataManagedBean.rejectBanRequest}" action="/admin/homePage.xhtml?faces-redirect=true"  rendered="#{!adminDataManagedBean.selectedBanRequest.isAttendedTo}" style="background-color: #DC5191; border-color: #DC5191">
                         <p:confirm header="Confirmation" message="Are you sure you want to reject this ban request?" icon="pi pi-exclamation-triangle"/>
                     </p:commandButton>
+                    <p:commandButton value="Unban User" icon="pi pi-check" actionListener="#{adminDataManagedBean.unbanUser}" action="/admin/homePage.xhtml?faces-redirect=true"  update="message" class="mr-3 sm:mb-2 md:mb-2" rendered="#{adminDataManagedBean.selectedBanRequest.isAttendedTo and adminDataManagedBean.selectedBanRequest.getUserToBan().banned}"> 
+                        <p:confirm header="Confirmation" message="Are you sure you want to unban this user?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    
+                    <p:commandButton value="Unban Service" icon="pi pi-check" actionListener="#{adminDataManagedBean.unbanService}" action="/admin/homePage.xhtml?faces-redirect=true"  update="message" class="mr-3 sm:mb-2 md:mb-2" rendered="#{adminDataManagedBean.selectedBanRequest.isAttendedTo and adminDataManagedBean.selectedBanRequest.getServiceToBan().banned}"> 
+                        <p:confirm header="Confirmation" message="Are you sure you want to unban this service?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
                         <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
