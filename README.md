@@ -31,7 +31,6 @@ To either host online or expose web services and use that to deploy on localhost
 - [x] Cards for services in myServices.xhtml //Jun Wei 
 - [x] addNewService page or modal //Jun Wei / Leeann
 - [x] addNewService should have some basic input validation so user cannot create an empty service
-- [] addPortfolio should have some basic input validation so user cannot create an invalid portfolio link //Jun Wei
 
 ### Forum 
 - [x] Add forum topics // Dekai
