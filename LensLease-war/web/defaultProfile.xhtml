@@ -49,7 +49,7 @@
                                 </p:avatar>
                             </div>
                             <div class="align-items-center">
-                                <h4 style="margin-bottom: 0px; text-align: center"><h:outputText value="#{serviceManagedBean.user.name}"/></h4>
+                                <h4 style="margin-bottom: 0px; text-align: center"><h:outputText value="#{serviceManagedBean.user.name}"/></h4> <h:outputText class="subtitle" style="color: #D0342C" value="(Banned)" rendered="#{serviceManagedBean.user.banned}"/>
                                 <p class="subtitle" style="margin-top: 0px; text-align: center">@<h:outputText value="#{serviceManagedBean.user.username}"/></p>
                             </div>
                             <div class="align-items-center">

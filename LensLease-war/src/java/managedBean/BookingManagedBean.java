@@ -47,19 +47,18 @@ public class BookingManagedBean implements Serializable {
     private BookingSessionBeanLocal bookingSessionBean;
     @EJB
     private UserSessionBeanLocal userSessionBean;
-    
-    
+
     private User user;
     private List<Booking> todayServicesProvided;
     private List<Booking> pendingBookingsAsProvider;
     private List<Booking> allBookingsAsProvider;
-    
+
     private List<Booking> allBookingsAsRequester;
     private List<Booking> pendingBookingsAsRequester;
     private List<Booking> todayServices;
     private List<Booking> bookingsToBeRated;
     private List<Booking> upcomingBookings;
-    
+
     //for editing and rating
     private long selectedBookingId;
     private Booking selectedBooking;
@@ -72,14 +71,14 @@ public class BookingManagedBean implements Serializable {
      */
     public BookingManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         try {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AuthenticationManagedBean authenticationManagedBean = (AuthenticationManagedBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "authenticationManagedBean");
-            
+
             long userId = authenticationManagedBean.getUserId();
             setUser(userSessionBean.findUserByUserId(userId));
         } catch (Exception ex) {
@@ -94,12 +93,13 @@ public class BookingManagedBean implements Serializable {
             review.setDescription(reviewDescription);
             review.setStarRating(starRating);
             review.setReviewDate(new Date());
-            reviewSessionBean.submitNewReview(review,selectedBooking.getBookingId());
+            reviewSessionBean.submitNewReview(review, selectedBooking.getBookingId());
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Review submmited successfully"));
         } catch (BookingNotFoundException | ReviewAlreadyExistException e) {
             context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to submit review" + e.getMessage()));
         }
     }
+
     public String createBookingBanRequestAsUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -116,7 +116,7 @@ public class BookingManagedBean implements Serializable {
             return "myBookings.xhtml?faces-redirect=true";
         }
     }
-    
+
     public String createBookingBanRequestAsProvider() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -137,6 +137,7 @@ public class BookingManagedBean implements Serializable {
     public void loadTodayBookingsForServices() {
         this.todayServicesProvided = bookingSessionBean.getTodayServicesByUser(this.user);
     }
+
     public void loadTodayBookingsAsRequester() {
         this.todayServices = bookingSessionBean.getTodayServicesByRequester(this.user);
     }
@@ -144,50 +145,60 @@ public class BookingManagedBean implements Serializable {
     public void loadPendingBookingsAsProvider() {
         this.pendingBookingsAsProvider = bookingSessionBean.getPendingBookingRequestsAsProvider(user);
     }
+
     public void loadPendingBookingsAsRequester() {
         this.pendingBookingsAsRequester = bookingSessionBean.getPendingBookingRequestsAsRequester(user);
     }
-    
-    public void loadAllBookingsAsProvider(){
+
+    public void loadAllBookingsAsProvider() {
         this.allBookingsAsProvider = bookingSessionBean.getBookingsAsSupplier(user);
     }
-    
-    public void loadAllBookingsAsRequester(){
+
+    public void loadAllBookingsAsRequester() {
         this.allBookingsAsRequester = bookingSessionBean.getBookingsAsClient(user);
     }
-    
-    public void loadBookingsToBeRated(){
+
+    public void loadBookingsToBeRated() {
         this.bookingsToBeRated = bookingSessionBean.getToRateBookingsAsRequester(user);
     }
-    
-    public void loadUpcomingBookings(){
+
+    public void loadUpcomingBookings() {
         this.upcomingBookings = bookingSessionBean.getConfirmedBookingsAsRequester(user);
     }
 
-    public String setBookingAsCancelled(Booking booking){
+    public String setBookingAsCancelled(Booking booking) {
         bookingSessionBean.setBookingAsCancelled(booking);
         System.out.println("Booking has been cancelled " + booking.getBookingStatus());
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Confirmed", "You have cancelled booking");
-        FacesContext.getCurrentInstance().addMessage(null, message);    
+        FacesContext.getCurrentInstance().addMessage(null, message);
         return "myBookings.xhtml?faces-redirect=true&includeViewParams=true";
     }
 
-    public String setBookingAsToRate(Booking booking){
+    public String setBookingAsToRate(Booking booking) {
         bookingSessionBean.setBookingAsToRate(booking);
         System.out.println("Booking has been completed " + booking.getBookingStatus());
         return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
     }
-    public String setBookingAsRejected(Booking booking){
+
+    public String setBookingAsRejected(Booking booking) {
         bookingSessionBean.setBookingAsRejected(booking);
         System.out.println("Booking has been rejected " + booking.getBookingStatus());
         return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
     }
-    public String setBookingAsConfirmed(Booking booking){
-        bookingSessionBean.setBookingAsConfirmed(booking);
-        System.out.println("Booking has been confirmed " + booking.getBookingStatus());
-        return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+
+    public String setBookingAsConfirmed(Booking booking) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!user.isBanned()) {
+            bookingSessionBean.setBookingAsConfirmed(booking);
+            System.out.println("Booking has been confirmed " + booking.getBookingStatus());
+            return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+        } else {
+            context.addMessage("growl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Unable to accept booking, you are currently banned. Email admin@lenslease.com to appeal ban." ));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "myServices.xhtml?faces-redirect=true&includeViewParams=true";
+        }
     }
-    
+
     public User getUser() {
         return user;
     }
@@ -276,7 +287,7 @@ public class BookingManagedBean implements Serializable {
     public void setSelectedBooking(Booking selectedBooking) {
         this.selectedBooking = selectedBooking;
     }
-    
+
     public void loadSelectedBooking() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
