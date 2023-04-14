@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <span class="text-green-500 font-medium"><p>Active Bookings</p></span>
-                            <!--<span class="text-500">responded</span>-->
+                     
                         </div>
                         </h:link>
                     </div>
@@ -113,10 +113,6 @@
                     </p:column>
                     
                      <p:column headerText="Actions">
-<!--                         <p:commandButton value="View Request" update=":form1:requestDetails" oncomplete="PF('requestDialog').show()" title="View">          
-                             <f:setPropertyActionListener value="#{banRequest}" target="#{adminDataManagedBean.selectedBanRequest}" /> 
-                             <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
-                         </p:commandButton>-->
                          <p:button outcome="individualBanRequest" value="View Details">
                              <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
                          </p:button>
@@ -151,10 +147,6 @@
                 </p:column>
 
                 <p:column headerText="Actions">
-                    <!--                         <p:commandButton value="View Request" update=":form1:requestDetails" oncomplete="PF('requestDialog').show()" title="View">          
-                                                 <f:setPropertyActionListener value="#{banRequest}" target="#{adminDataManagedBean.selectedBanRequest}" /> 
-                                                 <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
-                                             </p:commandButton>-->
                     <p:button outcome="individualBanRequest" value="View Details">
                         <f:param name="banRequestId" value="#{banRequest.banRequestId}"/>
                     </p:button>
@@ -164,38 +156,6 @@
             </div>
         </div>
            
-            
-<!--            <p:dialog  header="Request Details" widgetVar="requestDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" >
-                <p:ajax event="close" update=":form1:requestDetails" listener="/>
-                <p:outputPanel id="requestDetails"  style="width: 500px; height: 400px" class="grid flex-column flex-wrap justify-content-end align-content-center px-5">
-                    
-                    <p:panelGrid columns="2" rendered="#{not empty adminDataManagedBean.selectedBanRequest}" style="width: 400px; height: 300px">
-                        <h:outputText value="Ban Id" />
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.banRequestId}" />
-                        <h:outputText value="Lend Date" />
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.requestDate}">
-                            <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                       
-                        <h:outputText value="Service Id" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.serviceId}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>  
-                        <h:outputText value="Service Name" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.serviceToBan.serviceName}" rendered="#{adminDataManagedBean.selectedBanRequest.serviceToBan != null}"/>  
-                        
-                        <h:outputText value="User Id" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.userId}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>  
-                        <h:outputText value="Username" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/>
-                        <h:outputText value="#{adminDataManagedBean.selectedBanRequest.userToBan.username}" rendered="#{adminDataManagedBean.selectedBanRequest.userToBan != null}"/> 
-                    </p:panelGrid>
-                    <br></br> <br></br>
-                    <div class=" flex justify-content-center">
-                    <p:commandButton value="Confirm Ban"  update=":form1:requestDetails" onclick="PF('requestDialog').hide()">                 
-                    
-                    </p:commandButton>
-                    </div>
-                   
-                </p:outputPanel>
-            </p:dialog>-->
         </h:form>
 
        

@@ -39,3 +39,8 @@ body .ui-dataview .ui-dataview-header {
     padding: 0px;
     margin:0px;
 }
+
+body .ui-dataview .ui-dataview-content {
+    background-color: whitesmoke;
+    margin-left: 30px;
+}
